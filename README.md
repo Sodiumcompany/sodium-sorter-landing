@@ -3,8 +3,8 @@
 Official landing website for Sodium Sorter - Automatic file organization for Windows.
 
 ## Live Demo
-- GitHub Pages: https://yourusername.github.io/sodium-sorter-landing
-- Vercel: https://sodium-sorter.vercel.app
+- GitHub Pages: https://github.com/Sodiumcompany/sodium-sorter-landing
+- Vercel: https://sodiumsorter.vercel.app/
 
 ## Features
 - Modern glassmorphism design
@@ -13,8 +13,6 @@ Official landing website for Sodium Sorter - Automatic file organization for Win
 - Fast loading (no dependencies)
 - Screenshots and product showcase
 
-## Setup Instructions
-See [SETUP_GUIDE.md](./SETUP_GUIDE.md)
-
-## License
-MIT
+Devoloped By
+MrGlitch_Spider
+Email : sajidulhasan2025@gmail.com
