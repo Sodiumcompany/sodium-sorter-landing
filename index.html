@@ -1,0 +1,2014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sodium Sorter - Automatically organize your Downloads folder. Built with Rust. Fast, lightweight, private.">
+    <meta name="keywords" content="file organizer, downloads folder, Windows utility, file sorter, storage management">
+    <meta name="author" content="Sodium">
+    <meta name="theme-color" content="#4F8CFF">
+    <title>Sodium Sorter - Your Downloads Folder, Finally Organized</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4F8CFF;
+            --primary-dark: #3D6FCC;
+            --accent: #00D9FF;
+            --success: #00FF88;
+            --warning: #FFB627;
+            --danger: #FF4757;
+            
+            /* Light Theme */
+            --bg-light: #FFFFFF;
+            --bg-light-secondary: #F5F7FA;
+            --bg-light-tertiary: #EBEEF5;
+            --text-light: #0F1419;
+            --text-light-secondary: #6B7280;
+            --border-light: rgba(15, 20, 25, 0.1);
+            --glass-light: rgba(255, 255, 255, 0.7);
+            --glass-light-border: rgba(255, 255, 255, 0.2);
+            
+            /* Dark Theme */
+            --bg-dark: #0F1419;
+            --bg-dark-secondary: #1A1F2E;
+            --bg-dark-tertiary: #252D3D;
+            --text-dark: #FFFFFF;
+            --text-dark-secondary: #B0BCC4;
+            --border-dark: rgba(255, 255, 255, 0.1);
+            --glass-dark: rgba(20, 20, 30, 0.6);
+            --glass-dark-border: rgba(255, 255, 255, 0.15);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: var(--text-light);
+            background: var(--bg-light);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        body.dark-theme {
+            color: var(--text-dark);
+            background: var(--bg-dark);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-light-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        body.dark-theme ::-webkit-scrollbar-track {
+            background: var(--bg-dark-secondary);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section {
+            padding: 80px 0;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: var(--text-light-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        body.dark-theme .section-header p {
+            color: var(--text-dark-secondary);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 0;
+            backdrop-filter: blur(10px);
+            background: var(--glass-light);
+            border-bottom: 1px solid var(--glass-light-border);
+            animation: slideDown 0.5s ease-out;
+        }
+
+        body.dark-theme nav {
+            background: var(--glass-dark);
+            border-bottom-color: var(--glass-dark-border);
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        body.dark-theme .nav-links a {
+            color: var(--text-dark);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.3rem;
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(20deg);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            box-shadow: 0 8px 16px rgba(79, 140, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(79, 140, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-light-secondary);
+            color: var(--text-light);
+            border: 1px solid var(--border-light);
+        }
+
+        body.dark-theme .btn-secondary {
+            background: var(--bg-dark-secondary);
+            color: var(--text-dark);
+            border-color: var(--border-dark);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-light-tertiary);
+        }
+
+        body.dark-theme .btn-secondary:hover {
+            background: var(--bg-dark-tertiary);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 120px 0 80px 0;
+            margin-top: 60px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(79, 140, 255, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(0, 217, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .hero .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .hero-content .tagline {
+            font-size: 1.3rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 15px;
+            animation: fadeInUp 0.6s ease-out 0.1s both;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            color: var(--text-light-secondary);
+            margin-bottom: 30px;
+            line-height: 1.8;
+            animation: fadeInUp 0.6s ease-out 0.2s both;
+        }
+
+        body.dark-theme .hero-content p {
+            color: var(--text-dark-secondary);
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            animation: fadeInUp 0.6s ease-out 0.3s both;
+        }
+
+        .hero-mockup {
+            position: relative;
+            animation: fadeInRight 0.8s ease-out 0.2s both;
+        }
+
+        .mockup-window {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            backdrop-filter: blur(20px);
+            padding: 0;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-theme .mockup-window {
+            background: linear-gradient(135deg, rgba(20, 20, 30, 0.8), rgba(20, 20, 30, 0.6));
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .mockup-header {
+            background: var(--bg-light-secondary);
+            padding: 12px 16px;
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        body.dark-theme .mockup-header {
+            background: var(--bg-dark-secondary);
+            border-bottom-color: var(--border-dark);
+        }
+
+        .mockup-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .mockup-dot.red {
+            background: #FF5F57;
+        }
+
+        .mockup-dot.yellow {
+            background: #FFBD2E;
+        }
+
+        .mockup-dot.green {
+            background: #28C940;
+        }
+
+        .mockup-content {
+            padding: 20px;
+            background: linear-gradient(135deg, var(--bg-light) 0%, var(--bg-light-secondary) 100%);
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark-theme .mockup-content {
+            background: linear-gradient(135deg, var(--bg-dark-tertiary) 0%, var(--bg-dark-secondary) 100%);
+        }
+
+        .notification-card {
+            background: var(--glass-light);
+            border: 1px solid var(--glass-light-border);
+            padding: 12px 15px;
+            border-radius: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            animation: slideInRight 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        body.dark-theme .notification-card {
+            background: var(--glass-dark);
+            border-color: var(--glass-dark-border);
+        }
+
+        .notification-card:nth-child(1) {
+            animation-delay: 0.3s;
+        }
+
+        .notification-card:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .notification-card:nth-child(3) {
+            animation-delay: 0.7s;
+        }
+
+        .notification-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .notification-icon.pdf {
+            background: rgba(255, 107, 107, 0.2);
+            color: #FF6B6B;
+        }
+
+        .notification-icon.image {
+            background: rgba(78, 205, 196, 0.2);
+            color: #4ECDC4;
+        }
+
+        .notification-icon.archive {
+            background: rgba(255, 183, 39, 0.2);
+            color: #FFB727;
+        }
+
+        .notification-text {
+            font-size: 0.9rem;
+            flex: 1;
+        }
+
+        .notification-text strong {
+            display: block;
+            color: var(--text-light);
+            margin-bottom: 2px;
+        }
+
+        body.dark-theme .notification-text strong {
+            color: var(--text-dark);
+        }
+
+        .notification-text span {
+            color: var(--text-light-secondary);
+            font-size: 0.85rem;
+        }
+
+        body.dark-theme .notification-text span {
+            color: var(--text-dark-secondary);
+        }
+
+        /* Features Section */
+        .features {
+            background: var(--bg-light-secondary);
+        }
+
+        body.dark-theme .features {
+            background: var(--bg-dark-secondary);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--glass-light);
+            border: 1px solid var(--glass-light-border);
+            padding: 40px 30px;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.6s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark-theme .feature-card {
+            background: var(--glass-dark);
+            border-color: var(--glass-dark-border);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(79, 140, 255, 0.2);
+        }
+
+        body.dark-theme .feature-card:hover {
+            box-shadow: 0 20px 40px rgba(79, 140, 255, 0.3);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-card p {
+            color: var(--text-light-secondary);
+            position: relative;
+            z-index: 1;
+        }
+
+        body.dark-theme .feature-card p {
+            color: var(--text-dark-secondary);
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            position: relative;
+        }
+
+        .timeline {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            position: relative;
+            margin-top: 60px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary) 33%, transparent 33%, transparent 66%, var(--primary) 66%);
+            z-index: 0;
+        }
+
+        .timeline-step {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .timeline-step:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .timeline-step:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0 auto 20px;
+            box-shadow: 0 10px 30px rgba(79, 140, 255, 0.3);
+        }
+
+        .timeline-step h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .timeline-step p {
+            color: var(--text-light-secondary);
+        }
+
+        body.dark-theme .timeline-step p {
+            color: var(--text-dark-secondary);
+        }
+
+        /* Screenshots Section */
+        .screenshots {
+            background: var(--bg-light-secondary);
+        }
+
+        body.dark-theme .screenshots {
+            background: var(--bg-dark-secondary);
+        }
+
+        .screenshots-container {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 20px 0;
+            scroll-behavior: smooth;
+        }
+
+        .screenshot-item {
+            flex: 0 0 350px;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.6s ease-out;
+            background: var(--bg-light);
+        }
+
+        body.dark-theme .screenshot-item {
+            background: var(--bg-dark-secondary);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .screenshot-item:hover {
+            transform: scale(1.05);
+        }
+
+        .screenshot-image {
+            width: 100%;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-light-secondary);
+            border: 1px solid var(--border-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark-theme .screenshot-image {
+            background: var(--bg-dark-tertiary);
+            border-color: var(--border-dark);
+        }
+
+        .screenshot-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .screenshot-label {
+            padding: 15px;
+            background: var(--glass-light);
+            border-top: 1px solid var(--glass-light-border);
+            font-weight: 600;
+        }
+
+        body.dark-theme .screenshot-label {
+            background: var(--glass-dark);
+            border-top-color: var(--glass-dark-border);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-light);
+            border-radius: 20px;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow: auto;
+            position: relative;
+            animation: scaleIn 0.3s ease;
+        }
+
+        body.dark-theme .modal-content {
+            background: var(--bg-dark);
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 20px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: var(--bg-light-secondary);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        body.dark-theme .modal-close {
+            background: var(--bg-dark-secondary);
+        }
+
+        .modal-close:hover {
+            transform: rotate(90deg);
+        }
+
+        /* Statistics Section */
+        .statistics {
+            position: relative;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .stat-card {
+            background: var(--glass-light);
+            border: 1px solid var(--glass-light-border);
+            padding: 40px;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        body.dark-theme .stat-card {
+            background: var(--glass-dark);
+            border-color: var(--glass-dark-border);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: var(--text-light-secondary);
+            font-weight: 600;
+        }
+
+        body.dark-theme .stat-label {
+            color: var(--text-dark-secondary);
+        }
+
+        /* Theme Showcase */
+        .theme-showcase {
+            background: var(--bg-light-secondary);
+        }
+
+        body.dark-theme .theme-showcase {
+            background: var(--bg-dark-secondary);
+        }
+
+        .theme-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+
+        .theme-btn {
+            padding: 12px 24px;
+            border: 2px solid var(--border-light);
+            background: var(--bg-light);
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-theme .theme-btn {
+            background: var(--bg-dark-secondary);
+            border-color: var(--border-dark);
+        }
+
+        .theme-btn.active {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+        }
+
+        .theme-preview-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .theme-preview {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        body.dark-theme .theme-preview {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .theme-preview:hover {
+            transform: translateY(-10px);
+        }
+
+        .theme-preview-header {
+            padding: 20px;
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .theme-preview.light .theme-preview-header {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F5F7FA 100%);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-preview.dark .theme-preview-header {
+            background: linear-gradient(135deg, #0F1419 0%, #1A1F2E 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-preview.glass .theme-preview-header {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .theme-preview.neon .theme-preview-header {
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 100%);
+            border-bottom: 1px solid rgba(79, 140, 255, 0.3);
+        }
+
+        .theme-preview.amoled .theme-preview-header {
+            background: #000000;
+            border-bottom: 1px solid rgba(79, 140, 255, 0.2);
+        }
+
+        .theme-preview-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .theme-preview-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .theme-preview-dot.red {
+            background: #FF5F57;
+        }
+
+        .theme-preview-dot.yellow {
+            background: #FFBD2E;
+        }
+
+        .theme-preview-dot.green {
+            background: #28C940;
+        }
+
+        .theme-preview-info {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .theme-preview.light .theme-preview-info {
+            background: white;
+            color: #0F1419;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .theme-preview.dark .theme-preview-info {
+            background: #1A1F2E;
+            color: white;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .theme-preview.glass .theme-preview-info {
+            background: rgba(255, 255, 255, 0.7);
+            color: #0F1419;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .theme-preview.neon .theme-preview-info {
+            background: #0a0e27;
+            color: #4F8CFF;
+            border-top: 1px solid rgba(79, 140, 255, 0.2);
+        }
+
+        .theme-preview.amoled .theme-preview-info {
+            background: #000000;
+            color: #4F8CFF;
+            border-top: 1px solid rgba(79, 140, 255, 0.1);
+        }
+
+        .theme-preview-name {
+            font-weight: 700;
+        }
+
+        .theme-preview-status {
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+
+        /* Download Section */
+        .download {
+            position: relative;
+            text-align: center;
+        }
+
+        .download-content {
+            background: var(--glass-light);
+            border: 1px solid var(--glass-light-border);
+            padding: 60px 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        body.dark-theme .download-content {
+            background: var(--glass-dark);
+            border-color: var(--glass-dark-border);
+        }
+
+        .download-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .download-content p {
+            font-size: 1.1rem;
+            color: var(--text-light-secondary);
+            margin-bottom: 40px;
+        }
+
+        body.dark-theme .download-content p {
+            color: var(--text-dark-secondary);
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .download-info {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        body.dark-theme .download-info {
+            border-top-color: var(--border-dark);
+        }
+
+        .download-item {
+            text-align: center;
+        }
+
+        .download-item strong {
+            display: block;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .download-item span {
+            color: var(--text-light-secondary);
+            font-size: 0.9rem;
+        }
+
+        body.dark-theme .download-item span {
+            color: var(--text-dark-secondary);
+        }
+
+        /* FAQ Section */
+        .faq {
+            background: var(--bg-light-secondary);
+        }
+
+        body.dark-theme .faq {
+            background: var(--bg-dark-secondary);
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--glass-light);
+            border: 1px solid var(--glass-light-border);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.6s ease-out;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-theme .faq-item {
+            background: var(--glass-dark);
+            border-color: var(--glass-dark-border);
+        }
+
+        .faq-item:hover {
+            border-color: var(--primary);
+        }
+
+        .faq-question {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .faq-question:hover {
+            color: var(--primary);
+        }
+
+        .faq-toggle {
+            font-size: 1.3rem;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            display: none;
+            padding: 0 20px 20px;
+            color: var(--text-light-secondary);
+            border-top: 1px solid var(--border-light);
+            line-height: 1.8;
+        }
+
+        body.dark-theme .faq-answer {
+            color: var(--text-dark-secondary);
+            border-top-color: var(--border-dark);
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-light-secondary);
+            border-top: 1px solid var(--border-light);
+            padding: 50px 0 30px;
+        }
+
+        body.dark-theme footer {
+            background: var(--bg-dark-secondary);
+            border-top-color: var(--border-dark);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h4 {
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section a {
+            color: var(--text-light-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-theme .footer-section a {
+            color: var(--text-dark-secondary);
+        }
+
+        .footer-section a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-light);
+            color: var(--text-light-secondary);
+            font-size: 0.9rem;
+        }
+
+        body.dark-theme .footer-bottom {
+            border-top-color: var(--border-dark);
+            color: var(--text-dark-secondary);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.6s ease-out;
+        }
+
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section {
+                padding: 60px 0;
+            }
+
+            .nav-links {
+                gap: 15px;
+                font-size: 0.85rem;
+            }
+
+            .hero .container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                margin-top: 40px;
+            }
+
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline {
+                grid-template-columns: 1fr;
+                margin-top: 40px;
+            }
+
+            .timeline::before {
+                display: none;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .hero-buttons .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .download-buttons {
+                flex-direction: column;
+            }
+
+            .download-buttons .btn {
+                width: 100%;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .theme-buttons {
+                gap: 10px;
+            }
+
+            .theme-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .screenshot-item {
+                flex: 0 0 280px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav .nav-links {
+                gap: 10px;
+                display: none;
+            }
+
+            nav .nav-right {
+                gap: 10px;
+            }
+
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero-content .tagline {
+                font-size: 1rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+
+            .section-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .screenshot-item {
+                flex: 0 0 280px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+
+            .feature-card {
+                padding: 30px 20px;
+            }
+
+            .download-content {
+                padding: 40px 20px;
+            }
+
+            .download-content h2 {
+                font-size: 1.5rem;
+            }
+
+            .footer-content {
+                gap: 20px;
+            }
+        }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--bg-light) 0%, var(--bg-light-secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        body.dark-theme .loading-screen {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-dark-secondary) 100%);
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--border-light);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        body.dark-theme .loading-spinner {
+            border-color: var(--border-dark);
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            color: var(--text-light-secondary);
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        body.dark-theme .loading-text {
+            color: var(--text-dark-secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Initializing Sodium Sorter</p>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="logo" onclick="document.documentElement.scrollTop = 0">Sodium Sorter</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how">How It Works</a></li>
+                <li><a href="#screenshots">Screenshots</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+            <div class="nav-right">
+                <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+                <a href="#download" class="btn btn-primary">Download</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Sodium Sorter</h1>
+                <p class="tagline">Your Downloads Folder, Finally Organized.</p>
+                <p>Automatically organize PDFs, Images, Videos, Code Files, Programs and more. Save time. Stay organized. Work faster.</p>
+                <div class="hero-buttons">
+                    <a href="#download" class="btn btn-primary">Download for Windows</a>
+                    <a href="#features" class="btn btn-secondary">View Features</a>
+                </div>
+            </div>
+            <div class="hero-mockup">
+                <div class="mockup-window">
+                    <div class="mockup-header">
+                        <div class="mockup-dot red"></div>
+                        <div class="mockup-dot yellow"></div>
+                        <div class="mockup-dot green"></div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="notification-card">
+                            <div class="notification-icon pdf">📄</div>
+                            <div class="notification-text">
+                                <strong>document.pdf</strong>
+                                <span>moved to PDFs</span>
+                            </div>
+                        </div>
+                        <div class="notification-card">
+                            <div class="notification-icon image">🖼️</div>
+                            <div class="notification-text">
+                                <strong>image.png</strong>
+                                <span>moved to Photos</span>
+                            </div>
+                        </div>
+                        <div class="notification-card">
+                            <div class="notification-icon archive">📦</div>
+                            <div class="notification-text">
+                                <strong>game.zip</strong>
+                                <span>moved to Archives</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features section" id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Powerful Features</h2>
+                <p>Everything you need to keep your files organized automatically</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Real-Time Folder Watching</h3>
+                    <p>Automatically detects new files and sorts them instantly as they arrive in your Downloads folder.</p>
+                </div>
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon">⚙️</div>
+                    <h3>Rule Editor</h3>
+                    <p>Create custom sorting rules based on file type, extension, name patterns, and more.</p>
+                </div>
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Theme Engine</h3>
+                    <p>Choose from Dark, Light, Glass, AMOLED, and Neon themes that match your style.</p>
+                </div>
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon">📊</div>
+                    <h3>Storage Analyzer</h3>
+                    <p>Visualize folder sizes and storage usage with beautiful interactive charts.</p>
+                </div>
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon">📁</div>
+                    <h3>Multi-Folder Watching</h3>
+                    <p>Watch Downloads, Desktop, Documents, external drives and unlimited custom folders.</p>
+                </div>
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Lightning Fast</h3>
+                    <p>Built with Rust. Uses less than 20 MB RAM and starts in under 1 second.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works section" id="how">
+        <div class="container">
+            <div class="section-header">
+                <h2>How It Works</h2>
+                <p>Get organized in three simple steps</p>
+            </div>
+            <div class="timeline">
+                <div class="timeline-step scroll-reveal">
+                    <div class="step-number">1</div>
+                    <h3>Select Folders</h3>
+                    <p>Choose which folders to watch. Start with Downloads or add any custom folder.</p>
+                </div>
+                <div class="timeline-step scroll-reveal">
+                    <div class="step-number">2</div>
+                    <h3>Create Rules</h3>
+                    <p>Define how files should be organized. Use presets or build custom rules.</p>
+                </div>
+                <div class="timeline-step scroll-reveal">
+                    <div class="step-number">3</div>
+                    <h3>Let It Work</h3>
+                    <p>Sodium Sorter organizes everything automatically. Just leave it running.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Screenshots -->
+    <section class="screenshots section" id="screenshots">
+        <div class="container">
+            <div class="section-header">
+                <h2>See It In Action</h2>
+                <p>Take a closer look at Sodium Sorter's beautiful interface</p>
+            </div>
+            <div class="screenshots-container" id="screenshotsContainer">
+                <div class="screenshot-item scroll-reveal" onclick="openModal(this)">
+                    <div class="screenshot-image">
+                        <img src="images/main.png" alt="Dashboard" loading="lazy">
+                    </div>
+                    <div class="screenshot-label">Dashboard</div>
+                </div>
+                <div class="screenshot-item scroll-reveal" onclick="openModal(this)">
+                    <div class="screenshot-image">
+                        <img src="images/folder.png" alt="Folder View" loading="lazy">
+                    </div>
+                    <div class="screenshot-label">Folder View</div>
+                </div>
+                <div class="screenshot-item scroll-reveal" onclick="openModal(this)">
+                    <div class="screenshot-image">
+                        <img src="images/rule.png" alt="Rule Editor" loading="lazy">
+                    </div>
+                    <div class="screenshot-label">Rule Editor</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div class="modal" id="screenshotModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            <div id="modalImage"></div>
+        </div>
+    </div>
+
+    <!-- Statistics -->
+    <section class="statistics section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card scroll-reveal">
+                    <div class="stat-number" data-target="20">0</div>
+                    <div class="stat-label">&lt;20 MB RAM</div>
+                </div>
+                <div class="stat-card scroll-reveal">
+                    <div class="stat-number" data-target="1">0</div>
+                    <div class="stat-label">&lt;1 Sec Startup</div>
+                </div>
+                <div class="stat-card scroll-reveal">
+                    <div class="stat-number" data-target="1000">0</div>
+                    <div class="stat-label">1000+ Files Sorted Per Day</div>
+                </div>
+                <div class="stat-card scroll-reveal">
+                    <div class="stat-number" data-target="999">0</div>
+                    <div class="stat-label">Unlimited Watched Folders</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Theme Showcase -->
+    <section class="theme-showcase section" id="themes">
+        <div class="container">
+            <div class="section-header">
+                <h2>Theme Showcase</h2>
+                <p>Choose a theme that matches your style</p>
+            </div>
+            <div class="theme-buttons">
+                <button class="theme-btn active" onclick="filterTheme('all')">All Themes</button>
+                <button class="theme-btn" onclick="filterTheme('light')">Light</button>
+                <button class="theme-btn" onclick="filterTheme('dark')">Dark</button>
+                <button class="theme-btn" onclick="filterTheme('glass')">Glass</button>
+                <button class="theme-btn" onclick="filterTheme('neon')">Neon</button>
+                <button class="theme-btn" onclick="filterTheme('amoled')">AMOLED</button>
+            </div>
+            <div class="theme-preview-container">
+                <div class="theme-preview light scroll-reveal">
+                    <div class="theme-preview-header">
+                        <div class="theme-preview-dots">
+                            <div class="theme-preview-dot red"></div>
+                            <div class="theme-preview-dot yellow"></div>
+                            <div class="theme-preview-dot green"></div>
+                        </div>
+                        <span style="color: #0F1419; font-weight: 600;">Light Theme</span>
+                    </div>
+                    <div class="theme-preview-info">
+                        <span class="theme-preview-name">Light</span>
+                        <span class="theme-preview-status">Default</span>
+                    </div>
+                </div>
+                <div class="theme-preview dark scroll-reveal">
+                    <div class="theme-preview-header">
+                        <div class="theme-preview-dots">
+                            <div class="theme-preview-dot red"></div>
+                            <div class="theme-preview-dot yellow"></div>
+                            <div class="theme-preview-dot green"></div>
+                        </div>
+                        <span style="color: white; font-weight: 600;">Dark Theme</span>
+                    </div>
+                    <div class="theme-preview-info">
+                        <span class="theme-preview-name">Dark</span>
+                        <span class="theme-preview-status">Popular</span>
+                    </div>
+                </div>
+                <div class="theme-preview glass scroll-reveal">
+                    <div class="theme-preview-header">
+                        <div class="theme-preview-dots">
+                            <div class="theme-preview-dot red"></div>
+                            <div class="theme-preview-dot yellow"></div>
+                            <div class="theme-preview-dot green"></div>
+                        </div>
+                        <span style="color: #0F1419; font-weight: 600;">Glassmorphism</span>
+                    </div>
+                    <div class="theme-preview-info">
+                        <span class="theme-preview-name">Glass</span>
+                        <span class="theme-preview-status">Premium</span>
+                    </div>
+                </div>
+                <div class="theme-preview neon scroll-reveal">
+                    <div class="theme-preview-header">
+                        <div class="theme-preview-dots">
+                            <div class="theme-preview-dot red"></div>
+                            <div class="theme-preview-dot yellow"></div>
+                            <div class="theme-preview-dot green"></div>
+                        </div>
+                        <span style="color: #4F8CFF; font-weight: 600;">Neon Glow</span>
+                    </div>
+                    <div class="theme-preview-info">
+                        <span class="theme-preview-name">Neon</span>
+                        <span class="theme-preview-status">Cyberpunk</span>
+                    </div>
+                </div>
+                <div class="theme-preview amoled scroll-reveal">
+                    <div class="theme-preview-header">
+                        <div class="theme-preview-dots">
+                            <div class="theme-preview-dot red"></div>
+                            <div class="theme-preview-dot yellow"></div>
+                            <div class="theme-preview-dot green"></div>
+                        </div>
+                        <span style="color: #4F8CFF; font-weight: 600;">AMOLED</span>
+                    </div>
+                    <div class="theme-preview-info">
+                        <span class="theme-preview-name">AMOLED</span>
+                        <span class="theme-preview-status">Battery Saver</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section class="download section" id="download">
+        <div class="container">
+            <div class="download-content">
+                <h2>Download Sodium Sorter</h2>
+                <p>Fast. Lightweight. Private. Get organized in minutes.</p>
+                <div class="download-buttons">
+                    <button class="btn btn-primary" onclick="downloadApp()">Download for Windows</button>
+                    <button class="btn btn-secondary" onclick="window.open('https://github.com', '_blank')">View Source</button>
+                </div>
+                <div class="download-info">
+                    <div class="download-item">
+                        <strong>File Size</strong>
+                        <span>Approx. 15 MB</span>
+                    </div>
+                    <div class="download-item">
+                        <strong>System</strong>
+                        <span>Windows 10 & 11</span>
+                    </div>
+                    <div class="download-item">
+                        <strong>Requirements</strong>
+                        <span>.NET 6.0+</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq section" id="faq">
+        <div class="container">
+            <div class="section-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Everything you need to know about Sodium Sorter</p>
+            </div>
+            <div class="faq-container">
+                <div class="faq-item scroll-reveal">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Is Sodium Sorter free?</span>
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Yes, Sodium Sorter is completely free and open source. You can use all features without any cost or subscription. We believe file organization should be accessible to everyone.
+                    </div>
+                </div>
+                <div class="faq-item scroll-reveal">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Does it work offline?</span>
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Absolutely. Sodium Sorter runs entirely on your local machine and doesn't require an internet connection. Your files stay private and never leave your computer.
+                    </div>
+                </div>
+                <div class="faq-item scroll-reveal">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>How much RAM does it use?</span>
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Sodium Sorter is extremely lightweight, using less than 20 MB of RAM even when watching multiple folders and processing large numbers of files. Built with Rust for maximum efficiency.
+                    </div>
+                </div>
+                <div class="faq-item scroll-reveal">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Can I create custom rules?</span>
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Yes. The Rule Editor lets you create custom sorting rules based on file extensions, names, sizes, and patterns. You can also modify and combine rules to create complex organization workflows.
+                    </div>
+                </div>
+                <div class="faq-item scroll-reveal">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Can it watch multiple folders?</span>
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Unlimited folders. Watch your Downloads, Desktop, Documents, external drives, or any custom location. Each folder can have its own set of rules for complete flexibility.
+                    </div>
+                </div>
+                <div class="faq-item scroll-reveal">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Is my data safe?</span>
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Yes. Sodium Sorter operates locally on your machine with no cloud connectivity. All file operations are logged and reversible. You maintain complete control over your files at all times.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how">How It Works</a></li>
+                        <li><a href="#screenshots">Screenshots</a></li>
+                        <li><a href="#download">Download</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">GitHub</a></li>
+                        <li><a href="#">Changelog</a></li>
+                        <li><a href="#">Issues</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Community</h4>
+                    <ul>
+                        <li><a href="#">Discord</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Reddit</a></li>
+                        <li><a href="#">Email</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">License</a></li>
+                        <li><a href="#">Security</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Sodium Sorter. Made with ❤️ for organized minds. Built with Rust.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Theme toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        const savedTheme = localStorage.getItem('theme') || (prefersDark ? 'dark' : 'light');
+        
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                html.classList.add('dark-theme');
+                themeToggle.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                html.classList.remove('dark-theme');
+                themeToggle.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        setTheme(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = html.classList.contains('dark-theme');
+            setTheme(isDark ? 'light' : 'dark');
+        });
+
+        // Hide loading screen
+        window.addEventListener('load', () => {
+            const loadingScreen = document.getElementById('loadingScreen');
+            setTimeout(() => {
+                loadingScreen.style.opacity = '0';
+                loadingScreen.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            }, 800);
+        });
+
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Counter animation
+        const counterObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statCards = entry.target.querySelectorAll('.stat-number');
+                    statCards.forEach(card => {
+                        const target = parseInt(card.dataset.target);
+                        animateCounter(card, target);
+                    });
+                    counterObserver.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        const statsSection = document.querySelector('.statistics');
+        if (statsSection) {
+            counterObserver.observe(statsSection);
+        }
+
+        function animateCounter(element, target) {
+            let current = 0;
+            const increment = target / 30;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target + (element.parentElement.classList.contains('stat-label') ? '' : target === 1 ? '' : '+');
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current);
+                }
+            }, 30);
+        }
+
+        // FAQ Toggle
+        function toggleFAQ(element) {
+            const item = element.parentElement;
+            item.classList.toggle('active');
+        }
+
+        // Screenshot Modal
+        function openModal(element) {
+            const modal = document.getElementById('screenshotModal');
+            const modalImage = document.getElementById('modalImage');
+            const img = element.querySelector('img');
+            
+            modalImage.innerHTML = `<img src="${img.src}" alt="${img.alt}" style="max-width: 100%; height: auto;">`;
+            
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('screenshotModal');
+            modal.classList.remove('active');
+        }
+
+        document.getElementById('screenshotModal').addEventListener('click', (e) => {
+            if (e.target.id === 'screenshotModal') {
+                closeModal();
+            }
+        });
+
+        // Filter themes
+        function filterTheme(theme) {
+            const buttons = document.querySelectorAll('.theme-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // Download app
+        function downloadApp() {
+            window.location.href = 'sodium_sorter.exe';
+        }
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && document.querySelector(href)) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Add parallax effect to hero
+        window.addEventListener('scroll', () => {
+            const hero = document.querySelector('.hero');
+            const scrolled = window.pageYOffset;
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+    </script>
+</body>
+</html>
