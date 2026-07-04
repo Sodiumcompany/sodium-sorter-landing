@@ -1,13 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" itemscope itemtype="https://schema.org/SoftwareApplication">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sodium Sorter — Smart File Organization, Automatically</title>
-    <meta name="description" content="Sodium Sorter automatically monitors folders and organizes files into appropriate locations using customizable rules. Lightweight, private, and fully local." />
+    <title>Sodium Sorter — Automatic File Organizer for Windows | Free Download</title>
+    <meta name="description" content="Sodium Sorter automatically monitors and organizes your files on Windows. Download the best free file sorter for Windows 10/11. 100% private, no cloud, no tracking." />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://sodiumsorter.vercel.app/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Sodium Sorter — Automatic File Organizer for Windows" />
+    <meta property="og:description" content="Automatically sort, organize, and clean your downloads and folders with Sodium Sorter. Free, portable, and 100% private." />
+    <meta property="og:url" content="https://sodiumsorter.vercel.app/" />
+    <meta property="og:site_name" content="Sodium Sorter" />
+    <meta property="og:image" content="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/File%20Sorter.png" />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Sodium Sorter — Automatic File Organizer for Windows" />
+    <meta name="twitter:description" content="Automatically sort files on Windows with custom rules. Free, portable, and private." />
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/File%20Sorter.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/folder.png" type="image/png" />
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/File%20Sorter.png" />
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com">
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js">
@@ -24,6 +56,76 @@
             }
         }
     </script>
+
+    <!-- ===== STRUCTURED DATA (JSON-LD) ===== -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "Sodium Sorter",
+            "operatingSystem": "Windows 10, Windows 11",
+            "applicationCategory": "UtilitiesApplication",
+            "description": "Automatically organize files on Windows with custom rules. Free, portable, and 100% private.",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+            },
+            "author": {
+                "@type": "Organization",
+                "name": "Sodium IOT"
+            },
+            "downloadUrl": "https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/sodium_sorter.exe",
+            "softwareVersion": "1.0.0",
+            "fileSize": "~5 MB",
+            "featureList": "Automatic file sorting, Real-time monitoring, Custom rules, Portable, No cloud, Lightweight"
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Sodium IOT",
+            "url": "https://sodiumcomapny.vercel.app",
+            "logo": "https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/company.jpg",
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "email": "sajidulhasan2025@gmail.com",
+                "contactType": "technical support"
+            },
+            "sameAs": [
+                "https://github.com/Sodiumcompany"
+            ]
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "MrGlitch_Spider",
+            "jobTitle": "Developer",
+            "affiliation": {
+                "@type": "Organization",
+                "name": "Sodium IOT"
+            },
+            "email": "sajidulhasan2025@gmail.com"
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sodiumsorter.vercel.app/" },
+                { "@type": "ListItem", "position": 2, "name": "Download", "item": "https://sodiumsorter.vercel.app/#download" },
+                { "@type": "ListItem", "position": 3, "name": "Features", "item": "https://sodiumsorter.vercel.app/#features" }
+            ]
+        }
+    </script>
+
     <style>
         /* ── RESET & BASE ── */
         * {
@@ -449,6 +551,269 @@
             color: rgba(192, 132, 252, 0.7);
         }
 
+        /* ── HOW IT WORKS ── */
+        .step-card {
+            background: rgba(12, 8, 20, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 20px;
+            padding: 32px 28px;
+            text-align: center;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(8px);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .step-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at var(--sx, 50%) var(--sy, 50%), rgba(168, 85, 247, 0.06), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+        .step-card:hover::before {
+            opacity: 1;
+        }
+        .step-card:hover {
+            border-color: rgba(168, 85, 247, 0.2);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 60px rgba(168, 85, 247, 0.08);
+        }
+        .step-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #E879F9, #A855F7, #7C3AED);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 4px;
+            opacity: 0.6;
+            transition: opacity 0.4s;
+        }
+        .step-card:hover .step-number {
+            opacity: 1;
+        }
+        .step-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(168, 85, 247, 0.08);
+            border: 1px solid rgba(168, 85, 247, 0.12);
+            color: #C084FC;
+            font-size: 26px;
+            margin: 8px auto 18px;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            flex-shrink: 0;
+        }
+        .step-card:hover .step-icon {
+            background: rgba(168, 85, 247, 0.15);
+            border-color: rgba(168, 85, 247, 0.3);
+            transform: scale(1.08) rotate(-2deg);
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.12);
+        }
+        .step-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 10px;
+            letter-spacing: -0.01em;
+        }
+        .step-card p {
+            font-size: 0.9rem;
+            color: #a0a0a0;
+            line-height: 1.7;
+            max-width: 260px;
+            margin: 0 auto;
+        }
+
+        .steps-timeline {
+            position: relative;
+        }
+        .steps-timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 5%;
+            right: 5%;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(168, 85, 247, 0.08), rgba(168, 85, 247, 0.3), rgba(168, 85, 247, 0.08));
+            transform: translateY(-50%);
+            pointer-events: none;
+            border-radius: 2px;
+        }
+        @media (max-width: 768px) {
+            .steps-timeline::before {
+                display: none;
+            }
+            .step-card {
+                padding: 24px 20px;
+            }
+            .step-icon {
+                width: 52px;
+                height: 52px;
+                font-size: 20px;
+            }
+            .step-number {
+                font-size: 2rem;
+            }
+            .step-card h3 {
+                font-size: 1rem;
+            }
+            .step-card p {
+                font-size: 0.82rem;
+            }
+        }
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .steps-timeline::before {
+                left: 8%;
+                right: 8%;
+            }
+        }
+
+        /* ── FAQ ── */
+        .faq-item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 20px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+        .faq-item:hover {
+            border-color: rgba(168, 85, 247, 0.15);
+        }
+        .faq-q {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #e8e8e8;
+            font-size: 1.05rem;
+            gap: 20px;
+            user-select: none;
+        }
+        .faq-q .fa-chevron-down {
+            flex-shrink: 0;
+            transition: transform 0.4s;
+            color: #A855F7;
+            font-size: 0.9rem;
+        }
+        .faq-item.open .faq-q .fa-chevron-down {
+            transform: rotate(180deg);
+        }
+        .faq-a {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+            opacity: 0;
+            color: #a0a0a0;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            padding-top: 0;
+        }
+        .faq-item.open .faq-a {
+            max-height: 300px;
+            opacity: 1;
+            padding-top: 14px;
+        }
+
+        /* ── COMPARISON TABLE ── */
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        .compare-table th,
+        .compare-table td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .compare-table th {
+            color: #C084FC;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .compare-table td {
+            color: #d4d4d4;
+        }
+        .compare-table .highlight {
+            color: #A855F7;
+            font-weight: 600;
+        }
+        .compare-table .check {
+            color: #10b981;
+        }
+        .compare-table .times {
+            color: #ef4444;
+        }
+        .compare-table tr:hover td {
+            background: rgba(168, 85, 247, 0.03);
+        }
+        @media (max-width: 640px) {
+            .compare-table th,
+            .compare-table td {
+                padding: 10px 10px;
+                font-size: 0.78rem;
+            }
+            .compare-table {
+                font-size: 0.78rem;
+            }
+        }
+
+        /* ── REASON CARDS ── */
+        .reason-card {
+            background: rgba(12, 8, 20, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 28px 24px;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+        .reason-card:hover {
+            border-color: rgba(168, 85, 247, 0.15);
+            transform: translateY(-3px);
+            background: rgba(15, 10, 25, 0.4);
+        }
+        .reason-card .icon-wrap {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(168, 85, 247, 0.08);
+            border: 1px solid rgba(168, 85, 247, 0.1);
+            color: #C084FC;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .reason-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+        .reason-card p {
+            font-size: 0.85rem;
+            color: #888;
+            line-height: 1.6;
+        }
+
         /* ── KEYFRAMES ── */
         @keyframes pulse {
             0%,
@@ -562,6 +927,10 @@
             transition-delay: .4s;
         }
 
+        .step-card.rv {
+            transition-delay: calc(0.08s * var(--i, 0));
+        }
+
         /* ── RESPONSIVE ── */
         @media(max-width:768px) {
             .demo-box {
@@ -582,143 +951,347 @@
                 padding: 16px 32px;
                 font-size: 1rem;
             }
+            .faq-q {
+                font-size: 0.95rem;
+            }
+        }
+
+        /* ── SKIP LINK ── */
+        .skip-link {
+            position: absolute;
+            top: -100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #A855F7;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 0 0 12px 12px;
+            z-index: 1000;
+            font-weight: 600;
+            text-decoration: none;
+            transition: top 0.3s;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* ── ACCESSIBILITY: focus-visible ── */
+        :focus-visible {
+            outline: 2px solid #A855F7;
+            outline-offset: 2px;
+        }
+
+        /* ── CONTACT CARD ── */
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            background: rgba(12, 8, 20, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.3s;
+        }
+        .contact-item:hover {
+            border-color: rgba(168, 85, 247, 0.15);
+            background: rgba(15, 10, 25, 0.4);
+        }
+        .contact-item .ci-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(168, 85, 247, 0.08);
+            color: #C084FC;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        .contact-item .ci-label {
+            font-size: 0.75rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .contact-item .ci-value {
+            color: #e0e0e0;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .contact-item .ci-value a {
+            color: #C084FC;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .contact-item .ci-value a:hover {
+            color: #E879F9;
         }
     </style>
 </head>
 <body>
 
-    <canvas id="bg-canvas"></canvas>
+    <!-- ===== SKIP LINK ===== -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <div class="page">
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
 
-        <!-- ====== NAV ====== -->
-        <nav id="nav" class="fixed top-0 left-0 right-0 z-50 glass">
-            <div class="max-w-7xl mx-auto px-6 lg:px-8">
-                <div class="flex items-center justify-between h-16 lg:h-[72px]">
-                    <a href="#" class="flex items-center gap-3 group">
-                        <!-- COMPANY LOGO (nav) -->
-                        <img src="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/company.jpg"
-                        alt="Sodium Company"
-                        class="w-9 h-9 rounded-lg logo-glow transition-transform group-hover:scale-110" />
-                        <span class="text-lg font-bold text-white tracking-tight">Sodium <span class="text-neutral-500 font-normal">Sorter</span></span>
-                    </a>
-                    <div class="hidden md:flex items-center gap-8">
-                        <a href="#features" class="nav-l">Features</a>
-                        <a href="#demo" class="nav-l">Demo</a>
-                        <a href="#privacy" class="nav-l">Privacy</a>
-                        <a href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/sodium_sorter.exe" download="sodium_sorter.exe" class="btn-primary" style="padding:10px 24px;font-size:0.8rem">
-                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                            Download
+    <div class="page" id="main-content">
+
+        <!-- ====== HEADER / NAV ====== -->
+        <header role="banner">
+            <nav id="nav" class="fixed top-0 left-0 right-0 z-50 glass" role="navigation" aria-label="Main navigation">
+                <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                    <div class="flex items-center justify-between h-16 lg:h-[72px]">
+                        <a href="#" class="flex items-center gap-3 group" aria-label="Sodium Sorter - Home">
+                            <img src="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/company.jpg"
+                            alt="Sodium IOT - Company Logo"
+                            class="w-9 h-9 rounded-lg logo-glow transition-transform group-hover:scale-110" width="36" height="36" loading="lazy" />
+                            <span class="text-lg font-bold text-white tracking-tight">Sodium <span class="text-neutral-500 font-normal">Sorter</span></span>
+                        </a>
+                        <div class="hidden md:flex items-center gap-8">
+                            <a href="#features" class="nav-l">Features</a>
+                            <a href="#how-it-works" class="nav-l">How It Works</a>
+                            <a href="#why-choose" class="nav-l">Why Choose</a>
+                            <a href="#faq" class="nav-l">FAQ</a>
+                            <a href="#about" class="nav-l">About</a>
+                            <a href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/sodium_sorter.exe" download="sodium_sorter.exe" class="btn-primary" style="padding:10px 24px;font-size:0.8rem" aria-label="Download Sodium Sorter">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                Download
+                            </a>
+                        </div>
+                        <button id="menu-btn" class="md:hidden text-white p-2" aria-label="Toggle mobile menu" aria-expanded="false">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <div id="menu-drop" class="hidden md:hidden border-t border-white/5" style="background:rgba(8,4,16,0.95);backdrop-filter:blur(20px)" role="menu">
+                    <div class="px-6 py-5 flex flex-col gap-4">
+                        <a href="#features" class="nav-l ml" role="menuitem">Features</a>
+                        <a href="#how-it-works" class="nav-l ml" role="menuitem">How It Works</a>
+                        <a href="#why-choose" class="nav-l ml" role="menuitem">Why Choose</a>
+                        <a href="#faq" class="nav-l ml" role="menuitem">FAQ</a>
+                        <a href="#about" class="nav-l ml" role="menuitem">About</a>
+                        <a href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/sodium_sorter.exe" download="sodium_sorter.exe" class="btn-primary justify-center ml" style="padding:12px;font-size:0.85rem" role="menuitem">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                            Download EXE
                         </a>
                     </div>
-                    <button id="menu-btn" class="md:hidden text-white p-2" aria-label="Menu">
-                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
-                    </button>
                 </div>
-            </div>
-            <div id="menu-drop" class="hidden md:hidden border-t border-white/5" style="background:rgba(8,4,16,0.95);backdrop-filter:blur(20px)">
-                <div class="px-6 py-5 flex flex-col gap-4">
-                    <a href="#features" class="nav-l ml">Features</a>
-                    <a href="#demo" class="nav-l ml">Demo</a>
-                    <a href="#privacy" class="nav-l ml">Privacy</a>
-                    <a href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/sodium_sorter.exe" download="sodium_sorter.exe" class="btn-primary justify-center ml" style="padding:12px;font-size:0.85rem">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                        Download EXE
-                    </a>
-                </div>
-            </div>
-        </nav>
+            </nav>
+        </header>
 
         <!-- ====== HERO ====== -->
-        <section class="min-h-screen flex items-center justify-center px-6 pt-20 pb-16 relative">
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full pointer-events-none" style="background:radial-gradient(circle,rgba(168,85,247,0.1) 0%,rgba(236,72,153,0.04) 35%,transparent 60%)"></div>
+        <section class="min-h-screen flex items-center justify-center px-6 pt-20 pb-16 relative" aria-labelledby="hero-heading">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full pointer-events-none" style="background:radial-gradient(circle,rgba(168,85,247,0.1) 0%,rgba(236,72,153,0.04) 35%,transparent 60%)" aria-hidden="true"></div>
             <div class="max-w-5xl mx-auto text-center">
                 <div class="rv mb-10">
                     <div class="relative w-28 h-28 mx-auto">
-                        <div class="absolute inset-[-24px] rounded-full border border-purple-400/15" style="animation:orbit 25s linear infinite">
-                            <div class="absolute -top-[5px] left-1/2 -translate-x-1/2 w-[10px] h-[10px] bg-purple-400 rounded-full" style="box-shadow:0 0 12px #A855F7"></div>
+                        <div class="absolute inset-[-24px] rounded-full border border-purple-400/15" style="animation:orbit 25s linear infinite" aria-hidden="true">
+                            <div class="absolute -top-[5px] left-1/2 -translate-x-1/2 w-[10px] h-[10px] bg-purple-400 rounded-full" style="box-shadow:0 0 12px #A855F7" aria-hidden="true"></div>
                         </div>
-                        <div class="absolute inset-[-48px] rounded-full border border-pink-500/10" style="animation:orbitR 35s linear infinite">
-                            <div class="absolute -bottom-[5px] left-1/2 -translate-x-1/2 w-[8px] h-[8px] bg-pink-500 rounded-full" style="box-shadow:0 0 10px #EC4899"></div>
+                        <div class="absolute inset-[-48px] rounded-full border border-pink-500/10" style="animation:orbitR 35s linear infinite" aria-hidden="true">
+                            <div class="absolute -bottom-[5px] left-1/2 -translate-x-1/2 w-[8px] h-[8px] bg-pink-500 rounded-full" style="box-shadow:0 0 10px #EC4899" aria-hidden="true"></div>
                         </div>
-                        <!-- SODIUM SORTER LOGO (hero) -->
                         <img src="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/File%20Sorter.png"
-                        alt="Sodium Sorter"
-                        class="w-full h-full object-contain logo-glow relative z-10 rounded-2xl" />
+                        alt="Sodium Sorter - Automatic File Organizer for Windows"
+                        class="w-full h-full object-contain logo-glow relative z-10 rounded-2xl" width="112" height="112" loading="lazy" />
                     </div>
                 </div>
                 <div class="rv d1 mb-8">
                     <span class="section-label">
-                        <span class="w-2 h-2 bg-purple-500 rounded-full" style="animation:pulse 2s ease-in-out infinite"></span>
+                        <span class="w-2 h-2 bg-purple-500 rounded-full" style="animation:pulse 2s ease-in-out infinite" aria-hidden="true"></span>
                         Fully Local · Zero Tracking · Windows 10/11
                     </span>
                 </div>
-                <h1 class="rv d2 font-extrabold tracking-tight leading-[1.05] mb-8" style="font-size:clamp(2.8rem,7vw,5.5rem)">
+                <h1 id="hero-heading" class="rv d2 font-extrabold tracking-tight leading-[1.05] mb-8" style="font-size:clamp(2.8rem,7vw,5.5rem)">
                     <span class="text-white">Smart File</span><br />
                     <span class="purple-grad">Organization</span><br />
                     <span style="color:rgba(255,255,255,0.55)">Automatically</span>
                 </h1>
                 <p class="rv d3 text-lg md:text-xl text-neutral-400 max-w-[600px] mx-auto mb-14 leading-relaxed font-light">
-                    Monitors your folders and organizes files using customizable rules. No cloud, no tracking — just clean file management on your machine.
+                    <strong>Sodium Sorter</strong> automatically monitors your <strong>download folder</strong> and organizes files using custom rules. Free, portable, and 100% private — the best <strong>file sorter for Windows</strong>.
                 </p>
                 <div class="rv d4 flex flex-col sm:flex-row items-center justify-center gap-5 mb-16">
-                    <a href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/sodium_sorter.exe" download="sodium_sorter.exe" class="btn-big glow-purple">
-                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                    <a href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/sodium_sorter.exe" download="sodium_sorter.exe" class="btn-big glow-purple" aria-label="Download Sodium Sorter for Windows">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                         Download for Windows
                     </a>
-                    <a href="#demo" class="btn-ghost">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        See it in action
+                    <a href="#how-it-works" class="btn-ghost">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        How it works
                     </a>
                 </div>
                 <div class="rv d5 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-neutral-500">
-                    <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Portable</span>
-                    <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Lightweight</span>
-                    <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>100% Private</span>
-                    <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>No Install</span>
+                    <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Portable</span>
+                    <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Lightweight</span>
+                    <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>100% Private</span>
+                    <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>No Install</span>
                 </div>
             </div>
-            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-25">
+            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-25" aria-hidden="true">
                 <span class="text-[10px] text-neutral-500 tracking-[0.2em] uppercase font-medium">Scroll</span>
                 <div class="w-5 h-9 border border-neutral-700 rounded-full flex justify-center pt-2"><div class="w-1 h-2 bg-neutral-500 rounded-full a-float"></div></div>
             </div>
         </section>
 
+        <!-- ====== HOW IT WORKS ====== -->
+        <section id="how-it-works" class="py-32 px-6" aria-labelledby="how-heading">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <span class="rv section-label mb-4">Step-by-Step</span>
+                    <h2 id="how-heading" class="rv d1 text-4xl md:text-5xl font-bold text-white mb-5 mt-6">How Sodium Sorter Works</h2>
+                    <p class="rv d2 text-neutral-400 text-lg max-w-2xl mx-auto">
+                        Get your <strong>download folder organized</strong> in minutes. Follow these simple steps to start using the best <strong>file organization software</strong> for Windows.
+                    </p>
+                </div>
+
+                <div class="steps-timeline grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                    <div class="step-card rv" style="--i:0">
+                        <div class="step-number">01</div>
+                        <div class="step-icon" aria-hidden="true"><i class="fas fa-download"></i></div>
+                        <h3>Download Sodium Sorter</h3>
+                        <p>Download and install Sodium Sorter on your Windows PC. No installation required — it's a portable <strong>file sorter for Windows</strong>.</p>
+                    </div>
+                    <div class="step-card rv" style="--i:1">
+                        <div class="step-number">02</div>
+                        <div class="step-icon" aria-hidden="true"><i class="fas fa-folder-open"></i></div>
+                        <h3>Choose a Folder</h3>
+                        <p>Select the folder you want to organize automatically — your <strong>download folder</strong>, documents, or any other directory.</p>
+                    </div>
+                    <div class="step-card rv" style="--i:2">
+                        <div class="step-number">03</div>
+                        <div class="step-icon" aria-hidden="true"><i class="fas fa-search"></i></div>
+                        <h3>Scan Files</h3>
+                        <p>Sodium Sorter scans all files and identifies their types — documents, images, videos, music, and archives.</p>
+                    </div>
+                    <div class="step-card rv" style="--i:3">
+                        <div class="step-number">04</div>
+                        <div class="step-icon" aria-hidden="true"><i class="fas fa-sliders-h"></i></div>
+                        <h3>Create Sorting Rules</h3>
+                        <p>Configure how documents, images, videos, music, and archives should be organized with custom rules.</p>
+                    </div>
+                    <div class="step-card rv" style="--i:4">
+                        <div class="step-number">05</div>
+                        <div class="step-icon" aria-hidden="true"><i class="fas fa-play"></i></div>
+                        <h3>Start Sorting</h3>
+                        <p>Click the Sort button and let Sodium Sorter <strong>organize files automatically</strong> — it's that easy.</p>
+                    </div>
+                    <div class="step-card rv" style="--i:5">
+                        <div class="step-number">06</div>
+                        <div class="step-icon" aria-hidden="true"><i class="fas fa-check-circle"></i></div>
+                        <h3>Enjoy a Clean Workspace</h3>
+                        <p>Your files are now neatly arranged into organized folders. A clean <strong>download folder organizer</strong> at your service.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====== WHY CHOOSE SODIUM SORTER ====== -->
+        <section id="why-choose" class="py-32 px-6" aria-labelledby="why-heading">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <span class="rv section-label mb-4">Why Choose</span>
+                    <h2 id="why-heading" class="rv d1 text-4xl md:text-5xl font-bold text-white mb-5 mt-6">Why Sodium Sorter?</h2>
+                    <p class="rv d2 text-neutral-400 text-lg max-w-2xl mx-auto">
+                        The smartest <strong>file management software</strong> for Windows — built for speed, privacy, and simplicity.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="rv d1 reason-card">
+                        <div class="flex items-start gap-4">
+                            <div class="icon-wrap" aria-hidden="true"><i class="fas fa-shield-alt"></i></div>
+                            <div>
+                                <h4>100% Private & Local</h4>
+                                <p>Your files never leave your machine. No cloud, no telemetry, no tracking — just pure <strong>file organization software</strong>.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rv d2 reason-card">
+                        <div class="flex items-start gap-4">
+                            <div class="icon-wrap" aria-hidden="true"><i class="fas fa-bolt"></i></div>
+                            <div>
+                                <h4>Lightning Fast</h4>
+                                <p>Minimal CPU and memory usage. Works in the background without slowing down your system — the <strong>automatic file sorter</strong> you can trust.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rv d3 reason-card">
+                        <div class="flex items-start gap-4">
+                            <div class="icon-wrap" aria-hidden="true"><i class="fas fa-sliders-h"></i></div>
+                            <div>
+                                <h4>Fully Customizable</h4>
+                                <p>Create unlimited sorting rules based on file type, name, extension, or regex — a powerful <strong>folder organization tool</strong>.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rv d4 reason-card">
+                        <div class="flex items-start gap-4">
+                            <div class="icon-wrap" aria-hidden="true"><i class="fas fa-window-restore"></i></div>
+                            <div>
+                                <h4>Portable & No Install</h4>
+                                <p>Just download and run. No installation, no registry changes, no admin rights required — the ultimate <strong>file sorter for Windows</strong>.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rv d5 reason-card">
+                        <div class="flex items-start gap-4">
+                            <div class="icon-wrap" aria-hidden="true"><i class="fas fa-infinity"></i></div>
+                            <div>
+                                <h4>Unlimited Rules & Folders</h4>
+                                <p>Monitor unlimited folders and create unlimited sorting rules. Your <strong>download folder organizer</strong> has no limits.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rv d6 reason-card">
+                        <div class="flex items-start gap-4">
+                            <div class="icon-wrap" aria-hidden="true"><i class="fas fa-gem"></i></div>
+                            <div>
+                                <h4>Completely Free</h4>
+                                <p>No hidden costs, no premium tiers. Just free, powerful <strong>file management software</strong> for everyone.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- ====== DEMO ====== -->
-        <section id="demo" class="py-32 px-6">
+        <section id="demo" class="py-32 px-6" aria-labelledby="demo-heading">
             <div class="max-w-6xl mx-auto">
                 <div class="text-center mb-16">
                     <span class="rv section-label mb-4">Live Demo</span>
-                    <h2 class="rv d1 text-4xl md:text-5xl font-bold text-white mb-5 mt-6">Watch it work</h2>
+                    <h2 id="demo-heading" class="rv d1 text-4xl md:text-5xl font-bold text-white mb-5 mt-6">Watch it work</h2>
                     <p class="rv d2 text-neutral-400 text-lg max-w-lg mx-auto">Files appear, rules activate, folders stay clean — automatically.</p>
                 </div>
                 <div class="rv-s" id="demo-wrap">
-                    <div class="demo-box" id="demo-stage">
+                    <div class="demo-box" id="demo-stage" role="img" aria-label="Interactive demo showing automatic file sorting">
                         <div class="demo-badge off" id="badge">
-                            <span class="badge-dot"></span>
+                            <span class="badge-dot" aria-hidden="true"></span>
                             <span id="badge-txt">Waiting...</span>
                         </div>
-                        <svg id="demo-svg" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:5"></svg>
+                        <svg id="demo-svg" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:5" aria-hidden="true"></svg>
                         <div class="demo-folder" id="f-src" style="top:40px;left:24px">
-                            <svg class="w-7 h-7 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+                            <svg class="w-7 h-7 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
                             <span class="text-[11px] text-neutral-500 font-medium">Downloads</span>
                         </div>
                         <div class="demo-folder" id="f-docs" style="top:40px;right:24px">
-                            <svg class="w-7 h-7 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+                            <svg class="w-7 h-7 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
                             <span class="text-[11px] text-neutral-500 font-medium">Documents</span>
                         </div>
                         <div class="demo-folder" id="f-imgs" style="top:50%;right:24px;transform:translateY(-50%)">
-                            <svg class="w-7 h-7 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+                            <svg class="w-7 h-7 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
                             <span class="text-[11px] text-neutral-500 font-medium">Images</span>
                         </div>
                         <div class="demo-folder" id="f-vids" style="bottom:40px;right:24px">
-                            <svg class="w-7 h-7 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+                            <svg class="w-7 h-7 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
                             <span class="text-[11px] text-neutral-500 font-medium">Videos</span>
                         </div>
                     </div>
                     <div class="text-center mt-6">
-                        <button id="demo-restart" class="text-sm text-purple-400/50 hover:text-purple-400 transition-colors cursor-pointer inline-flex items-center gap-2 bg-transparent border-none">
-                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                        <button id="demo-restart" class="text-sm text-purple-400/50 hover:text-purple-400 transition-colors cursor-pointer inline-flex items-center gap-2 bg-transparent border-none" aria-label="Restart demo animation">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                             Restart
                         </button>
                     </div>
@@ -727,37 +1300,122 @@
         </section>
 
         <!-- ====== MAIN SCREENSHOT ====== -->
-        <section class="py-16 px-6">
+        <section class="py-16 px-6" aria-label="Sodium Sorter dashboard screenshot">
             <div class="max-w-6xl mx-auto rv-s">
                 <div class="ss-frame glow-purple">
-                    <div class="ss-bar"><div class="ss-dot" style="background:#FF5F57"></div><div class="ss-dot" style="background:#FEBC2E"></div><div class="ss-dot" style="background:#28C840"></div></div>
-                    <div class="scan-line"></div>
-                    <img src="https://github.com/Sodiumcompany/sodium-sorter-landing/blob/main/main.png?raw=true" alt="Dashboard" loading="lazy" />
+                    <div class="ss-bar"><div class="ss-dot" style="background:#FF5F57" aria-hidden="true"></div><div class="ss-dot" style="background:#FEBC2E" aria-hidden="true"></div><div class="ss-dot" style="background:#28C840" aria-hidden="true"></div></div>
+                    <div class="scan-line" aria-hidden="true"></div>
+                    <img src="https://github.com/Sodiumcompany/sodium-sorter-landing/blob/main/main.png?raw=true"
+                    alt="Sodium Sorter dashboard showing monitored folders and sorting rules"
+                    width="1200" height="675" loading="lazy" />
                 </div>
             </div>
         </section>
 
         <!-- ====== FEATURES ====== -->
-        <section id="features" class="py-32 px-6">
+        <section id="features" class="py-32 px-6" aria-labelledby="features-heading">
             <div class="max-w-6xl mx-auto">
                 <div class="text-center mb-20">
                     <span class="rv section-label mb-4">Features</span>
-                    <h2 class="rv d1 text-4xl md:text-5xl font-bold text-white mb-5 mt-6">Built for efficiency</h2>
+                    <h2 id="features-heading" class="rv d1 text-4xl md:text-5xl font-bold text-white mb-5 mt-6">Built for efficiency</h2>
                     <p class="rv d2 text-neutral-400 text-lg max-w-lg mx-auto">Every feature keeps your folders clean without getting in your way.</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                    <div class="rv d1 f-card"><div class="f-icon mb-5"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></div><h3 class="text-lg font-semibold text-white mb-2">Automatic Sorting</h3><p class="text-neutral-500 text-sm leading-relaxed">Files move to designated folders the moment they appear.</p></div>
-                    <div class="rv d2 f-card"><div class="f-icon mb-5"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></div><h3 class="text-lg font-semibold text-white mb-2">Real-time Monitoring</h3><p class="text-neutral-500 text-sm leading-relaxed">Watches folders continuously with instant response.</p></div>
-                    <div class="rv d3 f-card"><div class="f-icon mb-5"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div><h3 class="text-lg font-semibold text-white mb-2">Custom Rules</h3><p class="text-neutral-500 text-sm leading-relaxed">Define rules by type, name, extension, or any criteria.</p></div>
-                    <div class="rv d4 f-card"><div class="f-icon mb-5"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg></div><h3 class="text-lg font-semibold text-white mb-2">Manual Mode</h3><p class="text-neutral-500 text-sm leading-relaxed">Need control? Switch to manual and sort on your terms.</p></div>
-                    <div class="rv d5 f-card"><div class="f-icon mb-5"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div><h3 class="text-lg font-semibold text-white mb-2">Auto Folder Creation</h3><p class="text-neutral-500 text-sm leading-relaxed">Target folders missing? Created on the fly.</p></div>
-                    <div class="rv d6 f-card"><div class="f-icon mb-5"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div><h3 class="text-lg font-semibold text-white mb-2">Lightweight</h3><p class="text-neutral-500 text-sm leading-relaxed">Minimal CPU and memory. Barely noticeable.</p></div>
+                    <article class="rv d1 f-card">
+                        <div class="f-icon mb-5" aria-hidden="true"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Automatic Sorting</h3>
+                        <p class="text-neutral-500 text-sm leading-relaxed">Files move to designated folders the moment they appear — the ultimate <strong>download folder organizer</strong>.</p>
+                    </article>
+                    <article class="rv d2 f-card">
+                        <div class="f-icon mb-5" aria-hidden="true"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Real-time Monitoring</h3>
+                        <p class="text-neutral-500 text-sm leading-relaxed">Watches folders continuously with instant response — true <strong>file management software</strong>.</p>
+                    </article>
+                    <article class="rv d3 f-card">
+                        <div class="f-icon mb-5" aria-hidden="true"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Custom Rules</h3>
+                        <p class="text-neutral-500 text-sm leading-relaxed">Define rules by type, name, or extension — a powerful <strong>folder organization tool</strong>.</p>
+                    </article>
+                    <article class="rv d4 f-card">
+                        <div class="f-icon mb-5" aria-hidden="true"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg></div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Manual Mode</h3>
+                        <p class="text-neutral-500 text-sm leading-relaxed">Need control? Switch to manual and sort on your terms.</p>
+                    </article>
+                    <article class="rv d5 f-card">
+                        <div class="f-icon mb-5" aria-hidden="true"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Auto Folder Creation</h3>
+                        <p class="text-neutral-500 text-sm leading-relaxed">Target folders missing? Created on the fly.</p>
+                    </article>
+                    <article class="rv d6 f-card">
+                        <div class="f-icon mb-5" aria-hidden="true"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Lightweight</h3>
+                        <p class="text-neutral-500 text-sm leading-relaxed">Minimal CPU and memory. Barely noticeable.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====== FEATURE COMPARISON ====== -->
+        <section class="py-32 px-6" aria-labelledby="compare-heading">
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center mb-16">
+                    <span class="rv section-label mb-4">Comparison</span>
+                    <h2 id="compare-heading" class="rv d1 text-4xl md:text-5xl font-bold text-white mb-5 mt-6">Why Sodium Sorter Stands Out</h2>
+                    <p class="rv d2 text-neutral-400 text-lg max-w-lg mx-auto">Compare Sodium Sorter with other file organization tools.</p>
+                </div>
+                <div class="rv-s overflow-x-auto">
+                    <table class="compare-table" aria-label="Feature comparison table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Feature</th>
+                                <th scope="col" class="text-purple-400">Sodium Sorter</th>
+                                <th scope="col" class="text-neutral-500">Other Tools</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="text-neutral-400">Free</span></td>
+                                <td class="highlight check"><i class="fas fa-check" aria-hidden="true"></i> Yes</td>
+                                <td class="times"><i class="fas fa-times" aria-hidden="true"></i> Often Paid</td>
+                            </tr>
+                            <tr>
+                                <td><span class="text-neutral-400">Portable (No Install)</span></td>
+                                <td class="highlight check"><i class="fas fa-check" aria-hidden="true"></i> Yes</td>
+                                <td class="times"><i class="fas fa-times" aria-hidden="true"></i> Usually Install</td>
+                            </tr>
+                            <tr>
+                                <td><span class="text-neutral-400">100% Private / No Cloud</span></td>
+                                <td class="highlight check"><i class="fas fa-check" aria-hidden="true"></i> Yes</td>
+                                <td class="times"><i class="fas fa-times" aria-hidden="true"></i> Cloud Sync</td>
+                            </tr>
+                            <tr>
+                                <td><span class="text-neutral-400">Custom Rules</span></td>
+                                <td class="highlight check"><i class="fas fa-check" aria-hidden="true"></i> Unlimited</td>
+                                <td class="times"><i class="fas fa-times" aria-hidden="true"></i> Limited</td>
+                            </tr>
+                            <tr>
+                                <td><span class="text-neutral-400">Real-time Monitoring</span></td>
+                                <td class="highlight check"><i class="fas fa-check" aria-hidden="true"></i> Yes</td>
+                                <td class="highlight check"><i class="fas fa-check" aria-hidden="true"></i> Yes</td>
+                            </tr>
+                            <tr>
+                                <td><span class="text-neutral-400">Manual Mode</span></td>
+                                <td class="highlight check"><i class="fas fa-check" aria-hidden="true"></i> Yes</td>
+                                <td class="times"><i class="fas fa-times" aria-hidden="true"></i> Rare</td>
+                            </tr>
+                            <tr>
+                                <td><span class="text-neutral-400">Auto Folder Creation</span></td>
+                                <td class="highlight check"><i class="fas fa-check" aria-hidden="true"></i> Yes</td>
+                                <td class="times"><i class="fas fa-times" aria-hidden="true"></i> Manual</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </section>
 
         <!-- ====== SCREENSHOTS ====== -->
-        <section class="py-32 px-6">
+        <section class="py-32 px-6" aria-label="Sodium Sorter screenshots">
             <div class="max-w-6xl mx-auto space-y-40">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                     <div class="rv-l">
@@ -765,27 +1423,27 @@
                         <h3 class="text-3xl md:text-4xl font-bold text-white mb-5 mt-6">Choose what to watch</h3>
                         <p class="text-neutral-400 leading-relaxed mb-8">Add multiple source folders. Toggle monitoring per folder.</p>
                         <ul class="space-y-4">
-                            <li class="flex items-center gap-4 text-neutral-300 text-[15px]"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0"></span>Unlimited source folders</li>
-                            <li class="flex items-center gap-4 text-neutral-300 text-[15px]"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0"></span>Browse or drag-and-drop</li>
-                            <li class="flex items-center gap-4 text-neutral-300 text-[15px]"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0"></span>Per-folder toggle</li>
+                            <li class="flex items-center gap-4 text-neutral-300 text-[15px]"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0" aria-hidden="true"></span>Unlimited source folders</li>
+                            <li class="flex items-center gap-4 text-neutral-300 text-[15px]"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0" aria-hidden="true"></span>Browse or drag-and-drop</li>
+                            <li class="flex items-center gap-4 text-neutral-300 text-[15px]"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0" aria-hidden="true"></span>Per-folder toggle</li>
                         </ul>
                     </div>
                     <div class="rv-r">
-                        <div class="ss-frame glow-purple"><div class="ss-bar"><div class="ss-dot" style="background:#FF5F57"></div><div class="ss-dot" style="background:#FEBC2E"></div><div class="ss-dot" style="background:#28C840"></div></div><div class="scan-line"></div><img src="https://github.com/Sodiumcompany/sodium-sorter-landing/blob/main/folder.png?raw=true" alt="Folders" loading="lazy" /></div>
+                        <div class="ss-frame glow-purple"><div class="ss-bar"><div class="ss-dot" style="background:#FF5F57" aria-hidden="true"></div><div class="ss-dot" style="background:#FEBC2E" aria-hidden="true"></div><div class="ss-dot" style="background:#28C840" aria-hidden="true"></div></div><div class="scan-line" aria-hidden="true"></div><img src="https://github.com/Sodiumcompany/sodium-sorter-landing/blob/main/folder.png?raw=true" alt="Folder selection interface in Sodium Sorter" width="600" height="400" loading="lazy" /></div>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                     <div class="rv-l order-2 lg:order-1">
-                        <div class="ss-frame glow-purple"><div class="ss-bar"><div class="ss-dot" style="background:#FF5F57"></div><div class="ss-dot" style="background:#FEBC2E"></div><div class="ss-dot" style="background:#28C840"></div></div><div class="scan-line"></div><img src="https://github.com/Sodiumcompany/sodium-sorter-landing/blob/main/rule.png?raw=true" alt="Rules" loading="lazy" /></div>
+                        <div class="ss-frame glow-purple"><div class="ss-bar"><div class="ss-dot" style="background:#FF5F57" aria-hidden="true"></div><div class="ss-dot" style="background:#FEBC2E" aria-hidden="true"></div><div class="ss-dot" style="background:#28C840" aria-hidden="true"></div></div><div class="scan-line" aria-hidden="true"></div><img src="https://github.com/Sodiumcompany/sodium-sorter-landing/blob/main/rule.png?raw=true" alt="Rule engine interface showing custom sorting rules" width="600" height="400" loading="lazy" /></div>
                     </div>
                     <div class="rv-r order-1 lg:order-2">
                         <span class="section-label mb-4">Rule Engine</span>
                         <h3 class="text-3xl md:text-4xl font-bold text-white mb-5 mt-6">Define your rules</h3>
                         <p class="text-neutral-400 leading-relaxed mb-8">Match by extension, name, or regex. Set destinations. Prioritize freely.</p>
                         <ul class="space-y-4">
-                            <li class="flex items-center gap-4 text-neutral-300 text-[15px]"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0"></span>Extension, name, or regex</li>
-                            <li class="flex items-center gap-4 text-neutral-300 text-[15px]"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0"></span>Custom destination paths</li>
-                            <li class="flex items-center gap-4 text-neutral-300 text-[15px]"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0"></span>Enable, disable, reorder</li>
+                            <li class="flex items-center gap-4 text-neutral-300 text-[15px]"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0" aria-hidden="true"></span>Extension, name, or regex</li>
+                            <li class="flex items-center gap-4 text-neutral-300 text-[15px]"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0" aria-hidden="true"></span>Custom destination paths</li>
+                            <li class="flex items-center gap-4 text-neutral-300 text-[15px]"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0" aria-hidden="true"></span>Enable, disable, reorder</li>
                         </ul>
                     </div>
                 </div>
@@ -793,8 +1451,8 @@
         </section>
 
         <!-- ====== STATS ====== -->
-        <section class="py-28 px-6 relative">
-            <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at center,rgba(168,85,247,0.04) 0%,transparent 70%)"></div>
+        <section class="py-28 px-6 relative" aria-label="Statistics">
+            <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at center,rgba(168,85,247,0.04) 0%,transparent 70%)" aria-hidden="true"></div>
             <div class="max-w-5xl mx-auto relative">
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
                     <div class="rv d1 text-center"><div class="stat-num purple-grad mb-3">0</div><div class="text-sm text-neutral-500 font-medium">Cloud Dependencies</div></div>
@@ -805,89 +1463,279 @@
             </div>
         </section>
 
+        <!-- ====== FAQ ====== -->
+        <section id="faq" class="py-32 px-6" aria-labelledby="faq-heading">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-16">
+                    <span class="rv section-label mb-4">FAQ</span>
+                    <h2 id="faq-heading" class="rv d1 text-4xl md:text-5xl font-bold text-white mb-5 mt-6">Frequently Asked Questions</h2>
+                    <p class="rv d2 text-neutral-400 text-lg max-w-lg mx-auto">Everything you need to know about Sodium Sorter.</p>
+                </div>
+                <div class="rv-s space-y-1" id="faq-container">
+                    <div class="faq-item">
+                        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+                            <span>Is Sodium Sorter free?</span>
+                            <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                        </div>
+                        <div class="faq-a">Yes! Sodium Sorter is completely free to download and use. No hidden charges, no premium tiers — just a powerful <strong>file sorter for Windows</strong>.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+                            <span>Does Sodium Sorter work offline?</span>
+                            <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                        </div>
+                        <div class="faq-a">Absolutely. Sodium Sorter works completely offline. No internet connection is ever required to <strong>organize files automatically</strong>.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+                            <span>Is my data uploaded to the cloud?</span>
+                            <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                        </div>
+                        <div class="faq-a">No. Sodium Sorter is 100% local. Your files never leave your machine. There is no cloud upload, no telemetry, and no tracking — just pure <strong>file management software</strong>.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+                            <span>What file types can be organized?</span>
+                            <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                        </div>
+                        <div class="faq-a">Sodium Sorter supports all file types. Create rules for documents (.pdf, .docx), images (.jpg, .png), videos (.mp4, .avi), music (.mp3, .flac), archives (.zip, .rar), and any other extension.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+                            <span>Does Sodium Sorter support Windows 11?</span>
+                            <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                        </div>
+                        <div class="faq-a">Yes, Sodium Sorter is fully compatible with Windows 10 and Windows 11. It runs as a portable executable with no installation required.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+                            <span>Can I customize sorting rules?</span>
+                            <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                        </div>
+                        <div class="faq-a">Absolutely. Sodium Sorter lets you define unlimited custom rules based on file extension, name pattern, or regular expressions. You can enable, disable, and reorder rules freely — making it the most flexible <strong>folder organization tool</strong>.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====== ABOUT ====== -->
+        <section id="about" class="py-32 px-6" aria-labelledby="about-heading">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <span class="rv section-label mb-4">About</span>
+                    <h2 id="about-heading" class="rv d1 text-4xl md:text-5xl font-bold text-white mb-5 mt-6">About Sodium Sorter</h2>
+                    <p class="rv d2 text-neutral-400 text-lg max-w-2xl mx-auto">
+                        Built by <strong>Sodium IOT</strong> to make <strong>file organization software</strong> simple, private, and free for everyone.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                    <div class="rv-l">
+                        <h3 class="text-2xl font-bold text-white mb-4">Our Mission</h3>
+                        <p class="text-neutral-400 leading-relaxed mb-6">
+                            Sodium Sorter was created to solve a simple problem: messy folders. We believe that <strong>file management software</strong> should be powerful, private, and accessible to everyone — without hidden costs or cloud dependencies.
+                        </p>
+                        <p class="text-neutral-400 leading-relaxed">
+                            Whether you're a student, professional, or just someone who wants to keep their <strong>download folder organized</strong>, Sodium Sorter gives you the tools to <strong>organize files automatically</strong> with zero effort.
+                        </p>
+                        <div class="mt-8 flex flex-wrap gap-4">
+                            <a href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/sodium_sorter.exe" download="sodium_sorter.exe" class="btn-primary" aria-label="Download Sodium Sorter">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                Free Download
+                            </a>
+                            <a href="https://sodiumcompany.vercel.app" target="_blank" rel="noopener noreferrer" class="btn-ghost">
+                                Visit Sodium IOT
+                            </a>
+                        </div>
+                    </div>
+                    <div class="rv-r">
+                        <div class="bg-[rgba(12,8,20,0.4)] border border-[rgba(255,255,255,0.04)] rounded-2xl p-8 backdrop-blur-sm">
+                            <h4 class="text-xl font-bold text-white mb-6">Developer Information</h4>
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400" aria-hidden="true"><i class="fas fa-code"></i></div>
+                                    <div><span class="text-neutral-500 text-sm">Developer</span><br /><span class="text-white font-medium">MrGlitch_Spider</span></div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400" aria-hidden="true"><i class="fas fa-building"></i></div>
+                                    <div><span class="text-neutral-500 text-sm">Company</span><br /><span class="text-white font-medium">Sodium IOT</span></div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400" aria-hidden="true"><i class="fas fa-envelope"></i></div>
+                                    <div><span class="text-neutral-500 text-sm">Email</span><br /><a href="mailto:sajidulhasan2025@gmail.com" class="text-purple-400 hover:text-purple-300 transition-colors">sajidulhasan2025@gmail.com</a></div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400" aria-hidden="true"><i class="fab fa-discord"></i></div>
+                                    <div><span class="text-neutral-500 text-sm">Discord</span><br /><span class="text-white font-medium">mrglitch_spider</span></div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400" aria-hidden="true"><i class="fas fa-globe"></i></div>
+                                    <div><span class="text-neutral-500 text-sm">Website</span><br /><a href="https://sodiumsorter.vercel.app" target="_blank" rel="noopener noreferrer" class="text-purple-400 hover:text-purple-300 transition-colors">sodiumsorter.vercel.app</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- ====== PRIVACY ====== -->
-        <section id="privacy" class="py-32 px-6">
+        <section id="privacy" class="py-32 px-6" aria-labelledby="privacy-heading">
             <div class="max-w-6xl mx-auto">
                 <div class="text-center mb-20">
-                    <span class="rv inline-flex items-center gap-2 section-label mb-4"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>Privacy First</span>
-                    <h2 class="rv d1 text-4xl md:text-5xl font-bold text-white mb-5 mt-6">Privacy by design</h2>
+                    <span class="rv inline-flex items-center gap-2 section-label mb-4"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>Privacy & Security</span>
+                    <h2 id="privacy-heading" class="rv d1 text-4xl md:text-5xl font-bold text-white mb-5 mt-6">Privacy by design</h2>
                     <p class="rv d2 text-neutral-400 text-lg max-w-lg mx-auto">Built from the ground up to respect your privacy.</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5" id="priv-grid">
-                    <div class="rv d1 p-card"><div class="spot"></div><div class="relative z-10 flex items-start gap-5"><div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.12)"><svg class="w-7 h-7 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg></div><div><h3 class="text-xl font-semibold text-white mb-2">No Cloud Services</h3><p class="text-neutral-500 text-sm leading-relaxed">Everything happens on your machine. Your files never leave.</p></div></div></div>
-                    <div class="rv d2 p-card"><div class="spot"></div><div class="relative z-10 flex items-start gap-5"><div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.12)"><svg class="w-7 h-7 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></div><div><h3 class="text-xl font-semibold text-white mb-2">No Tracking</h3><p class="text-neutral-500 text-sm leading-relaxed">Zero analytics, telemetry, or data collection.</p></div></div></div>
-                    <div class="rv d3 p-card"><div class="spot"></div><div class="relative z-10 flex items-start gap-5"><div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.12)"><svg class="w-7 h-7 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.858 15.355-5.858 21.213 0"/></svg></div><div><h3 class="text-xl font-semibold text-white mb-2">No Internet Required</h3><p class="text-neutral-500 text-sm leading-relaxed">Works completely offline. Always.</p></div></div></div>
-                    <div class="rv d4 p-card"><div class="spot"></div><div class="relative z-10 flex items-start gap-5"><div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.12)"><svg class="w-7 h-7 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><div><h3 class="text-xl font-semibold text-white mb-2">Fully Local Processing</h3><p class="text-neutral-500 text-sm leading-relaxed">All operations happen locally. Your data, your control.</p></div></div></div>
+                    <div class="rv d1 p-card"><div class="spot"></div><div class="relative z-10 flex items-start gap-5"><div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.12)" aria-hidden="true"><svg class="w-7 h-7 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg></div><div><h3 class="text-xl font-semibold text-white mb-2">No Cloud Services</h3><p class="text-neutral-500 text-sm leading-relaxed">Everything happens on your machine. Your files never leave.</p></div></div></div>
+                    <div class="rv d2 p-card"><div class="spot"></div><div class="relative z-10 flex items-start gap-5"><div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.12)" aria-hidden="true"><svg class="w-7 h-7 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></div><div><h3 class="text-xl font-semibold text-white mb-2">No Tracking</h3><p class="text-neutral-500 text-sm leading-relaxed">Zero analytics, telemetry, or data collection.</p></div></div></div>
+                    <div class="rv d3 p-card"><div class="spot"></div><div class="relative z-10 flex items-start gap-5"><div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.12)" aria-hidden="true"><svg class="w-7 h-7 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.858 15.355-5.858 21.213 0"/></svg></div><div><h3 class="text-xl font-semibold text-white mb-2">No Internet Required</h3><p class="text-neutral-500 text-sm leading-relaxed">Works completely offline. Always.</p></div></div></div>
+                    <div class="rv d4 p-card"><div class="spot"></div><div class="relative z-10 flex items-start gap-5"><div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.12)" aria-hidden="true"><svg class="w-7 h-7 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><div><h3 class="text-xl font-semibold text-white mb-2">Fully Local Processing</h3><p class="text-neutral-500 text-sm leading-relaxed">All operations happen locally. Your data, your control.</p></div></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====== TERMS & CONTACT ====== -->
+        <section id="terms" class="py-32 px-6" aria-labelledby="terms-heading">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                    <div class="rv-l">
+                        <span class="section-label mb-4">Legal</span>
+                        <h2 id="terms-heading" class="text-3xl md:text-4xl font-bold text-white mb-5 mt-6">Terms of Use</h2>
+                        <p class="text-neutral-400 leading-relaxed mb-6">
+                            By downloading and using Sodium Sorter, you agree to the following terms:
+                        </p>
+                        <ul class="space-y-3 text-neutral-400 text-sm leading-relaxed">
+                            <li class="flex items-start gap-3"><span class="text-purple-400 mt-1" aria-hidden="true">•</span> Sodium Sorter is provided "as is" without warranty of any kind.</li>
+                            <li class="flex items-start gap-3"><span class="text-purple-400 mt-1" aria-hidden="true">•</span> The software is free for personal and commercial use.</li>
+                            <li class="flex items-start gap-3"><span class="text-purple-400 mt-1" aria-hidden="true">•</span> You are responsible for backing up your files before sorting.</li>
+                            <li class="flex items-start gap-3"><span class="text-purple-400 mt-1" aria-hidden="true">•</span> Sodium IOT is not liable for any data loss or damage.</li>
+                            <li class="flex items-start gap-3"><span class="text-purple-400 mt-1" aria-hidden="true">•</span> You may not redistribute or sell the software without permission.</li>
+                            <li class="flex items-start gap-3"><span class="text-purple-400 mt-1" aria-hidden="true">•</span> No data is collected — ever.</li>
+                        </ul>
+                        <p class="text-neutral-500 text-sm mt-6">Last updated: January 2026</p>
+                    </div>
+
+                    <div class="rv-r">
+                        <span class="section-label mb-4">Get in Touch</span>
+                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-5 mt-6">Contact</h2>
+                        <p class="text-neutral-400 leading-relaxed mb-8">
+                            Have questions or feedback? Reach out to the developer directly.
+                        </p>
+                        <div class="space-y-4">
+                            <div class="contact-item">
+                                <div class="ci-icon" aria-hidden="true"><i class="fas fa-envelope"></i></div>
+                                <div>
+                                    <div class="ci-label">Email</div>
+                                    <div class="ci-value"><a href="mailto:sajidulhasan2025@gmail.com">sajidulhasan2025@gmail.com</a></div>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="ci-icon" aria-hidden="true"><i class="fab fa-discord"></i></div>
+                                <div>
+                                    <div class="ci-label">Discord</div>
+                                    <div class="ci-value">mrglitch_spider</div>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="ci-icon" aria-hidden="true"><i class="fab fa-github"></i></div>
+                                <div>
+                                    <div class="ci-label">GitHub</div>
+                                    <div class="ci-value"><a href="https://github.com/Sodiumcompany" target="_blank" rel="noopener noreferrer">@Sodiumcompany</a></div>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="ci-icon" aria-hidden="true"><i class="fas fa-globe"></i></div>
+                                <div>
+                                    <div class="ci-label">Company Website</div>
+                                    <div class="ci-value"><a href="https://sodiumcompany.vercel.app" target="_blank" rel="noopener noreferrer">sodiumcompany.vercel.app</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- ====== CTA ====== -->
-        <section id="download" class="py-40 px-6 relative overflow-hidden">
-            <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at 50% 80%,rgba(168,85,247,0.08) 0%,transparent 60%)"></div>
+        <section id="download" class="py-40 px-6 relative overflow-hidden" aria-labelledby="cta-heading">
+            <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at 50% 80%,rgba(168,85,247,0.08) 0%,transparent 60%)" aria-hidden="true"></div>
             <div class="max-w-4xl mx-auto text-center relative">
                 <div class="rv mb-8">
-                    <!-- SODIUM SORTER LOGO (CTA) -->
                     <img src="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/File%20Sorter.png"
-                    alt="Sodium Sorter"
-                    class="w-20 h-20 mx-auto rounded-2xl logo-glow" />
+                    alt="Sodium Sorter - automatic file organizer for Windows"
+                    class="w-20 h-20 mx-auto rounded-2xl logo-glow" width="80" height="80" loading="lazy" />
                 </div>
-                <div class="rv d1 mb-8"><span class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border" style="background:rgba(16,185,129,0.06);border-color:rgba(16,185,129,0.12)"><span class="w-2.5 h-2.5 bg-emerald-500 rounded-full" style="animation:pulse 2s ease-in-out infinite"></span><span class="text-[13px] text-emerald-400 font-semibold">Available Now — Free</span></span></div>
-                <h2 class="rv d2 text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight">Get Sodium Sorter</h2>
-                <p class="rv d3 text-lg text-neutral-400 mb-14 max-w-lg mx-auto leading-relaxed">Portable executable. No installation. Run it and start organizing.</p>
-                <div class="rv d4 mb-10"><a href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/sodium_sorter.exe" download="sodium_sorter.exe" class="btn-big glow-purple-big"><svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>Download SodiumSorter.exe</a></div>
+                <div class="rv d1 mb-8"><span class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border" style="background:rgba(16,185,129,0.06);border-color:rgba(16,185,129,0.12)"><span class="w-2.5 h-2.5 bg-emerald-500 rounded-full" style="animation:pulse 2s ease-in-out infinite" aria-hidden="true"></span><span class="text-[13px] text-emerald-400 font-semibold">Available Now — Free</span></span></div>
+                <h2 id="cta-heading" class="rv d2 text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight">Get Sodium Sorter</h2>
+                <p class="rv d3 text-lg text-neutral-400 mb-14 max-w-lg mx-auto leading-relaxed">Portable executable. No installation. Run it and start organizing your <strong>download folder</strong> instantly.</p>
+                <div class="rv d4 mb-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/sodium_sorter.exe" download="sodium_sorter.exe" class="btn-big glow-purple-big" aria-label="Download Sodium Sorter executable">
+                        <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                        Download SodiumSorter.exe
+                    </a>
+                    <a href="https://github.com/Sodiumcompany/sodium-sorter-landing" target="_blank" rel="noopener noreferrer" class="btn-ghost" aria-label="View source on GitHub">
+                        <i class="fab fa-github" aria-hidden="true"></i> View on GitHub
+                    </a>
+                </div>
                 <div class="rv d5 flex flex-wrap items-center justify-center gap-6 text-sm text-neutral-500">
-                    <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>Windows 10/11</span>
-                    <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>Portable</span>
-                    <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>Direct Download</span>
+                    <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>Windows 10/11</span>
+                    <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>Portable</span>
+                    <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>Direct Download</span>
                 </div>
             </div>
         </section>
 
         <!-- ====== FOOTER ====== -->
-        <footer class="py-16 px-6 border-t border-white/[0.04]">
+        <footer class="py-16 px-6 border-t border-white/[0.04]" role="contentinfo">
             <div class="max-w-6xl mx-auto">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
                     <div class="md:col-span-2">
                         <div class="flex items-center gap-3 mb-5">
-                            <!-- SODIUM SORTER LOGO (footer) -->
                             <img src="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/File%20Sorter.png"
-                            alt="Sodium Sorter"
-                            class="w-10 h-10 rounded-xl logo-glow" />
-                            <div><span class="text-lg font-bold text-white">Sodium Sorter</span><br /><span class="text-xs text-neutral-600">by Sodium Company</span></div>
+                            alt="Sodium Sorter logo"
+                            class="w-10 h-10 rounded-xl logo-glow" width="40" height="40" loading="lazy" />
+                            <div><span class="text-lg font-bold text-white">Sodium Sorter</span><br /><span class="text-xs text-neutral-600">by Sodium IOT</span></div>
                         </div>
-                        <p class="text-sm text-neutral-500 leading-relaxed max-w-sm">Smart file organization, automatically. Keep your folders clean without lifting a finger.</p>
+                        <p class="text-sm text-neutral-500 leading-relaxed max-w-sm">Smart <strong>file organization</strong>, automatically. Keep your folders clean without lifting a finger.</p>
                     </div>
                     <div>
                         <h4 class="text-xs font-semibold tracking-[0.15em] uppercase text-neutral-400 mb-5">Product</h4>
                         <ul class="space-y-3">
                             <li><a href="#features" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors">Features</a></li>
-                            <li><a href="#demo" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors">Demo</a></li>
-                            <li><a href="#privacy" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors">Privacy</a></li>
+                            <li><a href="#how-it-works" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors">How It Works</a></li>
+                            <li><a href="#why-choose" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors">Why Choose</a></li>
+                            <li><a href="#faq" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors">FAQ</a></li>
                             <li><a href="#download" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors">Download</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h4 class="text-xs font-semibold tracking-[0.15em] uppercase text-neutral-400 mb-5">Contact</h4>
+                        <h4 class="text-xs font-semibold tracking-[0.15em] uppercase text-neutral-400 mb-5">Company</h4>
                         <ul class="space-y-3">
-                            <li class="text-sm text-neutral-500">Dev: <span class="text-neutral-400">MrGlitch_Spider</span></li>
-                            <li class="text-sm text-neutral-500">Org: <span class="text-neutral-400">Sodium Company</span></li>
-                            <li><a href="mailto:sajidulhasan2025@gmail.com" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors break-all">sajidulhasan2025@gmail.com</a></li>
-                            <li><a href="https://github.com/Sodiumcompany/sodium-sorter-landing" target="_blank" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors inline-flex items-center gap-1.5"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>GitHub</a></li>
+                            <li><a href="#about" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors">About</a></li>
+                            <li><a href="#privacy" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors">Privacy Policy</a></li>
+                            <li><a href="#terms" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors">Terms of Use</a></li>
+                            <li><a href="https://sodiumcomapny.vercel.app" target="_blank" rel="noopener noreferrer" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors">Sodium IOT</a></li>
+                            <li><a href="https://github.com/Sodiumcompany" target="_blank" rel="noopener noreferrer" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors inline-flex items-center gap-1.5"><i class="fab fa-github" aria-hidden="true"></i> GitHub</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="pt-8 border-t border-white/[0.04] flex flex-col md:flex-row items-center justify-between gap-4">
-                    <p class="text-xs text-neutral-600">© 2024 Sodium Company. All rights reserved.</p>
-                    <span class="flex items-center gap-2 text-xs text-neutral-600">Built with <svg class="w-3.5 h-3.5 text-pink-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/></svg> for clean folders</span>
+                    <p class="text-sm text-neutral-600">&copy; 2026 Sodium IOT. All Rights Reserved.</p>
+                    <div class="flex items-center gap-6 text-sm text-neutral-600">
+                        <span>Developer: <span class="text-neutral-400">MrGlitch_Spider</span></span>
+                        <span class="flex items-center gap-2">Built with <svg class="w-3.5 h-3.5 text-pink-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/></svg> for clean folders</span>
+                    </div>
                 </div>
             </div>
         </footer>
     </div>
 
+    <!-- ===== SCRIPTS ===== -->
     <script>
         /* ============================================================
-           PURPLE/PINK BLACKHOLE 3D BACKGROUND
+           PURPLE/PINK BLACKHOLE 3D BACKGROUND (optimized)
            ============================================================ */
         (function() {
             var canvas = document.getElementById('bg-canvas');
@@ -905,21 +1753,18 @@
                 scrollY = 0,
                 time = 0;
 
-            /* BLACKHOLE CORE */
             var bhGeo = new THREE.SphereGeometry(1.2, 64, 64);
             var bhMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
             var blackhole = new THREE.Mesh(bhGeo, bhMat);
             blackhole.position.set(0, 0, -5);
             scene.add(blackhole);
 
-            /* dark purple haze around core */
             var hazeGeo = new THREE.SphereGeometry(1.6, 32, 32);
             var hazeMat = new THREE.MeshBasicMaterial({ color: 0x1a0030, transparent: true, opacity: 0.5 });
             var haze = new THREE.Mesh(hazeGeo, hazeMat);
             haze.position.copy(blackhole.position);
             scene.add(haze);
 
-            /* EVENT HORIZON RINGS - purple & pink */
             var ringGeo = new THREE.TorusGeometry(1.8, 0.035, 16, 128);
             var ringMat = new THREE.MeshBasicMaterial({ color: 0xD946EF, transparent: true, opacity: 0.7 });
             var eventRing = new THREE.Mesh(ringGeo, ringMat);
@@ -941,7 +1786,6 @@
             eventRing3.rotation.x = Math.PI / 2.1;
             scene.add(eventRing3);
 
-            /* ACCRETION DISK - 3500 particles purple→pink gradient */
             var diskCount = 3500;
             var diskGeo = new THREE.BufferGeometry();
             var diskPos = new Float32Array(diskCount * 3);
@@ -961,24 +1805,20 @@
 
                 var t = (radius - 2.0) / 5.5;
                 if (t < 0.15) {
-                    /* inner: bright white-pink */
                     diskCol[i * 3] = 1.0;
                     diskCol[i * 3 + 1] = 0.85 - t * 2;
                     diskCol[i * 3 + 2] = 0.95;
                 } else if (t < 0.4) {
-                    /* mid-inner: hot pink */
                     var tt = (t - 0.15) / 0.25;
                     diskCol[i * 3] = 1.0 - tt * 0.1;
                     diskCol[i * 3 + 1] = 0.55 - tt * 0.25;
                     diskCol[i * 3 + 2] = 0.95 - tt * 0.1;
                 } else if (t < 0.7) {
-                    /* mid: magenta-purple */
                     var tt2 = (t - 0.4) / 0.3;
                     diskCol[i * 3] = 0.9 - tt2 * 0.35;
                     diskCol[i * 3 + 1] = 0.3 - tt2 * 0.2;
                     diskCol[i * 3 + 2] = 0.85 - tt2 * 0.15;
                 } else {
-                    /* outer: deep purple */
                     var tt3 = (t - 0.7) / 0.3;
                     diskCol[i * 3] = 0.55 - tt3 * 0.25;
                     diskCol[i * 3 + 1] = 0.1 - tt3 * 0.05;
@@ -1003,7 +1843,6 @@
             diskParticles.rotation.x = 0.4;
             scene.add(diskParticles);
 
-            /* SPIRAL INFALL PARTICLES */
             var spiralCount = 900;
             var spiralGeo = new THREE.BufferGeometry();
             var spiralPos = new Float32Array(spiralCount * 3);
@@ -1052,7 +1891,6 @@
             spiralParticles.position.copy(blackhole.position);
             scene.add(spiralParticles);
 
-            /* RELATIVISTIC JETS - purple/pink */
             var jetCount = 500;
             var jetGeo = new THREE.BufferGeometry();
             var jetPos = new Float32Array(jetCount * 3);
@@ -1093,7 +1931,6 @@
             jetParticles.position.copy(blackhole.position);
             scene.add(jetParticles);
 
-            /* DISTANT STARS */
             var starCount = 1500;
             var starGeo = new THREE.BufferGeometry();
             var starPos = new Float32Array(starCount * 3);
@@ -1121,7 +1958,6 @@
             scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({ size: 0.08, vertexColors: true,
                 transparent: true, opacity: 0.55, sizeAttenuation: true })));
 
-            /* PHOTON SPHERE RING */
             var lensGeo = new THREE.TorusGeometry(1.55, 0.012, 8, 128);
             var lensMat = new THREE.MeshBasicMaterial({ color: 0xE879F9, transparent: true, opacity: 0.12 });
             var lensRing = new THREE.Mesh(lensGeo, lensMat);
@@ -1129,7 +1965,6 @@
             lensRing.rotation.x = Math.PI / 2;
             scene.add(lensRing);
 
-            /* WIREFRAME SHAPES - purple/pink */
             var shapes = [];
 
             function addShape(geo, col, pos, sc) {
@@ -1150,12 +1985,10 @@
             addShape(new THREE.OctahedronGeometry(0.4, 0), 0xEC4899, [-4, 6, -30], 1.8);
             addShape(new THREE.TorusKnotGeometry(0.4, 0.08, 64, 8, 2, 3), 0xA855F7, [8, -6, -28], 0.7);
 
-            /* ANIMATION LOOP */
             function animate() {
                 requestAnimationFrame(animate);
                 time += 0.006;
 
-                /* accretion disk */
                 var dP = diskGeo.attributes.position.array;
                 for (var i = 0; i < diskCount; i++) {
                     var d = diskData[i];
@@ -1168,7 +2001,6 @@
                 }
                 diskGeo.attributes.position.needsUpdate = true;
 
-                /* spiral infall */
                 var sP = spiralGeo.attributes.position.array;
                 var sC = spiralGeo.attributes.color.array;
                 for (var i = 0; i < spiralCount; i++) {
@@ -1192,7 +2024,6 @@
                 spiralGeo.attributes.position.needsUpdate = true;
                 spiralGeo.attributes.color.needsUpdate = true;
 
-                /* jets */
                 var jP = jetGeo.attributes.position.array;
                 for (var i = 0; i < jetCount; i++) {
                     var j = jetInfo[i];
@@ -1208,16 +2039,12 @@
                 }
                 jetGeo.attributes.position.needsUpdate = true;
 
-                /* rotate rings */
                 eventRing.rotation.z += 0.003;
                 eventRing2.rotation.z -= 0.002;
                 eventRing3.rotation.z += 0.0015;
                 lensRing.rotation.z += 0.001;
-
-                /* pulse haze */
                 haze.scale.setScalar(1.0 + Math.sin(time * 3) * 0.04);
 
-                /* wireframe shapes */
                 for (var i = 0; i < shapes.length; i++) {
                     var sh = shapes[i];
                     sh.mesh.rotation.x += sh.rx;
@@ -1225,7 +2052,6 @@
                     sh.mesh.position.y += Math.sin(time * sh.fs + sh.ph) * 0.003;
                 }
 
-                /* camera */
                 var targetX = mouseX * 2.0;
                 var targetY = -mouseY * 1.5 + 2;
                 camera.position.x += (targetX - camera.position.x) * 0.02;
@@ -1237,29 +2063,40 @@
             }
             animate();
 
+            var isResizing = false;
+            window.addEventListener('resize', function() {
+                if (isResizing) return;
+                isResizing = true;
+                requestAnimationFrame(function() {
+                    camera.aspect = window.innerWidth / window.innerHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                    isResizing = false;
+                });
+            });
+
             document.addEventListener('mousemove', function(e) {
                 mouseX = (e.clientX / window.innerWidth) - 0.5;
                 mouseY = (e.clientY / window.innerHeight) - 0.5;
             });
             window.addEventListener('scroll', function() { scrollY = window.scrollY });
-            window.addEventListener('resize', function() {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            });
         })();
 
         /* ===== MOBILE MENU ===== */
         document.getElementById('menu-btn').addEventListener('click', function() {
-            document.getElementById('menu-drop').classList.toggle('hidden');
+            var menu = document.getElementById('menu-drop');
+            menu.classList.toggle('hidden');
+            this.setAttribute('aria-expanded', !menu.classList.contains('hidden'));
         });
         var mlinks = document.querySelectorAll('.ml');
         for (var i = 0; i < mlinks.length; i++) {
-            mlinks[i].addEventListener('click', function() { document.getElementById('menu-drop').classList.add(
-                    'hidden') });
+            mlinks[i].addEventListener('click', function() {
+                document.getElementById('menu-drop').classList.add('hidden');
+                document.getElementById('menu-btn').setAttribute('aria-expanded', 'false');
+            });
         }
 
-        /* ===== REVEAL ON SCROLL ===== */
+        /* ===== REVEAL ON SCROLL (optimized with passive) ===== */
         var rObs = new IntersectionObserver(function(entries) {
             for (var i = 0; i < entries.length; i++) {
                 if (entries[i].isIntersecting) entries[i].target.classList.add('show');
@@ -1276,11 +2113,48 @@
                     var rect = card.getBoundingClientRect();
                     card.style.setProperty('--sx', (e.clientX - rect.left) + 'px');
                     card.style.setProperty('--sy', (e.clientY - rect.top) + 'px');
-                });
+                }, { passive: true });
             })(pCards[i]);
         }
 
-        /* ===== DEMO ANIMATION ===== */
+        /* ===== STEP CARDS SPOTLIGHT ===== */
+        var stepCards = document.querySelectorAll('.step-card');
+        for (var i = 0; i < stepCards.length; i++) {
+            (function(card) {
+                card.addEventListener('mousemove', function(e) {
+                    var rect = card.getBoundingClientRect();
+                    card.style.setProperty('--sx', ((e.clientX - rect.left) / rect.width * 100) + '%');
+                    card.style.setProperty('--sy', ((e.clientY - rect.top) / rect.height * 100) + '%');
+                }, { passive: true });
+            })(stepCards[i]);
+        }
+
+        /* ===== FAQ ACCORDION ===== */
+        var faqItems = document.querySelectorAll('.faq-item');
+        for (var i = 0; i < faqItems.length; i++) {
+            (function(item) {
+                var q = item.querySelector('.faq-q');
+                q.addEventListener('click', function() {
+                    var isOpen = item.classList.contains('open');
+                    for (var j = 0; j < faqItems.length; j++) {
+                        faqItems[j].classList.remove('open');
+                        faqItems[j].querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+                    }
+                    if (!isOpen) {
+                        item.classList.add('open');
+                        q.setAttribute('aria-expanded', 'true');
+                    }
+                });
+                q.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        q.click();
+                    }
+                });
+            })(faqItems[i]);
+        }
+
+        /* ===== DEMO ANIMATION (optimized) ===== */
         (function() {
             var stage = document.getElementById('demo-stage');
             var badge = document.getElementById('badge');
@@ -1415,6 +2289,42 @@
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' }) }
             });
         }
+
+        /* ===== INJECT FAQ SCHEMA DYNAMICALLY ===== */
+        (function() {
+            var faqData = [
+                { q: "Is Sodium Sorter free?", a: "Yes! Sodium Sorter is completely free to download and use. No hidden charges, no premium tiers — just a powerful file sorter for Windows." },
+                { q: "Does Sodium Sorter work offline?", a: "Absolutely. Sodium Sorter works completely offline. No internet connection is ever required to organize files automatically." },
+                { q: "Is my data uploaded to the cloud?", a: "No. Sodium Sorter is 100% local. Your files never leave your machine. There is no cloud upload, no telemetry, and no tracking — just pure file management software." },
+                { q: "What file types can be organized?", a: "Sodium Sorter supports all file types. Create rules for documents (.pdf, .docx), images (.jpg, .png), videos (.mp4, .avi), music (.mp3, .flac), archives (.zip, .rar), and any other extension." },
+                { q: "Does Sodium Sorter support Windows 11?", a: "Yes, Sodium Sorter is fully compatible with Windows 10 and Windows 11. It runs as a portable executable with no installation required." },
+                { q: "Can I customize sorting rules?", a: "Absolutely. Sodium Sorter lets you define unlimited custom rules based on file extension, name pattern, or regular expressions. You can enable, disable, and reorder rules freely — making it the most flexible folder organization tool." }
+            ];
+
+            var schema = {
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": faqData.map(function(item) {
+                    return {
+                        "@type": "Question",
+                        "name": item.q,
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": item.a
+                        }
+                    };
+                })
+            };
+
+            var script = document.createElement('script');
+            script.type = 'application/ld+json';
+            script.textContent = JSON.stringify(schema);
+            document.head.appendChild(script);
+        })();
+
+        console.log('%c🧪 Sodium Sorter v1.0.0', 'font-size:18px;font-weight:bold;color:#A855F7;');
+        console.log('%c🚀 Built by MrGlitch_Spider @ Sodium IOT', 'font-size:14px;color:#888;');
+        console.log('%c🔒 100% Private · No Cloud · Free', 'font-size:13px;color:#10b981;');
     </script>
 </body>
 </html>
