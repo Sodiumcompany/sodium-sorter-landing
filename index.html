@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sodium Sorter — Smart File Organization, Automatically</title>
-    <meta name="description" content="Sodium Sorter automatically monitors folders and organizes files into appropriate locations using customizable rules. Lightweight, private, and fully local.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <meta name="description" content="Sodium Sorter automatically monitors folders and organizes files into appropriate locations using customizable rules. Lightweight, private, and fully local." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js">
+    </script>
     <script>
         tailwind.config = {
             theme: {
@@ -23,994 +25,1396 @@
         }
     </script>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        html{scroll-behavior:smooth}
-        body{background:#050208;color:#d4d4d4;font-family:'Inter',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-        ::-webkit-scrollbar{width:5px}
-        ::-webkit-scrollbar-track{background:transparent}
-        ::-webkit-scrollbar-thumb{background:rgba(168,85,247,0.25);border-radius:10px}
-
-        #bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
-        .page{position:relative;z-index:1}
-
-        .purple-grad{
-            background:linear-gradient(135deg,#E879F9,#A855F7,#7C3AED);
-            -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-            background-clip:text;
+        /* ── RESET & BASE ── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .pink-grad{
-            background:linear-gradient(135deg,#F9A8D4,#EC4899,#DB2777);
-            -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-            background-clip:text;
+        html {
+            scroll-behavior: smooth;
         }
-
-        .glass{
-            background:rgba(8,4,16,0.8);
-            backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
-            border-bottom:1px solid rgba(168,85,247,0.06);
+        body {
+            background: #050208;
+            color: #d4d4d4;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
-        .logo-glow{filter:drop-shadow(0 0 12px rgba(168,85,247,0.6)) drop-shadow(0 0 30px rgba(236,72,153,0.2))}
-
-        .glow-purple{box-shadow:0 0 50px rgba(168,85,247,0.25),0 0 120px rgba(168,85,247,0.08)}
-        .glow-purple-big{box-shadow:0 0 70px rgba(168,85,247,0.4),0 0 150px rgba(236,72,153,0.12)}
-
-        .btn-primary{
-            display:inline-flex;align-items:center;gap:10px;
-            padding:14px 36px;border-radius:14px;border:none;cursor:pointer;
-            background:linear-gradient(135deg,#A855F7,#7C3AED,#6D28D9);
-            color:#fff;font-weight:700;font-size:0.9rem;
-            text-decoration:none;position:relative;overflow:hidden;
-            transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
-            box-shadow:0 4px 20px rgba(168,85,247,0.3);
+        ::-webkit-scrollbar {
+            width: 5px;
         }
-        .btn-primary::before{
-            content:'';position:absolute;inset:0;
-            background:linear-gradient(135deg,transparent,rgba(255,255,255,0.2),transparent);
-            transform:translateX(-100%);transition:transform 0.6s;
+        ::-webkit-scrollbar-track {
+            background: transparent;
         }
-        .btn-primary:hover::before{transform:translateX(100%)}
-        .btn-primary:hover{transform:translateY(-3px);box-shadow:0 20px 50px rgba(168,85,247,0.45)}
-
-        .btn-ghost{
-            display:inline-flex;align-items:center;gap:10px;
-            padding:14px 36px;border-radius:14px;cursor:pointer;
-            background:transparent;color:#C084FC;font-weight:600;font-size:0.9rem;
-            border:1.5px solid rgba(168,85,247,0.2);
-            text-decoration:none;transition:all 0.4s;
-        }
-        .btn-ghost:hover{background:rgba(168,85,247,0.08);border-color:rgba(168,85,247,0.4);transform:translateY(-3px)}
-
-        .btn-big{
-            display:inline-flex;align-items:center;gap:14px;
-            padding:20px 52px;border-radius:16px;border:none;cursor:pointer;
-            background:linear-gradient(135deg,#C084FC,#A855F7,#7C3AED);
-            color:#fff;font-weight:800;font-size:1.1rem;letter-spacing:-0.01em;
-            text-decoration:none;position:relative;overflow:hidden;
-            transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
-            box-shadow:0 8px 40px rgba(168,85,247,0.35);
-        }
-        .btn-big::before{
-            content:'';position:absolute;inset:0;
-            background:linear-gradient(135deg,transparent,rgba(255,255,255,0.25),transparent);
-            transform:translateX(-100%);transition:transform 0.7s;
-        }
-        .btn-big:hover::before{transform:translateX(100%)}
-        .btn-big:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 30px 80px rgba(168,85,247,0.5)}
-
-        .nav-l{position:relative;color:#737373;transition:color 0.3s;font-weight:500;font-size:0.875rem;text-decoration:none}
-        .nav-l:hover{color:#C084FC}
-        .nav-l::after{
-            content:'';position:absolute;bottom:-4px;left:50%;width:0;height:2px;
-            background:linear-gradient(90deg,#A855F7,#EC4899);transition:all 0.3s;transform:translateX(-50%);border-radius:1px;
-        }
-        .nav-l:hover::after{width:100%}
-
-        .ss-frame{
-            position:relative;border-radius:16px;overflow:hidden;
-            background:#0a0810;border:1px solid rgba(168,85,247,0.1);
-            transition:all 0.5s;
-        }
-        .ss-frame:hover{border-color:rgba(168,85,247,0.2);box-shadow:0 0 50px rgba(168,85,247,0.08)}
-        .ss-bar{
-            position:absolute;top:0;left:0;right:0;height:44px;z-index:5;
-            background:linear-gradient(180deg,rgba(10,8,16,0.98),rgba(10,8,16,0.85));
-            display:flex;align-items:center;padding-left:18px;gap:8px;
-        }
-        .ss-dot{width:12px;height:12px;border-radius:50%}
-        .ss-frame img{width:100%;display:block;margin-top:44px}
-
-        .scan-line{
-            position:absolute;left:0;right:0;height:2px;z-index:20;
-            background:linear-gradient(90deg,transparent,rgba(168,85,247,0.3),transparent);
-            animation:scan 3s linear infinite;pointer-events:none;
+        ::-webkit-scrollbar-thumb {
+            background: rgba(168, 85, 247, 0.25);
+            border-radius: 10px;
         }
 
-        .f-card{
-            padding:32px;border-radius:20px;
-            background:rgba(12,8,20,0.5);border:1px solid rgba(255,255,255,0.04);
-            backdrop-filter:blur(10px);transition:all 0.4s;position:relative;overflow:hidden;
+        #bg-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
         }
-        .f-card::before{
-            content:'';position:absolute;top:0;left:0;right:0;height:1px;
-            background:linear-gradient(90deg,transparent,rgba(168,85,247,0.5),transparent);
-            opacity:0;transition:opacity 0.4s;
-        }
-        .f-card:hover{border-color:rgba(168,85,247,0.15);transform:translateY(-4px);background:rgba(15,10,25,0.6)}
-        .f-card:hover::before{opacity:1}
-
-        .f-icon{
-            width:50px;height:50px;border-radius:14px;
-            display:flex;align-items:center;justify-content:center;
-            background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.12);
-            color:#C084FC;transition:all 0.4s;flex-shrink:0;
-        }
-        .f-card:hover .f-icon{background:rgba(168,85,247,0.15);border-color:rgba(168,85,247,0.25);transform:scale(1.08)}
-
-        .p-card{
-            padding:36px;border-radius:20px;overflow:hidden;
-            background:rgba(12,8,20,0.4);border:1px solid rgba(255,255,255,0.04);
-            backdrop-filter:blur(10px);transition:all 0.4s;position:relative;
-        }
-        .p-card .spot{
-            position:absolute;inset:0;opacity:0;transition:opacity 0.4s;
-            background:radial-gradient(circle 200px at var(--sx) var(--sy),rgba(236,72,153,0.07),transparent);
-            pointer-events:none;
-        }
-        .p-card:hover .spot{opacity:1}
-        .p-card:hover{border-color:rgba(236,72,153,0.15);transform:translateY(-3px)}
-
-        .demo-box{
-            position:relative;height:420px;border-radius:24px;overflow:hidden;
-            background:rgba(8,4,16,0.6);border:1px solid rgba(168,85,247,0.06);
-            backdrop-filter:blur(16px);
-        }
-        .demo-folder{
-            position:absolute;width:115px;padding:14px 10px;border-radius:14px;
-            background:rgba(15,10,25,0.7);border:1px solid rgba(168,85,247,0.1);
-            display:flex;flex-direction:column;align-items:center;gap:8px;
-            backdrop-filter:blur(8px);transition:all 0.5s;
-        }
-        .demo-folder.lit{
-            border-color:rgba(236,72,153,0.5);
-            box-shadow:0 0 25px rgba(236,72,153,0.12);
-            background:rgba(236,72,153,0.04);
-        }
-        .demo-chip{
-            position:absolute;padding:8px 14px;border-radius:8px;
-            background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.2);
-            font-family:'JetBrains Mono',monospace;font-size:11px;color:#C084FC;
-            white-space:nowrap;z-index:10;
-            transition:all 0.7s cubic-bezier(0.4,0,0.2,1);
-        }
-        .demo-chip.done{border-color:rgba(236,72,153,0.3);color:#F472B6;background:rgba(236,72,153,0.08)}
-
-        .demo-badge{
-            position:absolute;top:14px;left:50%;transform:translateX(-50%);
-            padding:5px 14px;border-radius:20px;z-index:20;
-            font-size:11px;font-weight:600;letter-spacing:0.03em;
-            backdrop-filter:blur(10px);transition:all 0.4s;
-            display:flex;align-items:center;gap:6px;
-        }
-        .demo-badge.on{background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.2);color:#C084FC}
-        .demo-badge.off{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);color:#525252}
-        .badge-dot{width:6px;height:6px;border-radius:50%;transition:background 0.3s}
-        .demo-badge.on .badge-dot{background:#A855F7;animation:pulse 1s ease-in-out infinite}
-        .demo-badge.off .badge-dot{background:#404040}
-
-        .stat-num{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:clamp(2.5rem,5vw,4rem);line-height:1}
-
-        .section-label{
-            display:inline-flex;align-items:center;gap:8px;
-            padding:6px 16px;border-radius:100px;
-            background:rgba(168,85,247,0.06);border:1px solid rgba(168,85,247,0.1);
-            font-size:11px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:rgba(192,132,252,0.7);
+        .page {
+            position: relative;
+            z-index: 1;
         }
 
-        @keyframes pulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:1;transform:scale(1.4)}}
-        @keyframes scan{0%{top:-2px}100%{top:calc(100% + 2px)}}
-        @keyframes orbit{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-        @keyframes orbitR{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
-        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+        /* ── GRADIENTS ── */
+        .purple-grad {
+            background: linear-gradient(135deg, #E879F9, #A855F7, #7C3AED);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .pink-grad {
+            background: linear-gradient(135deg, #F9A8D4, #EC4899, #DB2777);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-        .a-float{animation:float 4s ease-in-out infinite}
+        /* ── GLASS / GLOW ── */
+        .glass {
+            background: rgba(8, 4, 16, 0.8);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border-bottom: 1px solid rgba(168, 85, 247, 0.06);
+        }
+        .logo-glow {
+            filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.6)) drop-shadow(0 0 30px rgba(236, 72, 153, 0.2));
+        }
+        .glow-purple {
+            box-shadow: 0 0 50px rgba(168, 85, 247, 0.25), 0 0 120px rgba(168, 85, 247, 0.08);
+        }
+        .glow-purple-big {
+            box-shadow: 0 0 70px rgba(168, 85, 247, 0.4), 0 0 150px rgba(236, 72, 153, 0.12);
+        }
 
-        .rv{opacity:0;transform:translateY(50px);transition:all 0.9s cubic-bezier(0.16,1,0.3,1)}
-        .rv.show{opacity:1;transform:translateY(0)}
-        .rv-l{opacity:0;transform:translateX(-50px);transition:all 0.9s cubic-bezier(0.16,1,0.3,1)}
-        .rv-l.show{opacity:1;transform:translateX(0)}
-        .rv-r{opacity:0;transform:translateX(50px);transition:all 0.9s cubic-bezier(0.16,1,0.3,1)}
-        .rv-r.show{opacity:1;transform:translateX(0)}
-        .rv-s{opacity:0;transform:scale(0.92);transition:all 0.9s cubic-bezier(0.16,1,0.3,1)}
-        .rv-s.show{opacity:1;transform:scale(1)}
+        /* ── BUTTONS ── */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 36px;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #A855F7, #7C3AED, #6D28D9);
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(168, 85, 247, 0.3);
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+        .btn-primary:hover::before {
+            transform: translateX(100%);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 50px rgba(168, 85, 247, 0.45);
+        }
 
-        .d1{transition-delay:.05s}.d2{transition-delay:.1s}.d3{transition-delay:.15s}
-        .d4{transition-delay:.2s}.d5{transition-delay:.25s}.d6{transition-delay:.3s}
-        .d7{transition-delay:.35s}.d8{transition-delay:.4s}
+        .btn-ghost {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 36px;
+            border-radius: 14px;
+            cursor: pointer;
+            background: transparent;
+            color: #C084FC;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1.5px solid rgba(168, 85, 247, 0.2);
+            text-decoration: none;
+            transition: all 0.4s;
+        }
+        .btn-ghost:hover {
+            background: rgba(168, 85, 247, 0.08);
+            border-color: rgba(168, 85, 247, 0.4);
+            transform: translateY(-3px);
+        }
 
-        @media(max-width:768px){
-            .demo-box{height:300px}
-            .demo-folder{width:95px;padding:10px 6px}
-            .demo-folder svg{width:22px;height:22px}
-            .demo-folder span{font-size:9px}
-            .btn-big{padding:16px 32px;font-size:1rem}
+        .btn-big {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            padding: 20px 52px;
+            border-radius: 16px;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #C084FC, #A855F7, #7C3AED);
+            color: #fff;
+            font-weight: 800;
+            font-size: 1.1rem;
+            letter-spacing: -0.01em;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 40px rgba(168, 85, 247, 0.35);
+        }
+        .btn-big::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.7s;
+        }
+        .btn-big:hover::before {
+            transform: translateX(100%);
+        }
+        .btn-big:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 30px 80px rgba(168, 85, 247, 0.5);
+        }
+
+        /* ── NAV LINKS ── */
+        .nav-l {
+            position: relative;
+            color: #737373;
+            transition: color 0.3s;
+            font-weight: 500;
+            font-size: 0.875rem;
+            text-decoration: none;
+        }
+        .nav-l:hover {
+            color: #C084FC;
+        }
+        .nav-l::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #A855F7, #EC4899);
+            transition: all 0.3s;
+            transform: translateX(-50%);
+            border-radius: 1px;
+        }
+        .nav-l:hover::after {
+            width: 100%;
+        }
+
+        /* ── SCREENSHOT FRAME ── */
+        .ss-frame {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #0a0810;
+            border: 1px solid rgba(168, 85, 247, 0.1);
+            transition: all 0.5s;
+        }
+        .ss-frame:hover {
+            border-color: rgba(168, 85, 247, 0.2);
+            box-shadow: 0 0 50px rgba(168, 85, 247, 0.08);
+        }
+        .ss-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 44px;
+            z-index: 5;
+            background: linear-gradient(180deg, rgba(10, 8, 16, 0.98), rgba(10, 8, 16, 0.85));
+            display: flex;
+            align-items: center;
+            padding-left: 18px;
+            gap: 8px;
+        }
+        .ss-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .ss-frame img {
+            width: 100%;
+            display: block;
+            margin-top: 44px;
+        }
+
+        .scan-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            z-index: 20;
+            background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.3), transparent);
+            animation: scan 3s linear infinite;
+            pointer-events: none;
+        }
+
+        /* ── FEATURE CARDS ── */
+        .f-card {
+            padding: 32px;
+            border-radius: 20px;
+            background: rgba(12, 8, 20, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+        .f-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.5), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .f-card:hover {
+            border-color: rgba(168, 85, 247, 0.15);
+            transform: translateY(-4px);
+            background: rgba(15, 10, 25, 0.6);
+        }
+        .f-card:hover::before {
+            opacity: 1;
+        }
+
+        .f-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(168, 85, 247, 0.08);
+            border: 1px solid rgba(168, 85, 247, 0.12);
+            color: #C084FC;
+            transition: all 0.4s;
+            flex-shrink: 0;
+        }
+        .f-card:hover .f-icon {
+            background: rgba(168, 85, 247, 0.15);
+            border-color: rgba(168, 85, 247, 0.25);
+            transform: scale(1.08);
+        }
+
+        /* ── PRIVACY CARDS ── */
+        .p-card {
+            padding: 36px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: rgba(12, 8, 20, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s;
+            position: relative;
+        }
+        .p-card .spot {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 0.4s;
+            background: radial-gradient(circle 200px at var(--sx) var(--sy), rgba(236, 72, 153, 0.07), transparent);
+            pointer-events: none;
+        }
+        .p-card:hover .spot {
+            opacity: 1;
+        }
+        .p-card:hover {
+            border-color: rgba(236, 72, 153, 0.15);
+            transform: translateY(-3px);
+        }
+
+        /* ── DEMO BOX ── */
+        .demo-box {
+            position: relative;
+            height: 420px;
+            border-radius: 24px;
+            overflow: hidden;
+            background: rgba(8, 4, 16, 0.6);
+            border: 1px solid rgba(168, 85, 247, 0.06);
+            backdrop-filter: blur(16px);
+        }
+        .demo-folder {
+            position: absolute;
+            width: 115px;
+            padding: 14px 10px;
+            border-radius: 14px;
+            background: rgba(15, 10, 25, 0.7);
+            border: 1px solid rgba(168, 85, 247, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(8px);
+            transition: all 0.5s;
+        }
+        .demo-folder.lit {
+            border-color: rgba(236, 72, 153, 0.5);
+            box-shadow: 0 0 25px rgba(236, 72, 153, 0.12);
+            background: rgba(236, 72, 153, 0.04);
+        }
+        .demo-chip {
+            position: absolute;
+            padding: 8px 14px;
+            border-radius: 8px;
+            background: rgba(168, 85, 247, 0.08);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: #C084FC;
+            white-space: nowrap;
+            z-index: 10;
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .demo-chip.done {
+            border-color: rgba(236, 72, 153, 0.3);
+            color: #F472B6;
+            background: rgba(236, 72, 153, 0.08);
+        }
+
+        .demo-badge {
+            position: absolute;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 5px 14px;
+            border-radius: 20px;
+            z-index: 20;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .demo-badge.on {
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            color: #C084FC;
+        }
+        .demo-badge.off {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: #525252;
+        }
+        .badge-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+        .demo-badge.on .badge-dot {
+            background: #A855F7;
+            animation: pulse 1s ease-in-out infinite;
+        }
+        .demo-badge.off .badge-dot {
+            background: #404040;
+        }
+
+        .stat-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            line-height: 1;
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            border-radius: 100px;
+            background: rgba(168, 85, 247, 0.06);
+            border: 1px solid rgba(168, 85, 247, 0.1);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(192, 132, 252, 0.7);
+        }
+
+        /* ── KEYFRAMES ── */
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: .4;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.4);
+            }
+        }
+        @keyframes scan {
+            0% {
+                top: -2px;
+            }
+            100% {
+                top: calc(100% + 2px);
+            }
+        }
+        @keyframes orbit {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        @keyframes orbitR {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(-360deg);
+            }
+        }
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+
+        .a-float {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* ── REVEAL ── */
+        .rv {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .rv.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .rv-l {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .rv-l.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .rv-r {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .rv-r.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .rv-s {
+            opacity: 0;
+            transform: scale(0.92);
+            transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .rv-s.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .d1 {
+            transition-delay: .05s;
+        }
+        .d2 {
+            transition-delay: .1s;
+        }
+        .d3 {
+            transition-delay: .15s;
+        }
+        .d4 {
+            transition-delay: .2s;
+        }
+        .d5 {
+            transition-delay: .25s;
+        }
+        .d6 {
+            transition-delay: .3s;
+        }
+        .d7 {
+            transition-delay: .35s;
+        }
+        .d8 {
+            transition-delay: .4s;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media(max-width:768px) {
+            .demo-box {
+                height: 300px;
+            }
+            .demo-folder {
+                width: 95px;
+                padding: 10px 6px;
+            }
+            .demo-folder svg {
+                width: 22px;
+                height: 22px;
+            }
+            .demo-folder span {
+                font-size: 9px;
+            }
+            .btn-big {
+                padding: 16px 32px;
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 <body>
 
-<canvas id="bg-canvas"></canvas>
+    <canvas id="bg-canvas"></canvas>
 
-<div class="page">
+    <div class="page">
 
-    <!-- NAV -->
-    <nav id="nav" class="fixed top-0 left-0 right-0 z-50 glass">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16 lg:h-[72px]">
-                <a href="#" class="flex items-center gap-3 group">
-                    <img src="https://z-cdn-media.chatglm.cn/files/200e3a6a-0ae7-484c-93e3-65bc0b6905e5.jpg?auth_key=1882797079-6aa3039efcb44498ac04286c388b4170-0-70cc7fd065cbc6902498ed4a171b7606" alt="Sodium" class="w-9 h-9 rounded-lg logo-glow transition-transform group-hover:scale-110">
-                    <span class="text-lg font-bold text-white tracking-tight">Sodium <span class="text-neutral-500 font-normal">Sorter</span></span>
-                </a>
-                <div class="hidden md:flex items-center gap-8">
-                    <a href="#features" class="nav-l">Features</a>
-                    <a href="#demo" class="nav-l">Demo</a>
-                    <a href="#privacy" class="nav-l">Privacy</a>
-                    <a href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/sodium_sorter.exe" download="sodium_sorter.exe" class="btn-primary" style="padding:10px 24px;font-size:0.8rem">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                        Download
+        <!-- ====== NAV ====== -->
+        <nav id="nav" class="fixed top-0 left-0 right-0 z-50 glass">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16 lg:h-[72px]">
+                    <a href="#" class="flex items-center gap-3 group">
+                        <!-- COMPANY LOGO (nav) -->
+                        <img src="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/company.jpg"
+                        alt="Sodium Company"
+                        class="w-9 h-9 rounded-lg logo-glow transition-transform group-hover:scale-110" />
+                        <span class="text-lg font-bold text-white tracking-tight">Sodium <span class="text-neutral-500 font-normal">Sorter</span></span>
                     </a>
-                </div>
-                <button id="menu-btn" class="md:hidden text-white p-2" aria-label="Menu">
-                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
-                </button>
-            </div>
-        </div>
-        <div id="menu-drop" class="hidden md:hidden border-t border-white/5" style="background:rgba(8,4,16,0.95);backdrop-filter:blur(20px)">
-            <div class="px-6 py-5 flex flex-col gap-4">
-                <a href="#features" class="nav-l ml">Features</a>
-                <a href="#demo" class="nav-l ml">Demo</a>
-                <a href="#privacy" class="nav-l ml">Privacy</a>
-                <a href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/sodium_sorter.exe" download="sodium_sorter.exe" class="btn-primary justify-center ml" style="padding:12px;font-size:0.85rem">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                    Download EXE
-                </a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- HERO -->
-    <section class="min-h-screen flex items-center justify-center px-6 pt-20 pb-16 relative">
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full pointer-events-none" style="background:radial-gradient(circle,rgba(168,85,247,0.1) 0%,rgba(236,72,153,0.04) 35%,transparent 60%)"></div>
-        <div class="max-w-5xl mx-auto text-center">
-            <div class="rv mb-10">
-                <div class="relative w-28 h-28 mx-auto">
-                    <div class="absolute inset-[-24px] rounded-full border border-purple-400/15" style="animation:orbit 25s linear infinite">
-                        <div class="absolute -top-[5px] left-1/2 -translate-x-1/2 w-[10px] h-[10px] bg-purple-400 rounded-full" style="box-shadow:0 0 12px #A855F7"></div>
+                    <div class="hidden md:flex items-center gap-8">
+                        <a href="#features" class="nav-l">Features</a>
+                        <a href="#demo" class="nav-l">Demo</a>
+                        <a href="#privacy" class="nav-l">Privacy</a>
+                        <a href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/sodium_sorter.exe" download="sodium_sorter.exe" class="btn-primary" style="padding:10px 24px;font-size:0.8rem">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                            Download
+                        </a>
                     </div>
-                    <div class="absolute inset-[-48px] rounded-full border border-pink-500/10" style="animation:orbitR 35s linear infinite">
-                        <div class="absolute -bottom-[5px] left-1/2 -translate-x-1/2 w-[8px] h-[8px] bg-pink-500 rounded-full" style="box-shadow:0 0 10px #EC4899"></div>
-                    </div>
-                    <img src="https://z-cdn-media.chatglm.cn/files/200e3a6a-0ae7-484c-93e3-65bc0b6905e5.jpg?auth_key=1882797079-6aa3039efcb44498ac04286c388b4170-0-70cc7fd065cbc6902498ed4a171b7606" alt="Sodium" class="w-full h-full object-contain logo-glow relative z-10 rounded-2xl">
-                </div>
-            </div>
-            <div class="rv d1 mb-8">
-                <span class="section-label">
-                    <span class="w-2 h-2 bg-purple-500 rounded-full" style="animation:pulse 2s ease-in-out infinite"></span>
-                    Fully Local · Zero Tracking · Windows 10/11
-                </span>
-            </div>
-            <h1 class="rv d2 font-extrabold tracking-tight leading-[1.05] mb-8" style="font-size:clamp(2.8rem,7vw,5.5rem)">
-                <span class="text-white">Smart File</span><br>
-                <span class="purple-grad">Organization</span><br>
-                <span style="color:rgba(255,255,255,0.55)">Automatically</span>
-            </h1>
-            <p class="rv d3 text-lg md:text-xl text-neutral-400 max-w-[600px] mx-auto mb-14 leading-relaxed font-light">
-                Monitors your folders and organizes files using customizable rules. No cloud, no tracking — just clean file management on your machine.
-            </p>
-            <div class="rv d4 flex flex-col sm:flex-row items-center justify-center gap-5 mb-16">
-                <a href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/sodium_sorter.exe" download="sodium_sorter.exe" class="btn-big glow-purple">
-                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                    Download for Windows
-                </a>
-                <a href="#demo" class="btn-ghost">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    See it in action
-                </a>
-            </div>
-            <div class="rv d5 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-neutral-500">
-                <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Portable</span>
-                <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Lightweight</span>
-                <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>100% Private</span>
-                <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>No Install</span>
-            </div>
-        </div>
-        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-25">
-            <span class="text-[10px] text-neutral-500 tracking-[0.2em] uppercase font-medium">Scroll</span>
-            <div class="w-5 h-9 border border-neutral-700 rounded-full flex justify-center pt-2"><div class="w-1 h-2 bg-neutral-500 rounded-full a-float"></div></div>
-        </div>
-    </section>
-
-    <!-- DEMO -->
-    <section id="demo" class="py-32 px-6">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-16">
-                <span class="rv section-label mb-4">Live Demo</span>
-                <h2 class="rv d1 text-4xl md:text-5xl font-bold text-white mb-5 mt-6">Watch it work</h2>
-                <p class="rv d2 text-neutral-400 text-lg max-w-lg mx-auto">Files appear, rules activate, folders stay clean — automatically.</p>
-            </div>
-            <div class="rv-s" id="demo-wrap">
-                <div class="demo-box" id="demo-stage">
-                    <div class="demo-badge off" id="badge">
-                        <span class="badge-dot"></span>
-                        <span id="badge-txt">Waiting...</span>
-                    </div>
-                    <svg id="demo-svg" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:5"></svg>
-                    <div class="demo-folder" id="f-src" style="top:40px;left:24px">
-                        <svg class="w-7 h-7 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
-                        <span class="text-[11px] text-neutral-500 font-medium">Downloads</span>
-                    </div>
-                    <div class="demo-folder" id="f-docs" style="top:40px;right:24px">
-                        <svg class="w-7 h-7 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
-                        <span class="text-[11px] text-neutral-500 font-medium">Documents</span>
-                    </div>
-                    <div class="demo-folder" id="f-imgs" style="top:50%;right:24px;transform:translateY(-50%)">
-                        <svg class="w-7 h-7 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
-                        <span class="text-[11px] text-neutral-500 font-medium">Images</span>
-                    </div>
-                    <div class="demo-folder" id="f-vids" style="bottom:40px;right:24px">
-                        <svg class="w-7 h-7 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
-                        <span class="text-[11px] text-neutral-500 font-medium">Videos</span>
-                    </div>
-                </div>
-                <div class="text-center mt-6">
-                    <button id="demo-restart" class="text-sm text-purple-400/50 hover:text-purple-400 transition-colors cursor-pointer inline-flex items-center gap-2 bg-transparent border-none">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                        Restart
+                    <button id="menu-btn" class="md:hidden text-white p-2" aria-label="Menu">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
                     </button>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- MAIN SCREENSHOT -->
-    <section class="py-16 px-6">
-        <div class="max-w-6xl mx-auto rv-s">
-            <div class="ss-frame glow-purple">
-                <div class="ss-bar"><div class="ss-dot" style="background:#FF5F57"></div><div class="ss-dot" style="background:#FEBC2E"></div><div class="ss-dot" style="background:#28C840"></div></div>
-                <div class="scan-line"></div>
-                <img src="https://github.com/Sodiumcompany/sodium-sorter-landing/blob/main/main.png?raw=true" alt="Dashboard" loading="lazy">
-            </div>
-        </div>
-    </section>
-
-    <!-- FEATURES -->
-    <section id="features" class="py-32 px-6">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-20">
-                <span class="rv section-label mb-4">Features</span>
-                <h2 class="rv d1 text-4xl md:text-5xl font-bold text-white mb-5 mt-6">Built for efficiency</h2>
-                <p class="rv d2 text-neutral-400 text-lg max-w-lg mx-auto">Every feature keeps your folders clean without getting in your way.</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                <div class="rv d1 f-card"><div class="f-icon mb-5"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></div><h3 class="text-lg font-semibold text-white mb-2">Automatic Sorting</h3><p class="text-neutral-500 text-sm leading-relaxed">Files move to designated folders the moment they appear.</p></div>
-                <div class="rv d2 f-card"><div class="f-icon mb-5"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></div><h3 class="text-lg font-semibold text-white mb-2">Real-time Monitoring</h3><p class="text-neutral-500 text-sm leading-relaxed">Watches folders continuously with instant response.</p></div>
-                <div class="rv d3 f-card"><div class="f-icon mb-5"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div><h3 class="text-lg font-semibold text-white mb-2">Custom Rules</h3><p class="text-neutral-500 text-sm leading-relaxed">Define rules by type, name, extension, or any criteria.</p></div>
-                <div class="rv d4 f-card"><div class="f-icon mb-5"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg></div><h3 class="text-lg font-semibold text-white mb-2">Manual Mode</h3><p class="text-neutral-500 text-sm leading-relaxed">Need control? Switch to manual and sort on your terms.</p></div>
-                <div class="rv d5 f-card"><div class="f-icon mb-5"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div><h3 class="text-lg font-semibold text-white mb-2">Auto Folder Creation</h3><p class="text-neutral-500 text-sm leading-relaxed">Target folders missing? Created on the fly.</p></div>
-                <div class="rv d6 f-card"><div class="f-icon mb-5"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div><h3 class="text-lg font-semibold text-white mb-2">Lightweight</h3><p class="text-neutral-500 text-sm leading-relaxed">Minimal CPU and memory. Barely noticeable.</p></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SCREENSHOTS -->
-    <section class="py-32 px-6">
-        <div class="max-w-6xl mx-auto space-y-40">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div class="rv-l">
-                    <span class="section-label mb-4">Folder Selection</span>
-                    <h3 class="text-3xl md:text-4xl font-bold text-white mb-5 mt-6">Choose what to watch</h3>
-                    <p class="text-neutral-400 leading-relaxed mb-8">Add multiple source folders. Toggle monitoring per folder.</p>
-                    <ul class="space-y-4">
-                        <li class="flex items-center gap-4 text-neutral-300 text-[15px]"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0"></span>Unlimited source folders</li>
-                        <li class="flex items-center gap-4 text-neutral-300 text-[15px]"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0"></span>Browse or drag-and-drop</li>
-                        <li class="flex items-center gap-4 text-neutral-300 text-[15px]"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0"></span>Per-folder toggle</li>
-                    </ul>
-                </div>
-                <div class="rv-r">
-                    <div class="ss-frame glow-purple"><div class="ss-bar"><div class="ss-dot" style="background:#FF5F57"></div><div class="ss-dot" style="background:#FEBC2E"></div><div class="ss-dot" style="background:#28C840"></div></div><div class="scan-line"></div><img src="https://github.com/Sodiumcompany/sodium-sorter-landing/blob/main/folder.png?raw=true" alt="Folders" loading="lazy"></div>
+            <div id="menu-drop" class="hidden md:hidden border-t border-white/5" style="background:rgba(8,4,16,0.95);backdrop-filter:blur(20px)">
+                <div class="px-6 py-5 flex flex-col gap-4">
+                    <a href="#features" class="nav-l ml">Features</a>
+                    <a href="#demo" class="nav-l ml">Demo</a>
+                    <a href="#privacy" class="nav-l ml">Privacy</a>
+                    <a href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/sodium_sorter.exe" download="sodium_sorter.exe" class="btn-primary justify-center ml" style="padding:12px;font-size:0.85rem">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                        Download EXE
+                    </a>
                 </div>
             </div>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div class="rv-l order-2 lg:order-1">
-                    <div class="ss-frame glow-purple"><div class="ss-bar"><div class="ss-dot" style="background:#FF5F57"></div><div class="ss-dot" style="background:#FEBC2E"></div><div class="ss-dot" style="background:#28C840"></div></div><div class="scan-line"></div><img src="https://github.com/Sodiumcompany/sodium-sorter-landing/blob/main/rule.png?raw=true" alt="Rules" loading="lazy"></div>
-                </div>
-                <div class="rv-r order-1 lg:order-2">
-                    <span class="section-label mb-4">Rule Engine</span>
-                    <h3 class="text-3xl md:text-4xl font-bold text-white mb-5 mt-6">Define your rules</h3>
-                    <p class="text-neutral-400 leading-relaxed mb-8">Match by extension, name, or regex. Set destinations. Prioritize freely.</p>
-                    <ul class="space-y-4">
-                        <li class="flex items-center gap-4 text-neutral-300 text-[15px]"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0"></span>Extension, name, or regex</li>
-                        <li class="flex items-center gap-4 text-neutral-300 text-[15px]"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0"></span>Custom destination paths</li>
-                        <li class="flex items-center gap-4 text-neutral-300 text-[15px]"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0"></span>Enable, disable, reorder</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
+        </nav>
 
-    <!-- STATS -->
-    <section class="py-28 px-6 relative">
-        <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at center,rgba(168,85,247,0.04) 0%,transparent 70%)"></div>
-        <div class="max-w-5xl mx-auto relative">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
-                <div class="rv d1 text-center"><div class="stat-num purple-grad mb-3">0</div><div class="text-sm text-neutral-500 font-medium">Cloud Dependencies</div></div>
-                <div class="rv d3 text-center"><div class="stat-num purple-grad mb-3">~5</div><div class="text-sm text-neutral-500 font-medium">MB RAM</div></div>
-                <div class="rv d5 text-center"><div class="stat-num purple-grad mb-3">&lt;1%</div><div class="text-sm text-neutral-500 font-medium">CPU Usage</div></div>
-                <div class="rv d7 text-center"><div class="stat-num purple-grad mb-3">∞</div><div class="text-sm text-neutral-500 font-medium">Custom Rules</div></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- PRIVACY -->
-    <section id="privacy" class="py-32 px-6">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-20">
-                <span class="rv inline-flex items-center gap-2 section-label mb-4"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>Privacy First</span>
-                <h2 class="rv d1 text-4xl md:text-5xl font-bold text-white mb-5 mt-6">Privacy by design</h2>
-                <p class="rv d2 text-neutral-400 text-lg max-w-lg mx-auto">Built from the ground up to respect your privacy.</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5" id="priv-grid">
-                <div class="rv d1 p-card"><div class="spot"></div><div class="relative z-10 flex items-start gap-5"><div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.12)"><svg class="w-7 h-7 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg></div><div><h3 class="text-xl font-semibold text-white mb-2">No Cloud Services</h3><p class="text-neutral-500 text-sm leading-relaxed">Everything happens on your machine. Your files never leave.</p></div></div></div>
-                <div class="rv d2 p-card"><div class="spot"></div><div class="relative z-10 flex items-start gap-5"><div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.12)"><svg class="w-7 h-7 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></div><div><h3 class="text-xl font-semibold text-white mb-2">No Tracking</h3><p class="text-neutral-500 text-sm leading-relaxed">Zero analytics, telemetry, or data collection.</p></div></div></div>
-                <div class="rv d3 p-card"><div class="spot"></div><div class="relative z-10 flex items-start gap-5"><div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.12)"><svg class="w-7 h-7 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.858 15.355-5.858 21.213 0"/></svg></div><div><h3 class="text-xl font-semibold text-white mb-2">No Internet Required</h3><p class="text-neutral-500 text-sm leading-relaxed">Works completely offline. Always.</p></div></div></div>
-                <div class="rv d4 p-card"><div class="spot"></div><div class="relative z-10 flex items-start gap-5"><div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.12)"><svg class="w-7 h-7 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><div><h3 class="text-xl font-semibold text-white mb-2">Fully Local Processing</h3><p class="text-neutral-500 text-sm leading-relaxed">All operations happen locally. Your data, your control.</p></div></div></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA -->
-    <section id="download" class="py-40 px-6 relative overflow-hidden">
-        <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at 50% 80%,rgba(168,85,247,0.08) 0%,transparent 60%)"></div>
-        <div class="max-w-4xl mx-auto text-center relative">
-            <div class="rv mb-8"><img src="https://z-cdn-media.chatglm.cn/files/200e3a6a-0ae7-484c-93e3-65bc0b6905e5.jpg?auth_key=1882797079-6aa3039efcb44498ac04286c388b4170-0-70cc7fd065cbc6902498ed4a171b7606" alt="Sodium" class="w-20 h-20 mx-auto rounded-2xl logo-glow"></div>
-            <div class="rv d1 mb-8"><span class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border" style="background:rgba(16,185,129,0.06);border-color:rgba(16,185,129,0.12)"><span class="w-2.5 h-2.5 bg-emerald-500 rounded-full" style="animation:pulse 2s ease-in-out infinite"></span><span class="text-[13px] text-emerald-400 font-semibold">Available Now — Free</span></span></div>
-            <h2 class="rv d2 text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight">Get Sodium Sorter</h2>
-            <p class="rv d3 text-lg text-neutral-400 mb-14 max-w-lg mx-auto leading-relaxed">Portable executable. No installation. Run it and start organizing.</p>
-            <div class="rv d4 mb-10"><a href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/sodium_sorter.exe" download="sodium_sorter.exe" class="btn-big glow-purple-big"><svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>Download SodiumSorter.exe</a></div>
-            <div class="rv d5 flex flex-wrap items-center justify-center gap-6 text-sm text-neutral-500">
-                <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>Windows 10/11</span>
-                <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>Portable</span>
-                <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>Direct Download</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="py-16 px-6 border-t border-white/[0.04]">
-        <div class="max-w-6xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-                <div class="md:col-span-2">
-                    <div class="flex items-center gap-3 mb-5">
-                        <img src="https://github.com/Sodiumcompany/sodium-sorter-landing/blob/main/File%20Sorter.png" alt="Sodium" class="w-10 h-10 rounded-xl logo-glow">
-                        <div><span class="text-lg font-bold text-white">Sodium Sorter</span><br><span class="text-xs text-neutral-600">by Sodium Company</span></div>
+        <!-- ====== HERO ====== -->
+        <section class="min-h-screen flex items-center justify-center px-6 pt-20 pb-16 relative">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full pointer-events-none" style="background:radial-gradient(circle,rgba(168,85,247,0.1) 0%,rgba(236,72,153,0.04) 35%,transparent 60%)"></div>
+            <div class="max-w-5xl mx-auto text-center">
+                <div class="rv mb-10">
+                    <div class="relative w-28 h-28 mx-auto">
+                        <div class="absolute inset-[-24px] rounded-full border border-purple-400/15" style="animation:orbit 25s linear infinite">
+                            <div class="absolute -top-[5px] left-1/2 -translate-x-1/2 w-[10px] h-[10px] bg-purple-400 rounded-full" style="box-shadow:0 0 12px #A855F7"></div>
+                        </div>
+                        <div class="absolute inset-[-48px] rounded-full border border-pink-500/10" style="animation:orbitR 35s linear infinite">
+                            <div class="absolute -bottom-[5px] left-1/2 -translate-x-1/2 w-[8px] h-[8px] bg-pink-500 rounded-full" style="box-shadow:0 0 10px #EC4899"></div>
+                        </div>
+                        <!-- SODIUM SORTER LOGO (hero) -->
+                        <img src="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/File%20Sorter.png"
+                        alt="Sodium Sorter"
+                        class="w-full h-full object-contain logo-glow relative z-10 rounded-2xl" />
                     </div>
-                    <p class="text-sm text-neutral-500 leading-relaxed max-w-sm">Smart file organization, automatically. Keep your folders clean without lifting a finger.</p>
                 </div>
-                <div>
-                    <h4 class="text-xs font-semibold tracking-[0.15em] uppercase text-neutral-400 mb-5">Product</h4>
-                    <ul class="space-y-3">
-                        <li><a href="#features" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors">Features</a></li>
-                        <li><a href="#demo" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors">Demo</a></li>
-                        <li><a href="#privacy" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors">Privacy</a></li>
-                        <li><a href="#download" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors">Download</a></li>
-                    </ul>
+                <div class="rv d1 mb-8">
+                    <span class="section-label">
+                        <span class="w-2 h-2 bg-purple-500 rounded-full" style="animation:pulse 2s ease-in-out infinite"></span>
+                        Fully Local · Zero Tracking · Windows 10/11
+                    </span>
                 </div>
-                <div>
-                    <h4 class="text-xs font-semibold tracking-[0.15em] uppercase text-neutral-400 mb-5">Contact</h4>
-                    <ul class="space-y-3">
-                        <li class="text-sm text-neutral-500">Dev: <span class="text-neutral-400">MrGlitch_Spider</span></li>
-                        <li class="text-sm text-neutral-500">Org: <span class="text-neutral-400">Sodium Company</span></li>
-                        <li><a href="mailto:sajidulhasan2025@gmail.com" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors break-all">sajidulhasan2025@gmail.com</a></li>
-                        <li><a href="https://github.com/Sodiumcompany/sodium-sorter-landing" target="_blank" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors inline-flex items-center gap-1.5"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>GitHub</a></li>
-                    </ul>
+                <h1 class="rv d2 font-extrabold tracking-tight leading-[1.05] mb-8" style="font-size:clamp(2.8rem,7vw,5.5rem)">
+                    <span class="text-white">Smart File</span><br />
+                    <span class="purple-grad">Organization</span><br />
+                    <span style="color:rgba(255,255,255,0.55)">Automatically</span>
+                </h1>
+                <p class="rv d3 text-lg md:text-xl text-neutral-400 max-w-[600px] mx-auto mb-14 leading-relaxed font-light">
+                    Monitors your folders and organizes files using customizable rules. No cloud, no tracking — just clean file management on your machine.
+                </p>
+                <div class="rv d4 flex flex-col sm:flex-row items-center justify-center gap-5 mb-16">
+                    <a href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/sodium_sorter.exe" download="sodium_sorter.exe" class="btn-big glow-purple">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                        Download for Windows
+                    </a>
+                    <a href="#demo" class="btn-ghost">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        See it in action
+                    </a>
+                </div>
+                <div class="rv d5 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-neutral-500">
+                    <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Portable</span>
+                    <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Lightweight</span>
+                    <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>100% Private</span>
+                    <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>No Install</span>
                 </div>
             </div>
-            <div class="pt-8 border-t border-white/[0.04] flex flex-col md:flex-row items-center justify-between gap-4">
-                <p class="text-xs text-neutral-600">© 2024 Sodium Company. All rights reserved.</p>
-                <span class="flex items-center gap-2 text-xs text-neutral-600">Built with <svg class="w-3.5 h-3.5 text-pink-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/></svg> for clean folders</span>
+            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-25">
+                <span class="text-[10px] text-neutral-500 tracking-[0.2em] uppercase font-medium">Scroll</span>
+                <div class="w-5 h-9 border border-neutral-700 rounded-full flex justify-center pt-2"><div class="w-1 h-2 bg-neutral-500 rounded-full a-float"></div></div>
             </div>
-        </div>
-    </footer>
-</div>
+        </section>
 
-<script>
-/* ============================================================
-   PURPLE/PINK BLACKHOLE 3D BACKGROUND
-   ============================================================ */
-(function(){
-    var canvas=document.getElementById('bg-canvas');
-    var renderer=new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:true});
-    renderer.setSize(window.innerWidth,window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+        <!-- ====== DEMO ====== -->
+        <section id="demo" class="py-32 px-6">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <span class="rv section-label mb-4">Live Demo</span>
+                    <h2 class="rv d1 text-4xl md:text-5xl font-bold text-white mb-5 mt-6">Watch it work</h2>
+                    <p class="rv d2 text-neutral-400 text-lg max-w-lg mx-auto">Files appear, rules activate, folders stay clean — automatically.</p>
+                </div>
+                <div class="rv-s" id="demo-wrap">
+                    <div class="demo-box" id="demo-stage">
+                        <div class="demo-badge off" id="badge">
+                            <span class="badge-dot"></span>
+                            <span id="badge-txt">Waiting...</span>
+                        </div>
+                        <svg id="demo-svg" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:5"></svg>
+                        <div class="demo-folder" id="f-src" style="top:40px;left:24px">
+                            <svg class="w-7 h-7 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+                            <span class="text-[11px] text-neutral-500 font-medium">Downloads</span>
+                        </div>
+                        <div class="demo-folder" id="f-docs" style="top:40px;right:24px">
+                            <svg class="w-7 h-7 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+                            <span class="text-[11px] text-neutral-500 font-medium">Documents</span>
+                        </div>
+                        <div class="demo-folder" id="f-imgs" style="top:50%;right:24px;transform:translateY(-50%)">
+                            <svg class="w-7 h-7 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+                            <span class="text-[11px] text-neutral-500 font-medium">Images</span>
+                        </div>
+                        <div class="demo-folder" id="f-vids" style="bottom:40px;right:24px">
+                            <svg class="w-7 h-7 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+                            <span class="text-[11px] text-neutral-500 font-medium">Videos</span>
+                        </div>
+                    </div>
+                    <div class="text-center mt-6">
+                        <button id="demo-restart" class="text-sm text-purple-400/50 hover:text-purple-400 transition-colors cursor-pointer inline-flex items-center gap-2 bg-transparent border-none">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                            Restart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    var scene=new THREE.Scene();
-    var camera=new THREE.PerspectiveCamera(60,window.innerWidth/window.innerHeight,0.1,200);
-    camera.position.set(0,2,12);
-    camera.lookAt(0,0,0);
+        <!-- ====== MAIN SCREENSHOT ====== -->
+        <section class="py-16 px-6">
+            <div class="max-w-6xl mx-auto rv-s">
+                <div class="ss-frame glow-purple">
+                    <div class="ss-bar"><div class="ss-dot" style="background:#FF5F57"></div><div class="ss-dot" style="background:#FEBC2E"></div><div class="ss-dot" style="background:#28C840"></div></div>
+                    <div class="scan-line"></div>
+                    <img src="https://github.com/Sodiumcompany/sodium-sorter-landing/blob/main/main.png?raw=true" alt="Dashboard" loading="lazy" />
+                </div>
+            </div>
+        </section>
 
-    var mouseX=0,mouseY=0,scrollY=0,time=0;
+        <!-- ====== FEATURES ====== -->
+        <section id="features" class="py-32 px-6">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-20">
+                    <span class="rv section-label mb-4">Features</span>
+                    <h2 class="rv d1 text-4xl md:text-5xl font-bold text-white mb-5 mt-6">Built for efficiency</h2>
+                    <p class="rv d2 text-neutral-400 text-lg max-w-lg mx-auto">Every feature keeps your folders clean without getting in your way.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <div class="rv d1 f-card"><div class="f-icon mb-5"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></div><h3 class="text-lg font-semibold text-white mb-2">Automatic Sorting</h3><p class="text-neutral-500 text-sm leading-relaxed">Files move to designated folders the moment they appear.</p></div>
+                    <div class="rv d2 f-card"><div class="f-icon mb-5"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></div><h3 class="text-lg font-semibold text-white mb-2">Real-time Monitoring</h3><p class="text-neutral-500 text-sm leading-relaxed">Watches folders continuously with instant response.</p></div>
+                    <div class="rv d3 f-card"><div class="f-icon mb-5"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div><h3 class="text-lg font-semibold text-white mb-2">Custom Rules</h3><p class="text-neutral-500 text-sm leading-relaxed">Define rules by type, name, extension, or any criteria.</p></div>
+                    <div class="rv d4 f-card"><div class="f-icon mb-5"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg></div><h3 class="text-lg font-semibold text-white mb-2">Manual Mode</h3><p class="text-neutral-500 text-sm leading-relaxed">Need control? Switch to manual and sort on your terms.</p></div>
+                    <div class="rv d5 f-card"><div class="f-icon mb-5"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div><h3 class="text-lg font-semibold text-white mb-2">Auto Folder Creation</h3><p class="text-neutral-500 text-sm leading-relaxed">Target folders missing? Created on the fly.</p></div>
+                    <div class="rv d6 f-card"><div class="f-icon mb-5"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div><h3 class="text-lg font-semibold text-white mb-2">Lightweight</h3><p class="text-neutral-500 text-sm leading-relaxed">Minimal CPU and memory. Barely noticeable.</p></div>
+                </div>
+            </div>
+        </section>
 
-    /* BLACKHOLE CORE */
-    var bhGeo=new THREE.SphereGeometry(1.2,64,64);
-    var bhMat=new THREE.MeshBasicMaterial({color:0x000000});
-    var blackhole=new THREE.Mesh(bhGeo,bhMat);
-    blackhole.position.set(0,0,-5);
-    scene.add(blackhole);
+        <!-- ====== SCREENSHOTS ====== -->
+        <section class="py-32 px-6">
+            <div class="max-w-6xl mx-auto space-y-40">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    <div class="rv-l">
+                        <span class="section-label mb-4">Folder Selection</span>
+                        <h3 class="text-3xl md:text-4xl font-bold text-white mb-5 mt-6">Choose what to watch</h3>
+                        <p class="text-neutral-400 leading-relaxed mb-8">Add multiple source folders. Toggle monitoring per folder.</p>
+                        <ul class="space-y-4">
+                            <li class="flex items-center gap-4 text-neutral-300 text-[15px]"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0"></span>Unlimited source folders</li>
+                            <li class="flex items-center gap-4 text-neutral-300 text-[15px]"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0"></span>Browse or drag-and-drop</li>
+                            <li class="flex items-center gap-4 text-neutral-300 text-[15px]"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0"></span>Per-folder toggle</li>
+                        </ul>
+                    </div>
+                    <div class="rv-r">
+                        <div class="ss-frame glow-purple"><div class="ss-bar"><div class="ss-dot" style="background:#FF5F57"></div><div class="ss-dot" style="background:#FEBC2E"></div><div class="ss-dot" style="background:#28C840"></div></div><div class="scan-line"></div><img src="https://github.com/Sodiumcompany/sodium-sorter-landing/blob/main/folder.png?raw=true" alt="Folders" loading="lazy" /></div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    <div class="rv-l order-2 lg:order-1">
+                        <div class="ss-frame glow-purple"><div class="ss-bar"><div class="ss-dot" style="background:#FF5F57"></div><div class="ss-dot" style="background:#FEBC2E"></div><div class="ss-dot" style="background:#28C840"></div></div><div class="scan-line"></div><img src="https://github.com/Sodiumcompany/sodium-sorter-landing/blob/main/rule.png?raw=true" alt="Rules" loading="lazy" /></div>
+                    </div>
+                    <div class="rv-r order-1 lg:order-2">
+                        <span class="section-label mb-4">Rule Engine</span>
+                        <h3 class="text-3xl md:text-4xl font-bold text-white mb-5 mt-6">Define your rules</h3>
+                        <p class="text-neutral-400 leading-relaxed mb-8">Match by extension, name, or regex. Set destinations. Prioritize freely.</p>
+                        <ul class="space-y-4">
+                            <li class="flex items-center gap-4 text-neutral-300 text-[15px]"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0"></span>Extension, name, or regex</li>
+                            <li class="flex items-center gap-4 text-neutral-300 text-[15px]"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0"></span>Custom destination paths</li>
+                            <li class="flex items-center gap-4 text-neutral-300 text-[15px]"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0"></span>Enable, disable, reorder</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    /* dark purple haze around core */
-    var hazeGeo=new THREE.SphereGeometry(1.6,32,32);
-    var hazeMat=new THREE.MeshBasicMaterial({color:0x1a0030,transparent:true,opacity:0.5});
-    var haze=new THREE.Mesh(hazeGeo,hazeMat);
-    haze.position.copy(blackhole.position);
-    scene.add(haze);
+        <!-- ====== STATS ====== -->
+        <section class="py-28 px-6 relative">
+            <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at center,rgba(168,85,247,0.04) 0%,transparent 70%)"></div>
+            <div class="max-w-5xl mx-auto relative">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
+                    <div class="rv d1 text-center"><div class="stat-num purple-grad mb-3">0</div><div class="text-sm text-neutral-500 font-medium">Cloud Dependencies</div></div>
+                    <div class="rv d3 text-center"><div class="stat-num purple-grad mb-3">~5</div><div class="text-sm text-neutral-500 font-medium">MB RAM</div></div>
+                    <div class="rv d5 text-center"><div class="stat-num purple-grad mb-3">&lt;1%</div><div class="text-sm text-neutral-500 font-medium">CPU Usage</div></div>
+                    <div class="rv d7 text-center"><div class="stat-num purple-grad mb-3">∞</div><div class="text-sm text-neutral-500 font-medium">Custom Rules</div></div>
+                </div>
+            </div>
+        </section>
 
-    /* EVENT HORIZON RINGS - purple & pink */
-    var ringGeo=new THREE.TorusGeometry(1.8,0.035,16,128);
-    var ringMat=new THREE.MeshBasicMaterial({color:0xD946EF,transparent:true,opacity:0.7});
-    var eventRing=new THREE.Mesh(ringGeo,ringMat);
-    eventRing.position.copy(blackhole.position);
-    eventRing.rotation.x=Math.PI/2.3;
-    scene.add(eventRing);
+        <!-- ====== PRIVACY ====== -->
+        <section id="privacy" class="py-32 px-6">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-20">
+                    <span class="rv inline-flex items-center gap-2 section-label mb-4"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>Privacy First</span>
+                    <h2 class="rv d1 text-4xl md:text-5xl font-bold text-white mb-5 mt-6">Privacy by design</h2>
+                    <p class="rv d2 text-neutral-400 text-lg max-w-lg mx-auto">Built from the ground up to respect your privacy.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5" id="priv-grid">
+                    <div class="rv d1 p-card"><div class="spot"></div><div class="relative z-10 flex items-start gap-5"><div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.12)"><svg class="w-7 h-7 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg></div><div><h3 class="text-xl font-semibold text-white mb-2">No Cloud Services</h3><p class="text-neutral-500 text-sm leading-relaxed">Everything happens on your machine. Your files never leave.</p></div></div></div>
+                    <div class="rv d2 p-card"><div class="spot"></div><div class="relative z-10 flex items-start gap-5"><div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.12)"><svg class="w-7 h-7 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></div><div><h3 class="text-xl font-semibold text-white mb-2">No Tracking</h3><p class="text-neutral-500 text-sm leading-relaxed">Zero analytics, telemetry, or data collection.</p></div></div></div>
+                    <div class="rv d3 p-card"><div class="spot"></div><div class="relative z-10 flex items-start gap-5"><div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.12)"><svg class="w-7 h-7 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.858 15.355-5.858 21.213 0"/></svg></div><div><h3 class="text-xl font-semibold text-white mb-2">No Internet Required</h3><p class="text-neutral-500 text-sm leading-relaxed">Works completely offline. Always.</p></div></div></div>
+                    <div class="rv d4 p-card"><div class="spot"></div><div class="relative z-10 flex items-start gap-5"><div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.12)"><svg class="w-7 h-7 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><div><h3 class="text-xl font-semibold text-white mb-2">Fully Local Processing</h3><p class="text-neutral-500 text-sm leading-relaxed">All operations happen locally. Your data, your control.</p></div></div></div>
+                </div>
+            </div>
+        </section>
 
-    var ring2Geo=new THREE.TorusGeometry(2.2,0.025,16,128);
-    var ring2Mat=new THREE.MeshBasicMaterial({color:0xEC4899,transparent:true,opacity:0.4});
-    var eventRing2=new THREE.Mesh(ring2Geo,ring2Mat);
-    eventRing2.position.copy(blackhole.position);
-    eventRing2.rotation.x=Math.PI/2.3;
-    scene.add(eventRing2);
+        <!-- ====== CTA ====== -->
+        <section id="download" class="py-40 px-6 relative overflow-hidden">
+            <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at 50% 80%,rgba(168,85,247,0.08) 0%,transparent 60%)"></div>
+            <div class="max-w-4xl mx-auto text-center relative">
+                <div class="rv mb-8">
+                    <!-- SODIUM SORTER LOGO (CTA) -->
+                    <img src="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/File%20Sorter.png"
+                    alt="Sodium Sorter"
+                    class="w-20 h-20 mx-auto rounded-2xl logo-glow" />
+                </div>
+                <div class="rv d1 mb-8"><span class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border" style="background:rgba(16,185,129,0.06);border-color:rgba(16,185,129,0.12)"><span class="w-2.5 h-2.5 bg-emerald-500 rounded-full" style="animation:pulse 2s ease-in-out infinite"></span><span class="text-[13px] text-emerald-400 font-semibold">Available Now — Free</span></span></div>
+                <h2 class="rv d2 text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight">Get Sodium Sorter</h2>
+                <p class="rv d3 text-lg text-neutral-400 mb-14 max-w-lg mx-auto leading-relaxed">Portable executable. No installation. Run it and start organizing.</p>
+                <div class="rv d4 mb-10"><a href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/sodium_sorter.exe" download="sodium_sorter.exe" class="btn-big glow-purple-big"><svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>Download SodiumSorter.exe</a></div>
+                <div class="rv d5 flex flex-wrap items-center justify-center gap-6 text-sm text-neutral-500">
+                    <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>Windows 10/11</span>
+                    <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>Portable</span>
+                    <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>Direct Download</span>
+                </div>
+            </div>
+        </section>
 
-    var ring3Geo=new THREE.TorusGeometry(2.6,0.015,16,128);
-    var ring3Mat=new THREE.MeshBasicMaterial({color:0xA855F7,transparent:true,opacity:0.2});
-    var eventRing3=new THREE.Mesh(ring3Geo,ring3Mat);
-    eventRing3.position.copy(blackhole.position);
-    eventRing3.rotation.x=Math.PI/2.1;
-    scene.add(eventRing3);
+        <!-- ====== FOOTER ====== -->
+        <footer class="py-16 px-6 border-t border-white/[0.04]">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                    <div class="md:col-span-2">
+                        <div class="flex items-center gap-3 mb-5">
+                            <!-- SODIUM SORTER LOGO (footer) -->
+                            <img src="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/File%20Sorter.png"
+                            alt="Sodium Sorter"
+                            class="w-10 h-10 rounded-xl logo-glow" />
+                            <div><span class="text-lg font-bold text-white">Sodium Sorter</span><br /><span class="text-xs text-neutral-600">by Sodium Company</span></div>
+                        </div>
+                        <p class="text-sm text-neutral-500 leading-relaxed max-w-sm">Smart file organization, automatically. Keep your folders clean without lifting a finger.</p>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-semibold tracking-[0.15em] uppercase text-neutral-400 mb-5">Product</h4>
+                        <ul class="space-y-3">
+                            <li><a href="#features" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors">Features</a></li>
+                            <li><a href="#demo" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors">Demo</a></li>
+                            <li><a href="#privacy" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors">Privacy</a></li>
+                            <li><a href="#download" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors">Download</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-semibold tracking-[0.15em] uppercase text-neutral-400 mb-5">Contact</h4>
+                        <ul class="space-y-3">
+                            <li class="text-sm text-neutral-500">Dev: <span class="text-neutral-400">MrGlitch_Spider</span></li>
+                            <li class="text-sm text-neutral-500">Org: <span class="text-neutral-400">Sodium Company</span></li>
+                            <li><a href="mailto:sajidulhasan2025@gmail.com" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors break-all">sajidulhasan2025@gmail.com</a></li>
+                            <li><a href="https://github.com/Sodiumcompany/sodium-sorter-landing" target="_blank" class="text-sm text-neutral-500 hover:text-purple-400 transition-colors inline-flex items-center gap-1.5"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>GitHub</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="pt-8 border-t border-white/[0.04] flex flex-col md:flex-row items-center justify-between gap-4">
+                    <p class="text-xs text-neutral-600">© 2024 Sodium Company. All rights reserved.</p>
+                    <span class="flex items-center gap-2 text-xs text-neutral-600">Built with <svg class="w-3.5 h-3.5 text-pink-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/></svg> for clean folders</span>
+                </div>
+            </div>
+        </footer>
+    </div>
 
-    /* ACCRETION DISK - 3500 particles purple→pink gradient */
-    var diskCount=3500;
-    var diskGeo=new THREE.BufferGeometry();
-    var diskPos=new Float32Array(diskCount*3);
-    var diskCol=new Float32Array(diskCount*3);
-    var diskData=[];
+    <script>
+        /* ============================================================
+           PURPLE/PINK BLACKHOLE 3D BACKGROUND
+           ============================================================ */
+        (function() {
+            var canvas = document.getElementById('bg-canvas');
+            var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    for(var i=0;i<diskCount;i++){
-        var angle=Math.random()*Math.PI*2;
-        var radius=2.0+Math.random()*5.5;
-        var yOff=(Math.random()-0.5)*0.15*(6.0/radius);
-        var speed=0.15+(3.0/radius)*0.4;
-        diskData.push({angle:angle,radius:radius,yOff:yOff,speed:speed});
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 200);
+            camera.position.set(0, 2, 12);
+            camera.lookAt(0, 0, 0);
 
-        diskPos[i*3]=Math.cos(angle)*radius;
-        diskPos[i*3+1]=yOff;
-        diskPos[i*3+2]=Math.sin(angle)*radius;
+            var mouseX = 0,
+                mouseY = 0,
+                scrollY = 0,
+                time = 0;
 
-        var t=(radius-2.0)/5.5;
-        if(t<0.15){
-            /* inner: bright white-pink */
-            diskCol[i*3]=1.0;
-            diskCol[i*3+1]=0.85-t*2;
-            diskCol[i*3+2]=0.95;
-        }else if(t<0.4){
-            /* mid-inner: hot pink */
-            var tt=(t-0.15)/0.25;
-            diskCol[i*3]=1.0-tt*0.1;
-            diskCol[i*3+1]=0.55-tt*0.25;
-            diskCol[i*3+2]=0.95-tt*0.1;
-        }else if(t<0.7){
-            /* mid: magenta-purple */
-            var tt2=(t-0.4)/0.3;
-            diskCol[i*3]=0.9-tt2*0.35;
-            diskCol[i*3+1]=0.3-tt2*0.2;
-            diskCol[i*3+2]=0.85-tt2*0.15;
-        }else{
-            /* outer: deep purple */
-            var tt3=(t-0.7)/0.3;
-            diskCol[i*3]=0.55-tt3*0.25;
-            diskCol[i*3+1]=0.1-tt3*0.05;
-            diskCol[i*3+2]=0.7-tt3*0.2;
-        }
-    }
+            /* BLACKHOLE CORE */
+            var bhGeo = new THREE.SphereGeometry(1.2, 64, 64);
+            var bhMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
+            var blackhole = new THREE.Mesh(bhGeo, bhMat);
+            blackhole.position.set(0, 0, -5);
+            scene.add(blackhole);
 
-    diskGeo.setAttribute('position',new THREE.BufferAttribute(diskPos,3));
-    diskGeo.setAttribute('color',new THREE.BufferAttribute(diskCol,3));
+            /* dark purple haze around core */
+            var hazeGeo = new THREE.SphereGeometry(1.6, 32, 32);
+            var hazeMat = new THREE.MeshBasicMaterial({ color: 0x1a0030, transparent: true, opacity: 0.5 });
+            var haze = new THREE.Mesh(hazeGeo, hazeMat);
+            haze.position.copy(blackhole.position);
+            scene.add(haze);
 
-    var diskMat=new THREE.PointsMaterial({
-        size:0.045,vertexColors:true,transparent:true,opacity:0.85,
-        sizeAttenuation:true,blending:THREE.AdditiveBlending,depthWrite:false
-    });
-    var diskParticles=new THREE.Points(diskGeo,diskMat);
-    diskParticles.position.copy(blackhole.position);
-    diskParticles.rotation.x=0.4;
-    scene.add(diskParticles);
+            /* EVENT HORIZON RINGS - purple & pink */
+            var ringGeo = new THREE.TorusGeometry(1.8, 0.035, 16, 128);
+            var ringMat = new THREE.MeshBasicMaterial({ color: 0xD946EF, transparent: true, opacity: 0.7 });
+            var eventRing = new THREE.Mesh(ringGeo, ringMat);
+            eventRing.position.copy(blackhole.position);
+            eventRing.rotation.x = Math.PI / 2.3;
+            scene.add(eventRing);
 
-    /* SPIRAL INFALL PARTICLES */
-    var spiralCount=900;
-    var spiralGeo=new THREE.BufferGeometry();
-    var spiralPos=new Float32Array(spiralCount*3);
-    var spiralCol=new Float32Array(spiralCount*3);
-    var spiralInfo=[];
+            var ring2Geo = new THREE.TorusGeometry(2.2, 0.025, 16, 128);
+            var ring2Mat = new THREE.MeshBasicMaterial({ color: 0xEC4899, transparent: true, opacity: 0.4 });
+            var eventRing2 = new THREE.Mesh(ring2Geo, ring2Mat);
+            eventRing2.position.copy(blackhole.position);
+            eventRing2.rotation.x = Math.PI / 2.3;
+            scene.add(eventRing2);
 
-    for(var i=0;i<spiralCount;i++){
-        var angle=Math.random()*Math.PI*2;
-        var radius=5.0+Math.random()*14.0;
-        var yOff=(Math.random()-0.5)*4;
-        var speed=0.05+Math.random()*0.1;
-        var inwardSpeed=0.003+Math.random()*0.008;
-        var hue=Math.random();
+            var ring3Geo = new THREE.TorusGeometry(2.6, 0.015, 16, 128);
+            var ring3Mat = new THREE.MeshBasicMaterial({ color: 0xA855F7, transparent: true, opacity: 0.2 });
+            var eventRing3 = new THREE.Mesh(ring3Geo, ring3Mat);
+            eventRing3.position.copy(blackhole.position);
+            eventRing3.rotation.x = Math.PI / 2.1;
+            scene.add(eventRing3);
 
-        spiralInfo.push({angle:angle,radius:radius,yOff:yOff,speed:speed,inward:inwardSpeed,baseRadius:radius});
+            /* ACCRETION DISK - 3500 particles purple→pink gradient */
+            var diskCount = 3500;
+            var diskGeo = new THREE.BufferGeometry();
+            var diskPos = new Float32Array(diskCount * 3);
+            var diskCol = new Float32Array(diskCount * 3);
+            var diskData = [];
 
-        spiralPos[i*3]=Math.cos(angle)*radius;
-        spiralPos[i*3+1]=yOff;
-        spiralPos[i*3+2]=Math.sin(angle)*radius;
+            for (var i = 0; i < diskCount; i++) {
+                var angle = Math.random() * Math.PI * 2;
+                var radius = 2.0 + Math.random() * 5.5;
+                var yOff = (Math.random() - 0.5) * 0.15 * (6.0 / radius);
+                var speed = 0.15 + (3.0 / radius) * 0.4;
+                diskData.push({ angle: angle, radius: radius, yOff: yOff, speed: speed });
 
-        if(hue<0.5){
-            spiralCol[i*3]=0.5+hue*0.5;
-            spiralCol[i*3+1]=0.15+hue*0.15;
-            spiralCol[i*3+2]=0.9;
-        }else{
-            spiralCol[i*3]=0.95;
-            spiralCol[i*3+1]=0.2-(hue-0.5)*0.15;
-            spiralCol[i*3+2]=0.6+(hue-0.5)*0.3;
-        }
-    }
+                diskPos[i * 3] = Math.cos(angle) * radius;
+                diskPos[i * 3 + 1] = yOff;
+                diskPos[i * 3 + 2] = Math.sin(angle) * radius;
 
-    spiralGeo.setAttribute('position',new THREE.BufferAttribute(spiralPos,3));
-    spiralGeo.setAttribute('color',new THREE.BufferAttribute(spiralCol,3));
-
-    var spiralMat=new THREE.PointsMaterial({
-        size:0.025,vertexColors:true,transparent:true,opacity:0.45,
-        sizeAttenuation:true,blending:THREE.AdditiveBlending,depthWrite:false
-    });
-    var spiralParticles=new THREE.Points(spiralGeo,spiralMat);
-    spiralParticles.position.copy(blackhole.position);
-    scene.add(spiralParticles);
-
-    /* RELATIVISTIC JETS - purple/pink */
-    var jetCount=500;
-    var jetGeo=new THREE.BufferGeometry();
-    var jetPos=new Float32Array(jetCount*3);
-    var jetCol=new Float32Array(jetCount*3);
-    var jetInfo=[];
-
-    for(var i=0;i<jetCount;i++){
-        var up=i<jetCount/2?1:-1;
-        var height=Math.random()*10;
-        var spread=Math.random()*0.35;
-        var ang=Math.random()*Math.PI*2;
-        var speed=0.01+Math.random()*0.025;
-        jetInfo.push({up:up,height:height,spread:spread,ang:ang,speed:speed});
-
-        jetPos[i*3]=Math.cos(ang)*spread;
-        jetPos[i*3+1]=up*height;
-        jetPos[i*3+2]=Math.sin(ang)*spread;
-
-        var fade=1.0-height/10.0;
-        jetCol[i*3]=0.6*fade+0.15;
-        jetCol[i*3+1]=0.15*fade+0.05;
-        jetCol[i*3+2]=0.95*fade;
-    }
-
-    jetGeo.setAttribute('position',new THREE.BufferAttribute(jetPos,3));
-    jetGeo.setAttribute('color',new THREE.BufferAttribute(jetCol,3));
-
-    var jetMat=new THREE.PointsMaterial({
-        size:0.022,vertexColors:true,transparent:true,opacity:0.4,
-        sizeAttenuation:true,blending:THREE.AdditiveBlending,depthWrite:false
-    });
-    var jetParticles=new THREE.Points(jetGeo,jetMat);
-    jetParticles.position.copy(blackhole.position);
-    scene.add(jetParticles);
-
-    /* DISTANT STARS */
-    var starCount=1500;
-    var starGeo=new THREE.BufferGeometry();
-    var starPos=new Float32Array(starCount*3);
-    var starCol=new Float32Array(starCount*3);
-
-    for(var i=0;i<starCount;i++){
-        var theta=Math.random()*Math.PI*2;
-        var phi=Math.acos(2*Math.random()-1);
-        var r=40+Math.random()*60;
-        starPos[i*3]=r*Math.sin(phi)*Math.cos(theta);
-        starPos[i*3+1]=r*Math.sin(phi)*Math.sin(theta);
-        starPos[i*3+2]=r*Math.cos(phi);
-        var bright=0.3+Math.random()*0.7;
-        var tint=Math.random();
-        if(tint<0.25){starCol[i*3]=bright*0.9;starCol[i*3+1]=bright*0.7;starCol[i*3+2]=bright;}
-        else if(tint<0.45){starCol[i*3]=bright;starCol[i*3+1]=bright*0.75;starCol[i*3+2]=bright*0.95;}
-        else{starCol[i*3]=bright;starCol[i*3+1]=bright;starCol[i*3+2]=bright;}
-    }
-    starGeo.setAttribute('position',new THREE.BufferAttribute(starPos,3));
-    starGeo.setAttribute('color',new THREE.BufferAttribute(starCol,3));
-    scene.add(new THREE.Points(starGeo,new THREE.PointsMaterial({size:0.08,vertexColors:true,transparent:true,opacity:0.55,sizeAttenuation:true})));
-
-    /* PHOTON SPHERE RING */
-    var lensGeo=new THREE.TorusGeometry(1.55,0.012,8,128);
-    var lensMat=new THREE.MeshBasicMaterial({color:0xE879F9,transparent:true,opacity:0.12});
-    var lensRing=new THREE.Mesh(lensGeo,lensMat);
-    lensRing.position.copy(blackhole.position);
-    lensRing.rotation.x=Math.PI/2;
-    scene.add(lensRing);
-
-    /* WIREFRAME SHAPES - purple/pink */
-    var shapes=[];
-    function addShape(geo,col,pos,sc){
-        var m=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color:col,wireframe:true,transparent:true,opacity:0.035}));
-        m.position.set(pos[0],pos[1],pos[2]);
-        m.scale.setScalar(sc);
-        scene.add(m);
-        shapes.push({mesh:m,rx:(Math.random()-0.5)*0.004,ry:(Math.random()-0.5)*0.004,fs:0.2+Math.random()*0.5,ph:Math.random()*6.28});
-    }
-    addShape(new THREE.IcosahedronGeometry(1,1),0xD946EF,[-8,4,-15],1.5);
-    addShape(new THREE.OctahedronGeometry(1,0),0xEC4899,[7,-3,-18],1.2);
-    addShape(new THREE.TorusGeometry(0.6,0.1,8,16),0xA855F7,[-6,-5,-20],2.0);
-    addShape(new THREE.DodecahedronGeometry(0.8,0),0xF472B6,[9,5,-22],1.0);
-    addShape(new THREE.TetrahedronGeometry(0.7,0),0x7C3AED,[-10,0,-25],1.3);
-    addShape(new THREE.IcosahedronGeometry(0.5,0),0xE879F9,[5,7,-16],0.8);
-    addShape(new THREE.OctahedronGeometry(0.4,0),0xEC4899,[-4,6,-30],1.8);
-    addShape(new THREE.TorusKnotGeometry(0.4,0.08,64,8,2,3),0xA855F7,[8,-6,-28],0.7);
-
-    /* ANIMATION LOOP */
-    function animate(){
-        requestAnimationFrame(animate);
-        time+=0.006;
-
-        /* accretion disk */
-        var dP=diskGeo.attributes.position.array;
-        for(var i=0;i<diskCount;i++){
-            var d=diskData[i];
-            d.angle+=d.speed*0.008;
-            d.radius-=0.00012;
-            if(d.radius<1.5)d.radius=2.0+Math.random()*5.5;
-            dP[i*3]=Math.cos(d.angle)*d.radius;
-            dP[i*3+1]=d.yOff+Math.sin(time*2+i)*0.01;
-            dP[i*3+2]=Math.sin(d.angle)*d.radius;
-        }
-        diskGeo.attributes.position.needsUpdate=true;
-
-        /* spiral infall */
-        var sP=spiralGeo.attributes.position.array;
-        var sC=spiralGeo.attributes.color.array;
-        for(var i=0;i<spiralCount;i++){
-            var s=spiralInfo[i];
-            s.angle+=s.speed*0.01;
-            s.radius-=s.inward*0.05;
-            s.yOff*=0.998;
-            if(s.radius<1.8){
-                s.radius=s.baseRadius;
-                s.yOff=(Math.random()-0.5)*4;
-                s.angle=Math.random()*Math.PI*2;
+                var t = (radius - 2.0) / 5.5;
+                if (t < 0.15) {
+                    /* inner: bright white-pink */
+                    diskCol[i * 3] = 1.0;
+                    diskCol[i * 3 + 1] = 0.85 - t * 2;
+                    diskCol[i * 3 + 2] = 0.95;
+                } else if (t < 0.4) {
+                    /* mid-inner: hot pink */
+                    var tt = (t - 0.15) / 0.25;
+                    diskCol[i * 3] = 1.0 - tt * 0.1;
+                    diskCol[i * 3 + 1] = 0.55 - tt * 0.25;
+                    diskCol[i * 3 + 2] = 0.95 - tt * 0.1;
+                } else if (t < 0.7) {
+                    /* mid: magenta-purple */
+                    var tt2 = (t - 0.4) / 0.3;
+                    diskCol[i * 3] = 0.9 - tt2 * 0.35;
+                    diskCol[i * 3 + 1] = 0.3 - tt2 * 0.2;
+                    diskCol[i * 3 + 2] = 0.85 - tt2 * 0.15;
+                } else {
+                    /* outer: deep purple */
+                    var tt3 = (t - 0.7) / 0.3;
+                    diskCol[i * 3] = 0.55 - tt3 * 0.25;
+                    diskCol[i * 3 + 1] = 0.1 - tt3 * 0.05;
+                    diskCol[i * 3 + 2] = 0.7 - tt3 * 0.2;
+                }
             }
-            sP[i*3]=Math.cos(s.angle)*s.radius;
-            sP[i*3+1]=s.yOff;
-            sP[i*3+2]=Math.sin(s.angle)*s.radius;
-            var prox=1.0-Math.min(s.radius/s.baseRadius,1.0);
-            sC[i*3]=Math.min(1.0,0.5+prox*0.5);
-            sC[i*3+1]=Math.min(0.4,0.1+prox*0.3);
-            sC[i*3+2]=Math.min(1.0,0.7+prox*0.3);
-        }
-        spiralGeo.attributes.position.needsUpdate=true;
-        spiralGeo.attributes.color.needsUpdate=true;
 
-        /* jets */
-        var jP=jetGeo.attributes.position.array;
-        for(var i=0;i<jetCount;i++){
-            var j=jetInfo[i];
-            j.height+=j.speed*j.up;
-            if(Math.abs(j.height)>10){
-                j.height=0;
-                j.spread=Math.random()*0.35;
-                j.ang=Math.random()*Math.PI*2;
+            diskGeo.setAttribute('position', new THREE.BufferAttribute(diskPos, 3));
+            diskGeo.setAttribute('color', new THREE.BufferAttribute(diskCol, 3));
+
+            var diskMat = new THREE.PointsMaterial({
+                size: 0.045,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.85,
+                sizeAttenuation: true,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+            var diskParticles = new THREE.Points(diskGeo, diskMat);
+            diskParticles.position.copy(blackhole.position);
+            diskParticles.rotation.x = 0.4;
+            scene.add(diskParticles);
+
+            /* SPIRAL INFALL PARTICLES */
+            var spiralCount = 900;
+            var spiralGeo = new THREE.BufferGeometry();
+            var spiralPos = new Float32Array(spiralCount * 3);
+            var spiralCol = new Float32Array(spiralCount * 3);
+            var spiralInfo = [];
+
+            for (var i = 0; i < spiralCount; i++) {
+                var angle = Math.random() * Math.PI * 2;
+                var radius = 5.0 + Math.random() * 14.0;
+                var yOff = (Math.random() - 0.5) * 4;
+                var speed = 0.05 + Math.random() * 0.1;
+                var inwardSpeed = 0.003 + Math.random() * 0.008;
+                var hue = Math.random();
+
+                spiralInfo.push({ angle: angle, radius: radius, yOff: yOff, speed: speed, inward: inwardSpeed,
+                    baseRadius: radius });
+
+                spiralPos[i * 3] = Math.cos(angle) * radius;
+                spiralPos[i * 3 + 1] = yOff;
+                spiralPos[i * 3 + 2] = Math.sin(angle) * radius;
+
+                if (hue < 0.5) {
+                    spiralCol[i * 3] = 0.5 + hue * 0.5;
+                    spiralCol[i * 3 + 1] = 0.15 + hue * 0.15;
+                    spiralCol[i * 3 + 2] = 0.9;
+                } else {
+                    spiralCol[i * 3] = 0.95;
+                    spiralCol[i * 3 + 1] = 0.2 - (hue - 0.5) * 0.15;
+                    spiralCol[i * 3 + 2] = 0.6 + (hue - 0.5) * 0.3;
+                }
             }
-            jP[i*3]=Math.cos(j.ang)*j.spread;
-            jP[i*3+1]=j.up*j.height;
-            jP[i*3+2]=Math.sin(j.ang)*j.spread;
-        }
-        jetGeo.attributes.position.needsUpdate=true;
 
-        /* rotate rings */
-        eventRing.rotation.z+=0.003;
-        eventRing2.rotation.z-=0.002;
-        eventRing3.rotation.z+=0.0015;
-        lensRing.rotation.z+=0.001;
+            spiralGeo.setAttribute('position', new THREE.BufferAttribute(spiralPos, 3));
+            spiralGeo.setAttribute('color', new THREE.BufferAttribute(spiralCol, 3));
 
-        /* pulse haze */
-        haze.scale.setScalar(1.0+Math.sin(time*3)*0.04);
+            var spiralMat = new THREE.PointsMaterial({
+                size: 0.025,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.45,
+                sizeAttenuation: true,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+            var spiralParticles = new THREE.Points(spiralGeo, spiralMat);
+            spiralParticles.position.copy(blackhole.position);
+            scene.add(spiralParticles);
 
-        /* wireframe shapes */
-        for(var i=0;i<shapes.length;i++){
-            var sh=shapes[i];
-            sh.mesh.rotation.x+=sh.rx;
-            sh.mesh.rotation.y+=sh.ry;
-            sh.mesh.position.y+=Math.sin(time*sh.fs+sh.ph)*0.003;
-        }
+            /* RELATIVISTIC JETS - purple/pink */
+            var jetCount = 500;
+            var jetGeo = new THREE.BufferGeometry();
+            var jetPos = new Float32Array(jetCount * 3);
+            var jetCol = new Float32Array(jetCount * 3);
+            var jetInfo = [];
 
-        /* camera */
-        var targetX=mouseX*2.0;
-        var targetY=-mouseY*1.5+2;
-        camera.position.x+=(targetX-camera.position.x)*0.02;
-        camera.position.y+=(targetY-camera.position.y)*0.02;
-        camera.position.z=12-scrollY*0.001;
-        camera.lookAt(blackhole.position.x*0.5,blackhole.position.y*0.5,blackhole.position.z);
+            for (var i = 0; i < jetCount; i++) {
+                var up = i < jetCount / 2 ? 1 : -1;
+                var height = Math.random() * 10;
+                var spread = Math.random() * 0.35;
+                var ang = Math.random() * Math.PI * 2;
+                var speed = 0.01 + Math.random() * 0.025;
+                jetInfo.push({ up: up, height: height, spread: spread, ang: ang, speed: speed });
 
-        renderer.render(scene,camera);
-    }
-    animate();
+                jetPos[i * 3] = Math.cos(ang) * spread;
+                jetPos[i * 3 + 1] = up * height;
+                jetPos[i * 3 + 2] = Math.sin(ang) * spread;
 
-    document.addEventListener('mousemove',function(e){
-        mouseX=(e.clientX/window.innerWidth)-0.5;
-        mouseY=(e.clientY/window.innerHeight)-0.5;
-    });
-    window.addEventListener('scroll',function(){scrollY=window.scrollY});
-    window.addEventListener('resize',function(){
-        camera.aspect=window.innerWidth/window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth,window.innerHeight);
-    });
-})();
+                var fade = 1.0 - height / 10.0;
+                jetCol[i * 3] = 0.6 * fade + 0.15;
+                jetCol[i * 3 + 1] = 0.15 * fade + 0.05;
+                jetCol[i * 3 + 2] = 0.95 * fade;
+            }
 
-/* ===== MOBILE MENU ===== */
-document.getElementById('menu-btn').addEventListener('click',function(){
-    document.getElementById('menu-drop').classList.toggle('hidden');
-});
-var mlinks=document.querySelectorAll('.ml');
-for(var i=0;i<mlinks.length;i++){
-    mlinks[i].addEventListener('click',function(){document.getElementById('menu-drop').classList.add('hidden')});
-}
+            jetGeo.setAttribute('position', new THREE.BufferAttribute(jetPos, 3));
+            jetGeo.setAttribute('color', new THREE.BufferAttribute(jetCol, 3));
 
-/* ===== REVEAL ON SCROLL ===== */
-var rObs=new IntersectionObserver(function(entries){
-    for(var i=0;i<entries.length;i++){
-        if(entries[i].isIntersecting)entries[i].target.classList.add('show');
-    }
-},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
-var rvs=document.querySelectorAll('.rv,.rv-l,.rv-r,.rv-s');
-for(var i=0;i<rvs.length;i++)rObs.observe(rvs[i]);
+            var jetMat = new THREE.PointsMaterial({
+                size: 0.022,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.4,
+                sizeAttenuation: true,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+            var jetParticles = new THREE.Points(jetGeo, jetMat);
+            jetParticles.position.copy(blackhole.position);
+            scene.add(jetParticles);
 
-/* ===== PRIVACY CARD SPOTLIGHT ===== */
-var pCards=document.querySelectorAll('.p-card');
-for(var i=0;i<pCards.length;i++){
-    (function(card){
-        card.addEventListener('mousemove',function(e){
-            var rect=card.getBoundingClientRect();
-            card.style.setProperty('--sx',(e.clientX-rect.left)+'px');
-            card.style.setProperty('--sy',(e.clientY-rect.top)+'px');
+            /* DISTANT STARS */
+            var starCount = 1500;
+            var starGeo = new THREE.BufferGeometry();
+            var starPos = new Float32Array(starCount * 3);
+            var starCol = new Float32Array(starCount * 3);
+
+            for (var i = 0; i < starCount; i++) {
+                var theta = Math.random() * Math.PI * 2;
+                var phi = Math.acos(2 * Math.random() - 1);
+                var r = 40 + Math.random() * 60;
+                starPos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+                starPos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+                starPos[i * 3 + 2] = r * Math.cos(phi);
+                var bright = 0.3 + Math.random() * 0.7;
+                var tint = Math.random();
+                if (tint < 0.25) { starCol[i * 3] = bright * 0.9;
+                    starCol[i * 3 + 1] = bright * 0.7;
+                    starCol[i * 3 + 2] = bright; } else if (tint < 0.45) { starCol[i * 3] = bright;
+                    starCol[i * 3 + 1] = bright * 0.75;
+                    starCol[i * 3 + 2] = bright * 0.95; } else { starCol[i * 3] = bright;
+                    starCol[i * 3 + 1] = bright;
+                    starCol[i * 3 + 2] = bright; }
+            }
+            starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+            starGeo.setAttribute('color', new THREE.BufferAttribute(starCol, 3));
+            scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({ size: 0.08, vertexColors: true,
+                transparent: true, opacity: 0.55, sizeAttenuation: true })));
+
+            /* PHOTON SPHERE RING */
+            var lensGeo = new THREE.TorusGeometry(1.55, 0.012, 8, 128);
+            var lensMat = new THREE.MeshBasicMaterial({ color: 0xE879F9, transparent: true, opacity: 0.12 });
+            var lensRing = new THREE.Mesh(lensGeo, lensMat);
+            lensRing.position.copy(blackhole.position);
+            lensRing.rotation.x = Math.PI / 2;
+            scene.add(lensRing);
+
+            /* WIREFRAME SHAPES - purple/pink */
+            var shapes = [];
+
+            function addShape(geo, col, pos, sc) {
+                var m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: col, wireframe: true,
+                    transparent: true, opacity: 0.035 }));
+                m.position.set(pos[0], pos[1], pos[2]);
+                m.scale.setScalar(sc);
+                scene.add(m);
+                shapes.push({ mesh: m, rx: (Math.random() - 0.5) * 0.004, ry: (Math.random() - 0.5) * 0.004,
+                    fs: 0.2 + Math.random() * 0.5, ph: Math.random() * 6.28 });
+            }
+            addShape(new THREE.IcosahedronGeometry(1, 1), 0xD946EF, [-8, 4, -15], 1.5);
+            addShape(new THREE.OctahedronGeometry(1, 0), 0xEC4899, [7, -3, -18], 1.2);
+            addShape(new THREE.TorusGeometry(0.6, 0.1, 8, 16), 0xA855F7, [-6, -5, -20], 2.0);
+            addShape(new THREE.DodecahedronGeometry(0.8, 0), 0xF472B6, [9, 5, -22], 1.0);
+            addShape(new THREE.TetrahedronGeometry(0.7, 0), 0x7C3AED, [-10, 0, -25], 1.3);
+            addShape(new THREE.IcosahedronGeometry(0.5, 0), 0xE879F9, [5, 7, -16], 0.8);
+            addShape(new THREE.OctahedronGeometry(0.4, 0), 0xEC4899, [-4, 6, -30], 1.8);
+            addShape(new THREE.TorusKnotGeometry(0.4, 0.08, 64, 8, 2, 3), 0xA855F7, [8, -6, -28], 0.7);
+
+            /* ANIMATION LOOP */
+            function animate() {
+                requestAnimationFrame(animate);
+                time += 0.006;
+
+                /* accretion disk */
+                var dP = diskGeo.attributes.position.array;
+                for (var i = 0; i < diskCount; i++) {
+                    var d = diskData[i];
+                    d.angle += d.speed * 0.008;
+                    d.radius -= 0.00012;
+                    if (d.radius < 1.5) d.radius = 2.0 + Math.random() * 5.5;
+                    dP[i * 3] = Math.cos(d.angle) * d.radius;
+                    dP[i * 3 + 1] = d.yOff + Math.sin(time * 2 + i) * 0.01;
+                    dP[i * 3 + 2] = Math.sin(d.angle) * d.radius;
+                }
+                diskGeo.attributes.position.needsUpdate = true;
+
+                /* spiral infall */
+                var sP = spiralGeo.attributes.position.array;
+                var sC = spiralGeo.attributes.color.array;
+                for (var i = 0; i < spiralCount; i++) {
+                    var s = spiralInfo[i];
+                    s.angle += s.speed * 0.01;
+                    s.radius -= s.inward * 0.05;
+                    s.yOff *= 0.998;
+                    if (s.radius < 1.8) {
+                        s.radius = s.baseRadius;
+                        s.yOff = (Math.random() - 0.5) * 4;
+                        s.angle = Math.random() * Math.PI * 2;
+                    }
+                    sP[i * 3] = Math.cos(s.angle) * s.radius;
+                    sP[i * 3 + 1] = s.yOff;
+                    sP[i * 3 + 2] = Math.sin(s.angle) * s.radius;
+                    var prox = 1.0 - Math.min(s.radius / s.baseRadius, 1.0);
+                    sC[i * 3] = Math.min(1.0, 0.5 + prox * 0.5);
+                    sC[i * 3 + 1] = Math.min(0.4, 0.1 + prox * 0.3);
+                    sC[i * 3 + 2] = Math.min(1.0, 0.7 + prox * 0.3);
+                }
+                spiralGeo.attributes.position.needsUpdate = true;
+                spiralGeo.attributes.color.needsUpdate = true;
+
+                /* jets */
+                var jP = jetGeo.attributes.position.array;
+                for (var i = 0; i < jetCount; i++) {
+                    var j = jetInfo[i];
+                    j.height += j.speed * j.up;
+                    if (Math.abs(j.height) > 10) {
+                        j.height = 0;
+                        j.spread = Math.random() * 0.35;
+                        j.ang = Math.random() * Math.PI * 2;
+                    }
+                    jP[i * 3] = Math.cos(j.ang) * j.spread;
+                    jP[i * 3 + 1] = j.up * j.height;
+                    jP[i * 3 + 2] = Math.sin(j.ang) * j.spread;
+                }
+                jetGeo.attributes.position.needsUpdate = true;
+
+                /* rotate rings */
+                eventRing.rotation.z += 0.003;
+                eventRing2.rotation.z -= 0.002;
+                eventRing3.rotation.z += 0.0015;
+                lensRing.rotation.z += 0.001;
+
+                /* pulse haze */
+                haze.scale.setScalar(1.0 + Math.sin(time * 3) * 0.04);
+
+                /* wireframe shapes */
+                for (var i = 0; i < shapes.length; i++) {
+                    var sh = shapes[i];
+                    sh.mesh.rotation.x += sh.rx;
+                    sh.mesh.rotation.y += sh.ry;
+                    sh.mesh.position.y += Math.sin(time * sh.fs + sh.ph) * 0.003;
+                }
+
+                /* camera */
+                var targetX = mouseX * 2.0;
+                var targetY = -mouseY * 1.5 + 2;
+                camera.position.x += (targetX - camera.position.x) * 0.02;
+                camera.position.y += (targetY - camera.position.y) * 0.02;
+                camera.position.z = 12 - scrollY * 0.001;
+                camera.lookAt(blackhole.position.x * 0.5, blackhole.position.y * 0.5, blackhole.position.z);
+
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            document.addEventListener('mousemove', function(e) {
+                mouseX = (e.clientX / window.innerWidth) - 0.5;
+                mouseY = (e.clientY / window.innerHeight) - 0.5;
+            });
+            window.addEventListener('scroll', function() { scrollY = window.scrollY });
+            window.addEventListener('resize', function() {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        })();
+
+        /* ===== MOBILE MENU ===== */
+        document.getElementById('menu-btn').addEventListener('click', function() {
+            document.getElementById('menu-drop').classList.toggle('hidden');
         });
-    })(pCards[i]);
-}
-
-/* ===== DEMO ANIMATION ===== */
-(function(){
-    var stage=document.getElementById('demo-stage');
-    var badge=document.getElementById('badge');
-    var badgeTxt=document.getElementById('badge-txt');
-    var svg=document.getElementById('demo-svg');
-    var fSrc=document.getElementById('f-src');
-    var fDocs=document.getElementById('f-docs');
-    var fImgs=document.getElementById('f-imgs');
-    var fVids=document.getElementById('f-vids');
-
-    var files=[
-        {name:'report.pdf',target:'f-docs'},
-        {name:'photo.jpg',target:'f-imgs'},
-        {name:'clip.mp4',target:'f-vids'},
-        {name:'notes.docx',target:'f-docs'},
-        {name:'wallpaper.png',target:'f-imgs'},
-        {name:'song.mp3',target:'f-vids'}
-    ];
-
-    var folderMap={'f-docs':fDocs,'f-imgs':fImgs,'f-vids':fVids};
-    var animating=false,pauseTimer=null;
-
-    function getPos(el){
-        var sr=stage.getBoundingClientRect();
-        var er=el.getBoundingClientRect();
-        return{x:er.left-sr.left+er.width/2,y:er.top-sr.top+er.height/2};
-    }
-    function makeChip(file){
-        var chip=document.createElement('div');
-        chip.className='demo-chip';
-        chip.textContent=file.name;
-        var sp=getPos(fSrc);
-        chip.style.left=(sp.x-40)+'px';
-        chip.style.top=(sp.y-14)+'px';
-        chip.style.opacity='0';
-        chip.style.transform='scale(0.7)';
-        stage.appendChild(chip);
-        return chip;
-    }
-    function makeLine(x1,y1,x2,y2){
-        var line=document.createElementNS('http://www.w3.org/2000/svg','line');
-        line.setAttribute('x1',x1);line.setAttribute('y1',y1);
-        line.setAttribute('x2',x2);line.setAttribute('y2',y2);
-        line.setAttribute('stroke','rgba(236,72,153,0.25)');
-        line.setAttribute('stroke-width','1.5');
-        line.setAttribute('stroke-dasharray','6 4');
-        svg.appendChild(line);
-        return line;
-    }
-    function wait(ms){return new Promise(function(r){setTimeout(r,ms)})}
-    function setBadge(on,txt){badge.className='demo-badge '+(on?'on':'off');badgeTxt.textContent=txt}
-
-    async function runSequence(){
-        if(animating)return;
-        animating=true;
-        setBadge(true,'Monitoring...');
-        await wait(800);
-        for(var i=0;i<files.length;i++){
-            if(!animating)return;
-            var file=files[i];
-            var chip=makeChip(file);
-            chip.style.transition='all 0.4s ease-out';
-            chip.style.opacity='1';
-            chip.style.transform='scale(1)';
-            await wait(400);
-            var sp=getPos(fSrc);
-            var tgtEl=folderMap[file.target];
-            var tp=getPos(tgtEl);
-            var line=makeLine(sp.x,sp.y,tp.x,tp.y);
-            tgtEl.classList.add('lit');
-            setBadge(true,'Sorting '+file.name+'...');
-            chip.style.transition='all 0.8s cubic-bezier(0.4,0,0.2,1)';
-            chip.style.left=(tp.x-40)+'px';
-            chip.style.top=(tp.y-14)+'px';
-            await wait(900);
-            chip.classList.add('done');
-            await wait(300);
-            chip.style.transition='all 0.4s ease-in';
-            chip.style.opacity='0';
-            chip.style.transform='scale(0.6)';
-            line.style.transition='opacity 0.4s';
-            line.style.opacity='0';
-            await wait(450);
-            tgtEl.classList.remove('lit');
-            chip.remove();line.remove();
-            await wait(300);
+        var mlinks = document.querySelectorAll('.ml');
+        for (var i = 0; i < mlinks.length; i++) {
+            mlinks[i].addEventListener('click', function() { document.getElementById('menu-drop').classList.add(
+                    'hidden') });
         }
-        setBadge(true,'All sorted ✓');
-        await wait(2000);
-        setBadge(false,'Waiting...');
-        animating=false;
-        pauseTimer=setTimeout(function(){runSequence()},1500);
-    }
 
-    var demoObs=new IntersectionObserver(function(entries){
-        if(entries[0].isIntersecting&&!animating){runSequence();demoObs.unobserve(stage)}
-    },{threshold:0.4});
-    demoObs.observe(stage);
+        /* ===== REVEAL ON SCROLL ===== */
+        var rObs = new IntersectionObserver(function(entries) {
+            for (var i = 0; i < entries.length; i++) {
+                if (entries[i].isIntersecting) entries[i].target.classList.add('show');
+            }
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+        var rvs = document.querySelectorAll('.rv,.rv-l,.rv-r,.rv-s');
+        for (var i = 0; i < rvs.length; i++) rObs.observe(rvs[i]);
 
-    document.getElementById('demo-restart').addEventListener('click',function(){
-        if(pauseTimer)clearTimeout(pauseTimer);
-        var old=stage.querySelectorAll('.demo-chip');
-        for(var i=0;i<old.length;i++)old[i].remove();
-        while(svg.firstChild)svg.removeChild(svg.firstChild);
-        fDocs.classList.remove('lit');fImgs.classList.remove('lit');fVids.classList.remove('lit');
-        setBadge(false,'Waiting...');
-        animating=false;
-        setTimeout(function(){runSequence()},300);
-    });
-})();
+        /* ===== PRIVACY CARD SPOTLIGHT ===== */
+        var pCards = document.querySelectorAll('.p-card');
+        for (var i = 0; i < pCards.length; i++) {
+            (function(card) {
+                card.addEventListener('mousemove', function(e) {
+                    var rect = card.getBoundingClientRect();
+                    card.style.setProperty('--sx', (e.clientX - rect.left) + 'px');
+                    card.style.setProperty('--sy', (e.clientY - rect.top) + 'px');
+                });
+            })(pCards[i]);
+        }
 
-/* ===== SMOOTH SCROLL ===== */
-var scrollLinks=document.querySelectorAll('a[href^="#"]');
-for(var i=0;i<scrollLinks.length;i++){
-    scrollLinks[i].addEventListener('click',function(e){
-        var href=this.getAttribute('href');
-        if(href==='#')return;
-        var target=document.querySelector(href);
-        if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'})}
-    });
-}
-</script>
+        /* ===== DEMO ANIMATION ===== */
+        (function() {
+            var stage = document.getElementById('demo-stage');
+            var badge = document.getElementById('badge');
+            var badgeTxt = document.getElementById('badge-txt');
+            var svg = document.getElementById('demo-svg');
+            var fSrc = document.getElementById('f-src');
+            var fDocs = document.getElementById('f-docs');
+            var fImgs = document.getElementById('f-imgs');
+            var fVids = document.getElementById('f-vids');
+
+            var files = [
+                { name: 'report.pdf', target: 'f-docs' },
+                { name: 'photo.jpg', target: 'f-imgs' },
+                { name: 'clip.mp4', target: 'f-vids' },
+                { name: 'notes.docx', target: 'f-docs' },
+                { name: 'wallpaper.png', target: 'f-imgs' },
+                { name: 'song.mp3', target: 'f-vids' }
+            ];
+
+            var folderMap = { 'f-docs': fDocs, 'f-imgs': fImgs, 'f-vids': fVids };
+            var animating = false,
+                pauseTimer = null;
+
+            function getPos(el) {
+                var sr = stage.getBoundingClientRect();
+                var er = el.getBoundingClientRect();
+                return { x: er.left - sr.left + er.width / 2, y: er.top - sr.top + er.height / 2 };
+            }
+
+            function makeChip(file) {
+                var chip = document.createElement('div');
+                chip.className = 'demo-chip';
+                chip.textContent = file.name;
+                var sp = getPos(fSrc);
+                chip.style.left = (sp.x - 40) + 'px';
+                chip.style.top = (sp.y - 14) + 'px';
+                chip.style.opacity = '0';
+                chip.style.transform = 'scale(0.7)';
+                stage.appendChild(chip);
+                return chip;
+            }
+
+            function makeLine(x1, y1, x2, y2) {
+                var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', x1);
+                line.setAttribute('y1', y1);
+                line.setAttribute('x2', x2);
+                line.setAttribute('y2', y2);
+                line.setAttribute('stroke', 'rgba(236,72,153,0.25)');
+                line.setAttribute('stroke-width', '1.5');
+                line.setAttribute('stroke-dasharray', '6 4');
+                svg.appendChild(line);
+                return line;
+            }
+
+            function wait(ms) { return new Promise(function(r) { setTimeout(r, ms) }) }
+
+            function setBadge(on, txt) { badge.className = 'demo-badge ' + (on ? 'on' : 'off');
+                badgeTxt.textContent = txt }
+
+            async function runSequence() {
+                if (animating) return;
+                animating = true;
+                setBadge(true, 'Monitoring...');
+                await wait(800);
+                for (var i = 0; i < files.length; i++) {
+                    if (!animating) return;
+                    var file = files[i];
+                    var chip = makeChip(file);
+                    chip.style.transition = 'all 0.4s ease-out';
+                    chip.style.opacity = '1';
+                    chip.style.transform = 'scale(1)';
+                    await wait(400);
+                    var sp = getPos(fSrc);
+                    var tgtEl = folderMap[file.target];
+                    var tp = getPos(tgtEl);
+                    var line = makeLine(sp.x, sp.y, tp.x, tp.y);
+                    tgtEl.classList.add('lit');
+                    setBadge(true, 'Sorting ' + file.name + '...');
+                    chip.style.transition = 'all 0.8s cubic-bezier(0.4,0,0.2,1)';
+                    chip.style.left = (tp.x - 40) + 'px';
+                    chip.style.top = (tp.y - 14) + 'px';
+                    await wait(900);
+                    chip.classList.add('done');
+                    await wait(300);
+                    chip.style.transition = 'all 0.4s ease-in';
+                    chip.style.opacity = '0';
+                    chip.style.transform = 'scale(0.6)';
+                    line.style.transition = 'opacity 0.4s';
+                    line.style.opacity = '0';
+                    await wait(450);
+                    tgtEl.classList.remove('lit');
+                    chip.remove();
+                    line.remove();
+                    await wait(300);
+                }
+                setBadge(true, 'All sorted ✓');
+                await wait(2000);
+                setBadge(false, 'Waiting...');
+                animating = false;
+                pauseTimer = setTimeout(function() { runSequence() }, 1500);
+            }
+
+            var demoObs = new IntersectionObserver(function(entries) {
+                if (entries[0].isIntersecting && !animating) { runSequence();
+                    demoObs.unobserve(stage) }
+            }, { threshold: 0.4 });
+            demoObs.observe(stage);
+
+            document.getElementById('demo-restart').addEventListener('click', function() {
+                if (pauseTimer) clearTimeout(pauseTimer);
+                var old = stage.querySelectorAll('.demo-chip');
+                for (var i = 0; i < old.length; i++) old[i].remove();
+                while (svg.firstChild) svg.removeChild(svg.firstChild);
+                fDocs.classList.remove('lit');
+                fImgs.classList.remove('lit');
+                fVids.classList.remove('lit');
+                setBadge(false, 'Waiting...');
+                animating = false;
+                setTimeout(function() { runSequence() }, 300);
+            });
+        })();
+
+        /* ===== SMOOTH SCROLL ===== */
+        var scrollLinks = document.querySelectorAll('a[href^="#"]');
+        for (var i = 0; i < scrollLinks.length; i++) {
+            scrollLinks[i].addEventListener('click', function(e) {
+                var href = this.getAttribute('href');
+                if (href === '#') return;
+                var target = document.querySelector(href);
+                if (target) { e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' }) }
+            });
+        }
+    </script>
 </body>
 </html>
