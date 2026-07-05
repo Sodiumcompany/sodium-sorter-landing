@@ -6,10 +6,7 @@
     <title>Sodium Sorter — Automatic File Organizer for Windows | Free Download</title>
     <meta name="description" content="Sodium Sorter automatically monitors and organizes your files on Windows. Download the best free file sorter for Windows 10/11. 100% private, no cloud, no tracking." />
     <meta name="robots" content="index, follow" />
-    <meta name="wot-verification" content="62a773200f248aed5e1f"/>
     <link rel="canonical" href="https://sodiumsorter.vercel.app/" />
-    <!-- Copy and paste this code into your website -->
-    <script async src='https://static.mywot.com/website_owners_badges/websiteOwnersBadge.js'></script>
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -27,9 +24,17 @@
     <meta name="twitter:description" content="Automatically sort files on Windows with custom rules. Free, portable, and private." />
     <meta name="twitter:image" content="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/File%20Sorter.png" />
 
-    <!-- Favicon -->
-    <link rel="icon" href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/folder.png" type="image/png" />
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/File%20Sorter.png" />
+    <!-- ===== FAVICON & APP ICONS ===== -->
+    <!-- Standard favicon -->
+    <link rel="icon" href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/folder.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/folder.png" type="image/png" sizes="16x16" />
+
+    <!-- Apple Touch Icon (iOS, iPadOS, macOS Safari) -->
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/File%20Sorter.png" sizes="180x180" />
+
+    <!-- Android Chrome / PWA icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/File%20Sorter.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="https://raw.githubusercontent.com/Sodiumcompany/sodium-sorter-landing/main/File%20Sorter.png" />
 
     <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json" />
@@ -58,6 +63,10 @@
                 }
             }
         }
+    </script>
+
+    <!-- ===== WOT (Web of Trust) Verification ===== -->
+    <script async src='https://static.mywot.com/website_owners_badges/websiteOwnersBadge.js'>
     </script>
 
     <!-- ===== STRUCTURED DATA (JSON-LD) ===== -->
@@ -817,6 +826,57 @@
             line-height: 1.6;
         }
 
+        /* ── WOT BADGE ── */
+        .wot-badge-wrapper {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(12, 8, 20, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 6px 14px 6px 10px;
+            transition: all 0.3s;
+            text-decoration: none;
+            backdrop-filter: blur(8px);
+        }
+        .wot-badge-wrapper:hover {
+            border-color: rgba(168, 85, 247, 0.2);
+            background: rgba(15, 10, 25, 0.6);
+            transform: translateY(-1px);
+        }
+        .wot-badge-wrapper .wot-icon {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            background: #2d8c3c;
+            color: #fff;
+            font-weight: 700;
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            flex-shrink: 0;
+        }
+        .wot-badge-wrapper .wot-text {
+            font-size: 0.75rem;
+            color: #a0a0a0;
+            font-weight: 500;
+        }
+        .wot-badge-wrapper .wot-text strong {
+            color: #d4d4d4;
+            font-weight: 600;
+        }
+        .wot-badge-wrapper .wot-arrow {
+            color: #4a4a4a;
+            font-size: 0.7rem;
+            transition: transform 0.3s;
+        }
+        .wot-badge-wrapper:hover .wot-arrow {
+            transform: translateX(3px);
+            color: #A855F7;
+        }
+
         /* ── KEYFRAMES ── */
         @keyframes pulse {
             0%,
@@ -1546,7 +1606,7 @@
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                                 Free Download
                             </a>
-                            <a href="https://sodiumcompany.vercel.app" target="_blank" rel="noopener noreferrer" class="btn-ghost">
+                            <a href="https://sodiumcomapny.vercel.app" target="_blank" rel="noopener noreferrer" class="btn-ghost">
                                 Visit Sodium IOT
                             </a>
                         </div>
@@ -1652,7 +1712,7 @@
                                 <div class="ci-icon" aria-hidden="true"><i class="fas fa-globe"></i></div>
                                 <div>
                                     <div class="ci-label">Company Website</div>
-                                    <div class="ci-value"><a href="https://sodiumcompany.vercel.app" target="_blank" rel="noopener noreferrer">sodiumcompany.vercel.app</a></div>
+                                    <div class="ci-value"><a href="https://sodiumcomapny.vercel.app" target="_blank" rel="noopener noreferrer">sodiumcomapny.vercel.app</a></div>
                                 </div>
                             </div>
                         </div>
@@ -1702,6 +1762,16 @@
                             <div><span class="text-lg font-bold text-white">Sodium Sorter</span><br /><span class="text-xs text-neutral-600">by Sodium IOT</span></div>
                         </div>
                         <p class="text-sm text-neutral-500 leading-relaxed max-w-sm">Smart <strong>file organization</strong>, automatically. Keep your folders clean without lifting a finger.</p>
+                        <div class="mt-4">
+                            <!-- ===== WOT BADGE ===== -->
+                            <a id='wot-badge0' class='wot-badge' href='https://www.mywot.com/scorecard/sodiumsorter.vercel.app?wot_badge=0_white' target='_blank' rel="noopener noreferrer">
+                                <div class='wot-logo'></div>
+                                <div class='wot-shield'></div>
+                                <p class='wot-secured'>Verified Website</p>
+                                <div class='wot-vertical'></div>
+                                <p class='wot-report'>See Report</p>
+                            </a>
+                        </div>
                     </div>
                     <div>
                         <h4 class="text-xs font-semibold tracking-[0.15em] uppercase text-neutral-400 mb-5">Product</h4>
@@ -2328,15 +2398,6 @@
         console.log('%c🧪 Sodium Sorter v1.0.0', 'font-size:18px;font-weight:bold;color:#A855F7;');
         console.log('%c🚀 Built by MrGlitch_Spider @ Sodium IOT', 'font-size:14px;color:#888;');
         console.log('%c🔒 100% Private · No Cloud · Free', 'font-size:13px;color:#10b981;');
-
-        <!-- Copy and paste this code into your website -->
-<a id='wot-badge0' class='wot-badge' href='https://www.mywot.com/scorecard/sodiumsorter.vercel.app?wot_badge=0_white' target='_blank' >
-    <div class='wot-logo'></div>
-    <div class='wot-shield'></div>
-    <p class='wot-secured'>Verified Website</p>
-    <div class='wot-vertical'></div>
-    <p class='wot-report'>See Report</p>
-</a>
     </script>
 </body>
 </html>
